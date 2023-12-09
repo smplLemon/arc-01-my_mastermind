@@ -43,7 +43,7 @@ void game_status(char* guess, char* secret_code, int* well_placed, int* misplace
 }
 
 int is_correct_input(char* input) {
-    if (strlen(input) != 4) {
+    if (strlen(input) > 4 || strspn(input, "0123456789") != strlen(input)) {
         return 0;
     }
     else {

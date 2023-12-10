@@ -5,8 +5,10 @@
 #include <unistd.h>
 #include "my_mastermind.h"
 
+#define CODE_LENGTH 4
+
 int main(int argc, char** argv) {
-    char* st_cd = calloc(sizeof(char), 4 + 1);
+    char st_cd[CODE_LENGTH + 1];
     int mx_atmp = 10;
     int max_attempts_per_game = 0;
     
@@ -28,30 +30,30 @@ int main(int argc, char** argv) {
         generate_random_code(st_cd);
     }
     
-    char user_guess[4 + 1];
+    char user_guess[CODE_LENGTH + 1];
     int well_placed, misplaced;
     int rounds = 0;
 
     printf("Will you find the secret code?\nPlease enter a valid guess\n");
 
-    for (int i = 0; i < mx_atmp; i++) {
+    while (rounds < mx_atmp) {
         printf("---\nRound %d\n>", rounds);
-        
-        if (read(0, user_guess, 4 + 1) == -1) {
+
+        if (read(0, user_guess, CODE_LENGTH + 1) == -1) {
             printf("Error reading input.\n");
             return 1;
         }
-        
-        user_guess[4] = '\0';
 
-        if (!is_correct_input(user_guess)) {
+        user_guess[CODE_LENGTH] = '\0';
+
+        if (!is_valid_input(user_guess)) {
             printf("Wrong input!\n");
             continue;
         }
 
         game_status(user_guess, st_cd, &well_placed, &misplaced);
 
-        if (well_placed == 4) {
+        if (well_placed == CODE_LENGTH) {
             printf("Congratz! You did it!\n");
             return 0;
         }
@@ -63,6 +65,10 @@ int main(int argc, char** argv) {
             printf("---\nGame over. You didn't find the secret code.\n");
             break;
         }
+    }
+
+    if (rounds == mx_atmp) {
+        printf("---\nGame over. Maximum attempts reached.\n");
     }
     
     return 0;

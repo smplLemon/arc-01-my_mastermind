@@ -5,15 +5,14 @@
 #include <unistd.h>
 #include "my_mastermind.h"
 
-char* generate_random_code(char* random_code) {
+#define CODE_LENGTH 4
+
+void generate_random_code(char* random_code) {
     const char numbers[] = "0123456789";
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < CODE_LENGTH; i++) {
         random_code[i] = numbers[rand() % 10];
     }
-    
-    random_code[4] = '\0';
-
-    return random_code;
+    random_code[CODE_LENGTH] = '\0';
 }
 
 void game_status(char* guess, char* secret_code, int* well_placed, int* misplaced) {
@@ -42,11 +41,18 @@ void game_status(char* guess, char* secret_code, int* well_placed, int* misplace
     }
 }
 
-int is_correct_input(char* input) {
-    if (strlen(input) > 4 || strspn(input, "0123456789") != strlen(input)) {
+int is_valid_input(const char* input) {
+    if (strlen(input) != CODE_LENGTH || strspn(input, "0123456789") != CODE_LENGTH) {
         return 0;
     }
-    else {
-        return 1;
+
+    for (int i = 0; i < CODE_LENGTH - 1; i++) {
+        for (int j = i + 1; j < CODE_LENGTH; j++) {
+            if (input[i] == input[j]) {
+                return 0;
+            }
+        }
     }
+    
+    return 1;
 }

@@ -23,7 +23,7 @@ The player has several attempts to find the secret code. If the player finds the
 
 ## Installation
 
-1. Install a C compiler ccccsuch as GCC.
+1. Install a C compiler such as GCC.
 2. Clone this repository using `git clone https://github.com/username/My-Mastermind-Project.git`.
 3. Navigate to the project directory using `cd My-Mastermind-Project`.
 4. Build the project using `make`.

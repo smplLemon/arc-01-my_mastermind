@@ -6,8 +6,8 @@
 
 #define LENGTH 4
 
-void check(char *val, char *matter, int *p1, int *p2)
-{
+void check(char *val, char *matter, int *p1, int *p2){
+
   *p1 = 0;
   *p2 = 0;
   int guess[10] = {0};

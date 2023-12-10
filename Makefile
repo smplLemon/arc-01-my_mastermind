@@ -8,7 +8,6 @@ CC = gcc
 
  all: $(TARGET)
 
-
  $(TARGET): $(OBJ)
  	$(CC) $(CFLAGS) -o $@ $^
 

@@ -14,8 +14,8 @@ int main(int argc, char** argv) {
     
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-c") == 0 && i + 1 < argc) {
-            strncpy(st_cd, argv[i + 1], 4);
-            st_cd[4] = '\0';
+            strncpy(st_cd, argv[i + 1], CODE_LENGTH);
+            st_cd[CODE_LENGTH] = '\0';
         }
         else if (strcmp(argv[i], "-t") == 0 && i + 1 < argc) {
             mx_atmp = atoi(argv[i + 1]);
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
             return 1;
         }
 
-        user_guess[CODE_LENGTH] = '\0';
+        user_guess[strcspn(user_guess, "\n")] = '\0';
 
         if (!is_valid_input(user_guess)) {
             printf("Wrong input!\n");

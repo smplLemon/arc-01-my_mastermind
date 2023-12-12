@@ -1,22 +1,12 @@
-OBJ = mastermind.o my_mastermind.o
-CFLAGS = -Wall -Wextra -Werror
-TARGET = my_mastermind
 CC = gcc
+CFLAGS = -g -Wall -Wextra -Werror -O0 
+SOURCES = my_mastermind.c mastermind.c
+OBJECTS = $(SOURCES:.c=.o)
+TARGET = my_mastermind
+$(TARGET) : $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^ 
 
-.PHONY: all clean fclean re
-
-all: $(TARGET)
-
-$(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+.PHONY: clean
 
 clean:
-	rm -f *.o
-
-fclean: clean
-	rm -f $(TARGET)
-
-re: fclean all
+	@rm -f $(TARGET) $(OBJECTS) core

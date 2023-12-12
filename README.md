@@ -2,12 +2,6 @@
 
 This is a simple implementation of the classic Mastermind game in C.
 
-## Features
-
-- **Classic Mode:** The traditional Mastermind game mode.
-- **Colored Mode:** A mode with colored pegs.
-- **Grayscale Mode:** A mode with grayscale pegs.
-
 ## Getting Started
 
 1. Clone the repository:

@@ -166,3 +166,69 @@ Misplaced pieces: Y
 </div>
 </div>
 </div>
+
+
+# Welcome to my Mastermind Game
+
+## Overview
+
+Mastermind, also known as Master Mind, is a game of code-breaking designed for two players and originated in Israel. It bears similarities to a traditional pencil and paper game called Bulls and Cows, which might have roots dating back a century.
+
+The objective of the game is for a player, known as the code-breaker, to deduce the secret code selected by another player, referred to as the code-maker. The code consists of a sequence of 4 colored pegs chosen from a pool of six available colors. The code-breaker makes a series of pattern guesses, and following each guess, the code-maker provides feedback using two numbers: the count of pegs that are both the right color and in the correct position, and the count of pegs that have the correct color but are not in the correct position. Typically, these counts are represented by small black and white pegs.
+
+## Features
+
+- Engaging Mastermind game featuring a user-friendly interface.
+- Adjustable game configurations, including the length of the code and the permissible number of guesses.
+- Carefully crafted feedback to assist the codebreaker in improving their guesses.
+
+## Getting Set Up
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/my_mastermind.git
+
+2. Move to the project folder:
+
+    ```bash 
+    cd my_mastermind
+
+3. Compile the project using the included Makefile:
+
+    ```bash 
+    make -f Makefile.mak
+
+
+### Usage 
+
+Start the game:
+
+```bash
+./mastermind [-c secret_code] [-t attempts]
+```
+
+
+
+Non-mandatory command line options:
+
+Choose the secret code manually using -c; if not provided, a random code will be generated. Use -t to set the number of attempts; the default is 10.
+
+
+Gameplay:
+
+Follow the on-screen prompts to make guesses. The game provides feedback on each guess, and you can enter "stop" at any time to end the game.
+
+
+
+
+## Contact
+
+paradoha61@gmail.com
+
+## The Core Team
+
+<span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
+<span><img alt='Qwasar SV -- Software Engineering School Logo' src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px' /></span>

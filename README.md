@@ -166,3 +166,42 @@ Misplaced pieces: Y
 </div>
 </div>
 </div>
+
+
+### Welcome to My Mastermind – a classic code-breaking game implemented in C. This project is a modern adaptation of the famous Mastermind game where players attempt to guess a secret code within a limited number of tries.
+
+## Description
+In this version of Mastermind, the game is composed of a secret code made of 4 distinct numeric characters ranging from 0 to 8. The player has a certain number of attempts to guess this code. After each guess, the game provides feedback by indicating the number of correctly placed digits and the number of correct digits that are misplaced.
+
+## Installation
+To install and run My Mastermind, follow these steps:
+
+Clone the repository or download the source code.
+Navigate to the source code directory.
+Compile the game using the provided Makefile:
+bash
+Copy code
+make
+Run the game:
+bash
+Copy code
+./my_mastermind
+Optional Command Line Arguments
+-c [CODE]: Set a custom secret code for the game. If not set, a random code will be generated.
+-t [ATTEMPTS]: Specify the number of attempts. Default is 10.
+Example of starting a game with a custom code and attempt limit:
+
+bash
+Copy code
+./my_mastermind -c "0123" -t 15
+
+### Usage
+Once the game starts, you will be prompted to enter your guess for the secret code. Enter a guess composed of 4 distinct digits and press Enter. The game will then provide feedback about your guess:
+
+Well placed pieces: Number of digits that are correct and in the right position.
+Misplaced pieces: Number of correct digits but in the wrong position.
+Continue guessing until you either crack the code or run out of attempts.
+
+### Ending Notes
+
+Enjoy cracking the code in My Mastermind! This game is a great exercise in logic and deduction. Feel free to explore the source code and contribute to its development.

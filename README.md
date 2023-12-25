@@ -11,7 +11,7 @@ This program is an implementation of the Mastermind game. In the Mastermind game
 
    ```
    git clone <repository_url>
-   cd my-mastermind
+   cd myMastermindGame
    ```
 
 2. Compile the program using the provided Makefile:

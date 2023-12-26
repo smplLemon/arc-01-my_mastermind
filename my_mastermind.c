@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "my_mastermind.h"
 int valid_code(char *str){
     int length = strlen(str);
@@ -138,6 +139,7 @@ int main(int argc, char**argv){
         int flag = 1;
         char c;
         printf("---\nRound %d\n>",i);
+        fflush(stdout);
         while(flag = read(0, &c, 1)){
            if(c=='\n') break;
           useCode[j++] = c;

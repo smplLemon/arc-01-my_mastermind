@@ -1,5 +1,5 @@
 OBJ = my_mastermind.o
-TARGET = mastermind
+TARGET = my_mastermind
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 all : $(TARGET)
@@ -9,7 +9,7 @@ $(TARGET): $(OBJ)
 .c.o :
 	$(CC) -c $^
 clean :
-	rm -f *o
+	rm -f *.o
 fclean : clean
 	rm -f $(TARGET)
 re : fclean all

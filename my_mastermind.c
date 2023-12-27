@@ -146,15 +146,21 @@ int main(int argc, char**argv){
         }
         useCode[j]='\0';
         if(flag==0){
+            free(secret_code);
+            free(useCode);
             return 0;
         }
         if(wellMiss(secret_code, useCode)){
+            free(secret_code);
+            free(useCode);
             return 1;
         }
         
                    
     }
     printf("%s", secret_code);
+    free(secret_code);
+    free(useCode);
     return 0;
 }
 

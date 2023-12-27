@@ -1,4 +1,4 @@
-OBJ = my_mastermind.o
+OBJ = my_mastermind.c
 TARGET = my_mastermind
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror

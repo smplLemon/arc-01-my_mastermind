@@ -2,244 +2,357 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include <limits.h>
+#include <ctype.h>
 
-// Объявления функций
-void startGame(int argc, char **argv);
-void gameProcess(int attempts, char *secret_code);
-char *myRand(char *secret_code);
-char *myStrchr(const char *str, int c);
-size_t myStrlen(const char *str);
+// Определение констант
+enum
+{
+    CODE_LENGTH = 4,
+    MAX_ATTEMPTS = 10,
+    MAX_DIGIT = 8,
+    MIN_DIGIT = 0,
+    MAX_INPUT_LENGTH = CODE_LENGTH + 1,
+    MY_INT_MIN = (-2147483648),
+    MY_INT_MAX = 2147483647,
+    INPUT_NOT_COMPLETE = -1
+};
+
+// Объявление функций
 int myStrcmp(const char *str1, const char *str2);
-char *myStrcpy(char *str1, const char *str2);
-int myAtoi(const char *str);
+char *myStrcpy(char *dest, const char *src);
+size_t myStrlen(const char *str);
+char *myStrchr(const char *str, int c);
+size_t myAtoi(const char *str);
+int isValidInput(const char *str);
+int areDigitsUnique(const char *str);
+void printErrorMessage(const char *message);
+void startGame(int argc, char **argv);
+void gameProcess(const char *secretCode);
+char *generateSecretCode(char *secretCode);
 char *myScanf();
+void displayGameInfo(const char *secretCode, int attempts);
 
-
-// Главная функция
-int main(int argc, char **argv) {
-  // Вызов главной функции игры
-  startGame(argc, argv);
-  return 0;
+// Основная функция
+int main(int argc, char **argv)
+{
+    startGame(argc, argv);
+    return 0;
 }
 
-// Функция начала игры
-void startGame(int argc, char **argv) {
-  // Выделение памяти под секретный код
-  char *secretCode = malloc(sizeof(char) * 5);
-  int attempts = 10;
+// Инициализация игры
+void startGame(int argc, char **argv)
+{
+    char secretCode[CODE_LENGTH + 1];
+    int attempts = MAX_ATTEMPTS;
 
-  // Обработка аргументов командной строки
-  for (int i = 1; i < argc; i++) {
-    if (myStrcmp(argv[i], "-c") == 0) {
-      myStrcpy(secretCode, argv[++i]);
-    } else if (myStrcmp(argv[i], "-t") == 0) {
-      attempts = myAtoi(argv[++i]);
+    // Обработка аргументов командной строки
+    for (int i = 1; i < argc; i++)
+    {
+        if (myStrcmp(argv[i], "-c") == 0)
+        {
+            myStrcpy(secretCode, argv[++i]);
+        }
+        else if (myStrcmp(argv[i], "-t") == 0)
+        {
+            attempts = myAtoi(argv[++i]);
+        }
     }
-  }
 
-  // Если секретный код не был предоставлен, генерируем его
-  if (!secretCode[0]) {
-    myRand(secretCode);
-  }
+    // Если не предоставлен секретный код, сгенерировать новый
+    if (secretCode[0] == '\0' || myStrlen(secretCode) != CODE_LENGTH || !isValidInput(secretCode) || !areDigitsUnique(secretCode))
+    {
+        generateSecretCode(secretCode);
+    }
 
-  // Вывод информации о игре на английском
-  printf("Secret Code: %s\n", secretCode);
-  printf("Attempts: %d\n", attempts);
+    // Вывод информации об игре
+    displayGameInfo(secretCode, attempts);
 
-  // Запуск процесса игры
-  gameProcess(attempts, secretCode);
-
-  // Освобождение памяти
-  free(secretCode);
+    // Запуск процесса игры
+    gameProcess(secretCode);
 }
 
-// Функция для игрового процесса
-void gameProcess(int attempts, char *secret_code) {
-  int i = 0;
-  char *enter_code;
-  printf("Will you find the secret code?\nPlease enter a valid guess.\n");
+// Игровой процесс
+void gameProcess(const char *secretCode)
+{
+    int round = 0;
+    char *userGuess;
 
-  while (i < attempts) {
-    printf("Round %d\n", i);
+    printf("Will you find the secret code?\nPlease enter a valid guess.\n");
 
-    if (myStrcmp((enter_code = myScanf()), "stop") == 0) {
-      free(enter_code); // Освобождаем память после использования
-      return;
+    // Основной цикл игры
+    while (1)
+    {
+        printf("Round %d\n", round);
+
+        // Получение ввода от пользователя
+        userGuess = myScanf();
+
+        // Проверка на неполный ввод или запрос пользователя на выход
+        if (userGuess == NULL)
+        {
+            free(userGuess);
+            continue;
+        }
+        else if (userGuess == (char *)INPUT_NOT_COMPLETE)
+        {
+            free(userGuess);
+            break;
+        }
+
+        // Валидация ввода пользователя
+        if (myStrlen(userGuess) != CODE_LENGTH || !isValidInput(userGuess) || !areDigitsUnique(userGuess))
+        {
+            printf("Invalid input. Please enter a %d-digit code with unique values between %d and %d.\n", CODE_LENGTH, MIN_DIGIT, MAX_DIGIT);
+            free(userGuess);
+            continue;
+        }
+
+        // Сравнение догадки пользователя с секретным кодом
+        int wellPlaced = 0, misplaced = 0;
+        for (int i = 0; i < CODE_LENGTH; ++i)
+        {
+            if (userGuess[i] == secretCode[i])
+            {
+                wellPlaced++;
+            }
+            else if (myStrchr(secretCode, userGuess[i]) != NULL)
+            {
+                misplaced++;
+            }
+        }
+
+        // Проверка, угадал ли пользователь код
+        if (wellPlaced == CODE_LENGTH)
+        {
+            printf("Congratulations! You did it!\n");
+            free(userGuess);
+            return;
+        }
+
+        // Предоставление обратной связи пользователю
+        printf("Well placed pieces: %d\nMisplaced pieces: %d\n", wellPlaced, misplaced);
+
+        free(userGuess);
+        round++;
     }
 
-    // Вывод информации о правильно и неправильно угаданных символах
-    int wellPlaced = 0, misplaced = 0;
-    for (int j = 0; j < 4; ++j) {
-      if (enter_code[j] == secret_code[j]) {
-        wellPlaced++;
-      } else if (myStrchr(secret_code, enter_code[j]) != NULL) {
-        misplaced++;
-      }
-    }
-    // Проверка на выигрыш
-    if (wellPlaced == 4) {
-      printf("Congratz! You did it!\n");
-      return;
-    }
-    printf("Well placed pieces: %d\nMisplaced pieces: %d\n", wellPlaced,
-           misplaced);
-
-    free(enter_code); // Освобождаем память после использования
-
-    i++;
-  }
-
-  // Если игрок не угадал секретный код за отведенное количество попыток
-  printf("You didn't find the secret code. Try again!\n");
+    printf("You didn't find the secret code. Try again!\n");
 }
 
-// Функция генерации случайного секретного кода
-char *myRand(char *secret_code) {
-  srand(time(0));
-  int i = 0;
+// Генерация случайного секретного кода
+char *generateSecretCode(char *secretCode)
+{
+    srand(time(NULL));
 
-  while (i < 4) {
-    char valid_numbers = (rand() % 9) + '0';
-    int found = 0;
+    int used_digits[MAX_DIGIT - MIN_DIGIT + 1] = {0};
 
-    // Проверка, есть ли valid_numbers уже в secret_code
-    for (int j = 0; j < i; ++j) {
-      if (secret_code[j] == valid_numbers) {
-        found = 1;
-        break;
-      }
+    for (int i = 0; i < CODE_LENGTH; ++i)
+    {
+        int digit;
+        do
+        {
+            digit = rand() % (MAX_DIGIT - MIN_DIGIT + 1);
+        } while (used_digits[digit]);
+
+        secretCode[i] = '0' + digit;
+        used_digits[digit] = 1;
     }
 
-    // Если valid_numbers не найден в secret_code, добавляем его
-    if (!found) {
-      secret_code[i++] = valid_numbers;
+    secretCode[CODE_LENGTH] = '\0';
+    return secretCode;
+}
+
+// Пользовательская функция scanf для чтения ввода пользователя
+char *myScanf()
+{
+    char c;
+    int i = 0;
+    char *inputString = malloc(sizeof(char) * MAX_INPUT_LENGTH);
+
+    printf(">");
+
+    if (inputString == NULL)
+    {
+        printErrorMessage("Memory allocation error");
     }
-  }
 
-  return secret_code;
-}
+    // Чтение ввода посимвольно
+    while (read(STDIN_FILENO, &c, 1))
+    {
+        // Проверка на новую строку или достижение максимальной длины
+        if (c == '\n' || i == CODE_LENGTH)
+        {
+            inputString[i] = '\0';
+            return (c == '\n') ? inputString : (char *)INPUT_NOT_COMPLETE;
+        }
 
-// Функция поиска символа в строке
-char *myStrchr(const char *str, int c) {
-  while (*str != '\0') {
-    if (*str == c) {
-      return (char *)str;
+        // Сохранение символа в строке ввода
+        inputString[i++] = c;
+
+        // Изменение размера строки ввода при необходимости
+        if (i >= MAX_INPUT_LENGTH)
+        {
+            char *temp = realloc(inputString, i + 1);
+            if (temp == NULL)
+            {
+                free(inputString);
+                printErrorMessage("Memory allocation error");
+            }
+            inputString = temp;
+        }
     }
-    str++;
-  }
-  return NULL;
+
+    return NULL;
 }
 
-// Функция определения длины строки
-size_t myStrlen(const char *str) {
-  size_t size = 0;
-  for (size_t i = 0; str[i] != '\0'; i++) {
-    size++;
-  }
-  return size;
+// Вывод информации об игре
+void displayGameInfo(const char *secretCode, int attempts)
+{
+    printf("Secret Code: %s\n", secretCode);
+    printf("Attempts: %d\n", attempts);
 }
 
-// Функция сравнения строк
-int myStrcmp(const char *str1, const char *str2) {
-  size_t sizeStr1 = myStrlen(str1);
-  size_t sizeStr2 = myStrlen(str2);
-
-  if (sizeStr1 > sizeStr2) {
+// Валидация ввода на наличие только допустимых цифр
+int isValidInput(const char *str)
+{
+    for (int i = 0; i < CODE_LENGTH; i++)
+    {
+        if (!isdigit(str[i]) || str[i] < '0' || str[i] > '8')
+        {
+            return 0;
+        }
+    }
     return 1;
-  } else if (sizeStr1 < sizeStr2) {
-    return -1;
-  }
-
-  for (size_t i = 0; i < sizeStr1; i++) {
-    if (str1[i] != str2[i]) {
-      return str1[i] - str2[i];
-    }
-  }
-
-  return 0;
 }
 
-// Функция копирования строк
-char *myStrcpy(char *str1, const char *str2) {
-  size_t lenStr2 = myStrlen(str2);
-
-  for (size_t i = 0; i <= lenStr2; i++) {
-    str1[i] = str2[i];
-  }
-  return str1;
+// Проверка, что все цифры во вводе уникальны
+int areDigitsUnique(const char *str)
+{
+    for (int i = 0; i < CODE_LENGTH; i++)
+    {
+        for (int j = i + 1; j < CODE_LENGTH; j++)
+        {
+            if (str[i] == str[j])
+            {
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 
-// Функция преобразования строки в число
-int myAtoi(const char *str) {
-  int i = 0;
-  long int num = 0;
-  int flag = 0;
+// Пользовательская функция atoi для преобразования строк в целые числа
+size_t myAtoi(const char *str)
+{
+    int i = 0;
+    long int num = 0;
+    int flag = 0;
 
-  while (str[i] == ' ') {
-    i++;
-  }
-
-  if (str[i] == '+' || str[i] == '-') {
-    if (str[i] == '-') {
-      flag = 1;
-    }
-    i++;
-  }
-
-  while (str[i] >= '0' && str[i] <= '9') {
-    num = num * 10 + (str[i] - '0');
-
-    if (!flag && num > INT_MAX) {
-      return INT_MAX;
-    } else if (flag && -num < INT_MIN) {
-      return INT_MIN;
+    // Пропуск начальных пробелов
+    while (str[i] == ' ')
+    {
+        i++;
     }
 
-    i++;
-  }
-  if (flag) {
-    num = -num;
-  }
+    // Проверка наличия знака
+    if (str[i] == '+' || str[i] == '-')
+    {
+        if (str[i] == '-')
+        {
+            flag = 1;
+        }
+        i++;
+    }
 
-  return num;
+    // Преобразование цифр в целое число
+    while (str[i] >= '0' && str[i] <= '9')
+    {
+        num = num * 10 + (str[i] - '0');
+
+        // Проверка на переполнение или недополнение
+        if (!flag && num > MY_INT_MAX)
+        {
+            return MY_INT_MAX;
+        }
+        else if (flag && -num < MY_INT_MIN)
+        {
+            return MY_INT_MIN;
+        }
+
+        i++;
+    }
+
+    // Применение знака при необходимости
+    if (flag)
+    {
+        num = -num;
+    }
+
+    return num;
 }
 
-// Функция чтения строки с клавиатуры
-char *myScanf() {
-  char c;
-  int i = 0;
-  char *str = malloc(sizeof(char) * 6); // Выделение памяти под строку
-  printf(">");
-
-  if (str == NULL) {
-    perror("Memory allocation error");
-    exit(EXIT_FAILURE);
-  }
-
-  while (read(STDIN_FILENO, &c, 1)) {
-    if (c == '\n' || i == 5) {
-      str[i] = '\0'; // Завершаем строку нулевым символом
-      return str;
+// Пользовательская функция сравнения строк
+int myStrcmp(const char *str1, const char *str2)
+{
+    while (*str1 != '\0' && *str2 != '\0')
+    {
+        if (*str1 < *str2)
+        {
+            return -1;
+        }
+        else if (*str1 > *str2)
+        {
+            return 1;
+        }
+        str1++;
+        str2++;
     }
 
-    str[i] = c;
-    i++;
+    return 0;
+}
 
-    // Если выделенная память заканчивается, увеличиваем ее размер
-    if (i >= 5) {
-      char *temp = realloc(
-          str,
-          i + 1); // Увеличиваем размер на 1 для завершающего нулевого символа
-      if (temp == NULL) {
-        free(str); // Освобождаем память в случае неудачи realloc
-        perror("Memory allocation error");
-        exit(EXIT_FAILURE);
-      }
-      str = temp;
+// Пользовательская функция копирования строк
+char *myStrcpy(char *dest, const char *src)
+{
+    size_t lenStr2 = myStrlen(src);
+
+    for (size_t i = 0; i <= lenStr2; i++)
+    {
+        dest[i] = src[i];
     }
-  }
+    return dest;
+}
 
-  // В случае ошибки возвращаем NULL
-  return NULL;
+// Пользовательская функция определения длины строки
+size_t myStrlen(const char *str)
+{
+    size_t length = 0;
+
+    while (*str != '\0')
+    {
+        ++length;
+        ++str;
+    }
+
+    return length;
+}
+
+// Пользовательская функция поиска символа в строке
+char *myStrchr(const char *str, int c)
+{
+    while (*str != '\0')
+    {
+        if (*str == c)
+        {
+            return (char *)str;
+        }
+        str++;
+    }
+    return NULL;
+}
+
+// Вывод сообщений об ошибке
+void printErrorMessage(const char *message)
+{
+    fprintf(stderr, "%s\n", message);
 }

@@ -1,8 +1,23 @@
+
+
 # Mastermind Game
 
 This is a simple implementation of the classic Mastermind game in C.
 
-## Getting Started
+## Task
+
+- [x] You will need to create a folder and in this folder will be additional files containing your work.
+- [x] Folder names must start with special file names and also contain ( Makefile - _.c - _.h).
+- [x] The player must follow the Mastermind game rules.
+- [x] A player is allowed to guess multiple times.
+- [x] Guesses entered by the player are checked and feedback is given whether they are correct or incorrect.
+
+## Description
+
+The player has several attempts to find the secret code. If the player finds the code, he wins and the game stops. A misplaced part is a part that is present in the secret code but not in good condition.
+
+
+## Installation
 
 1. Clone the repository:
 

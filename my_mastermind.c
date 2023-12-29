@@ -16,8 +16,8 @@ int new_strlen(char* input_checker){
 char* new_strcpy(char* param_1, char* param_2)
 {
     int i = 0;
-    for (; param_1[i] != '\0'; i++) {
-        param_1[i] = param_2[i];
+    for (; param_2[i] != '\0'; i++) {
+        param_2[i] = param_1[i];
     }
     return param_1;
 }

@@ -1,5 +1,3 @@
-
-
 # Mastermind Game
 
 This is a simple implementation of the classic Mastermind game in C.

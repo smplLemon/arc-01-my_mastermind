@@ -52,4 +52,4 @@ Follow the on-screen prompts to make guesses. The game provides feedback on each
 
 ## Contact
 
-- pragramist090@fmaio.com
+- pragramist090@gmail.com

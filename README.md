@@ -11,7 +11,6 @@ The program also accepts parameters:
 - -c [CODE]: Specifies the secret code. If no code is provided, a random code will be generated.
 - -t [ATTEMPTS]: Specifies the number of attempts. By default, the player has 10 attempts.
 
-
 ## Installation
 To compile the program, use the provided Makefile and ensure the code is compiled with the flags -Wall -Wextra -Werror.
 

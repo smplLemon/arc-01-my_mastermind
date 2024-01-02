@@ -114,7 +114,7 @@ char* the_users_guess(){
 }
 
 void the_main_function(char *the_secret_code, int the_turns){
-  
+  if (!inspector(the_secret_code)){exit(1);}
   printf("\n%s\nWelcome to game mastermind\n%s\n\nWill you find the secret code?\nPlease enter a valid guess\n", the_line, the_line);
   for (int the_round = 0; the_round < the_turns; ++the_round)
   {

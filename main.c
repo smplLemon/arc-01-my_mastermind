@@ -258,17 +258,18 @@ size_t my_atoi(const char *str) {
 // Пользовательская функция сравнения строк
 int my_strcmp(const char *str1, const char *str2) {
     while (*str1 != '\0' && *str2 != '\0') {
-        if (*str1 < *str2) {
-            return -1;
-        }
-        else if (*str1 > *str2) {
-            return 1;
+        if (*str1 != *str2) {
+            return (*str1 - *str2);
         }
         str1++;
         str2++;
     }
 
-    return 0;
+    if (*str1 == '\0' && *str2 == '\0') {
+        return 0;
+    }
+
+    return (*str1 - *str2);
 }
 
 // Пользовательская функция копирования строк

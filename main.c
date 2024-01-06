@@ -162,18 +162,12 @@ char *my_scanf()
         return NULL;
     }
 
-    while (read(STDIN_FILENO, &c, 1))
+    while (read(STDIN_FILENO, &c, 1) && c != 4)
     {
-        if (c == 4)
-        {
-            free(inputString);
-            return "stop";
-        }
-
         if (c == '\n')
         {
             inputString[i] = '\0';
-            return (c == '\n') ? inputString : (char *)INPUT_NOT_COMPLETE;
+            return inputString;
         }
 
         inputString[i++] = c;

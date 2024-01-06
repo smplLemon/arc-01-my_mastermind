@@ -7,7 +7,7 @@
 enum
 {
     CODE_LENGTH = 4,
-    MAX_ATTEMPTS = 10,
+    DEFAULT_ATTEMPTS = 10,
     MAX_DIGIT = 8,
     MIN_DIGIT = 0,
     MAX_INPUT_LENGTH = CODE_LENGTH + 1,
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 void start_game(int argc, char **argv)
 {
     char secretCode[CODE_LENGTH + 1];
-    int attempts = MAX_ATTEMPTS;
+    int attempts = DEFAULT_ATTEMPTS;
 
     for (int i = 1; i < argc; i++)
     {
@@ -68,23 +68,24 @@ void game_process(const char *secretCode, const int attempts)
 {
     int round = 0;
     char *userGuess;
-    printf("Will you find the secret code?\n");
+    printf("Will you find the secret code?\nPlease enter a valid guess.\n");
 
     while (round < attempts)
     {
         printf("Round %d\n", round);
-
+        printf("> ");
+        fflush(stdout);
         userGuess = my_scanf();
 
         if (userGuess == NULL)
         {
             free(userGuess);
-            break;
+            continue;
         }
         else if (userGuess == (char *)INPUT_NOT_COMPLETE)
         {
             free(userGuess);
-            continue;
+            break;
         }
 
         if (my_strlen(userGuess) != CODE_LENGTH || !is_valid_input(userGuess) ||
@@ -135,7 +136,7 @@ char *generate_secret_code(char *secretCode)
 
     for (size_t i = 0; i < CODE_LENGTH; ++i)
     {
-        int digit = 0;
+        int digit;
         do
         {
             digit = rand() % (MAX_DIGIT - MIN_DIGIT + 1);
@@ -161,10 +162,14 @@ char *my_scanf()
         return NULL;
     }
 
-    printf("> ");
-
     while (read(STDIN_FILENO, &c, 1))
     {
+        if (c == 4)
+        {
+            free(inputString);
+            return "stop";
+        }
+
         if (c == '\n')
         {
             inputString[i] = '\0';

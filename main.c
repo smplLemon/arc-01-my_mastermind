@@ -77,10 +77,10 @@ void game_process(const char *secretCode, const int attempts)
         fflush(stdout);
         userGuess = my_scanf();
 
-        if (userGuess == NULL)
+        if (userGuess == NULL || (my_strcmp(userGuess, "stop")) == 0)
         {
             free(userGuess);
-            continue;
+            break;
         }
         else if (userGuess == (char *)INPUT_NOT_COMPLETE)
         {
@@ -171,21 +171,9 @@ char *my_scanf()
         }
 
         inputString[i++] = c;
-
-        if (i >= MAX_INPUT_LENGTH)
-        {
-            char *temp = (char *)realloc(inputString, i + 1);
-            if (temp == NULL)
-            {
-                free(inputString);
-                print_error_message("Memory allocation error");
-                return NULL;
-            }
-            inputString = temp;
-        }
     }
 
-    return inputString;
+    return "stop";
 }
 
 void display_game_info(const char *secretCode, int attempts)

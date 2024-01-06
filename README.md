@@ -13,15 +13,6 @@ but it wasn’t easy, but somehow I was able to do it thanks to my teacher, with
 I mainly settled on misplace
 Wellplace was easy to solve, but the most important thing was that I was able to do it
 
-## Installation
-How to install your project npm install make make re
-
-## Usage
-How does it work
-```
-./my_project argument1 argument2
-```
-
 ### The Core Team
 
 

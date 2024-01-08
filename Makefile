@@ -1,23 +1,16 @@
 CC = gcc
- CFLAGS = -Wall -Wextra -Werror
- TARGET = my_mastermind
- SRC = my_mastermind.c
- OBJ = $(SRC:.c=.o)
+CFLAGS = -Wall -Wextra -std=c99
+TARGET = my_mastermind
 
- .PHONY: all clean fclean re
+all: $(TARGET)
 
- all: $(TARGET)
+$(TARGET): my_mastermind.c
+	$(CC) $(CFLAGS) -o $(TARGET) my_mastermind.c
 
- $(TARGET): $(OBJ)
- 	$(CC) $(CFLAGS) -o $@ $^
+clean:
+	rm -f $(TARGET)
 
- $(OBJ): $(SRC)
- 	$(CC) $(CFLAGS) -c $< -o $@
+fclean: clean
+	# Add any additional clean-up commands here, e.g., remove other generated files
 
- clean:
- 	rm -f $(OBJ)
-
- fclean: clean
- 	rm -f $(TARGET)
-
- re: fclean all
+re: fclean all

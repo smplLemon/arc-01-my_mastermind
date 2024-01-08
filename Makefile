@@ -2,6 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 TARGET = my_mastermind
 
+
 all: $(TARGET)
 
 $(TARGET): my_mastermind.c

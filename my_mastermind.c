@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #define the_length_of_secret_code 4
-
 void checking_function(char* users_guess, char* secret_code, int* right, int* wrong)
 {
     int i = 0; *right=0,*wrong=0;
@@ -56,8 +55,6 @@ int code_check_function(char* input_code)
     }
     return 1;
 }
-
-
 
 int main(int argc, char** argv)
 {

@@ -1,15 +1,24 @@
-OBJ = my_mastermind.c
-TARGET = my_mastermind
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-all : $(TARGET)
-$(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
 
-.c.o :
-	$(CC) -c $^
-clean :
-	rm -f *.o
-fclean : clean
+TARGET = my_mastermind
+FILEC = my_mastermind.c
+OBJ = $(FILEC:.c=.o)
+
+.PHONY: all clean fclean re
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -o $(TARGET)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ)
+
+fclean: clean
 	rm -f $(TARGET)
-re : fclean all
+
+re: fclean all

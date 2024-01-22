@@ -45,7 +45,7 @@ int wellMiss(char *str1, char *str2){
     }
     if(!valid_code(str2)){
         printf("Wrong input!\n");
-        return 1;
+        return 0;
     }
     size_t i, j;
     int counter1, counter2;

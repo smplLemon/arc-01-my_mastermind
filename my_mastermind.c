@@ -64,7 +64,7 @@ int wellMiss(char *str1, char *str2){
         }
     }
     if(counter1 == 4){
-        printf("Congratz! You did it!");
+        printf("Congratz! You did it!\n");
         return 1;
     }else{
         printf("Well placed place: %d\n", counter1);
@@ -100,14 +100,14 @@ char *randNum(){
     return randStr;
 }
 
-int createAttempt(){
-    int attempt = 10;
-    return attempt;
-}
+// int createAttempt(){
+//     int attempt = 10;
+//     return attempt;
+// }
 
 int main(int argc, char**argv){
     char *secret_code = (char*)calloc(5, sizeof(char));
-    int attempts;
+    int attempts = 10;
     for (int i = 1; i < argc; i++)
     {
         if (!strcmp(argv[i], "-c"))
@@ -135,9 +135,9 @@ int main(int argc, char**argv){
     if(secret_code[0] == '\0'){
         secret_code = randNum();
     }
-    if(!attempts){
-        attempts = createAttempt();
-    }
+    // if(!attempts){
+    //     attempts = createAttempt();
+    // }
 
     char *useCode = (char*)calloc(5, sizeof(char));
     useCode[4]='\0';
@@ -166,7 +166,7 @@ int main(int argc, char**argv){
 
 
     }
-    printf("%s", secret_code);
+    //printf("%s", secret_code);
     free(secret_code);
     free(useCode);
     return 0;

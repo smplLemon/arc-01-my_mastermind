@@ -2,15 +2,27 @@
 ***
 
 ## Task
-The task is about to create full game
+Task is to create the full inplementation of MAstermind game
 
 ## Description
-the game starts in the brain() function. the brain() function checks whether there is an option to command-line, and if there is an option start the game based on that option, or if the option attempts to enter 10 characters in number and the hidden code random determines the then the game starts. brain() starts the game by taking control of the data and isolating the information it receives. error alerts are checked during the game. and at the end of the game, the brain() function returns 0 to main()
+`my_mastermind` is a command-line implementation of the Mastermind game. In this game.
+The player attempts to guess a secret code composed of four distinct pieces, each represented by the colors '0' '1' '2' '3' '4' '5' '6' '7' '8'.
+The player has a limited number of attempts to find the secret code, and after each attempt, the game provides feedback on the number of well-placed and misplaced pieces.
 
 ## Installation
+To install the game, clone the repository and compile the source code.
+
+git clone https://github.com/TheKhurshidOff707/arc-01-my_mastermind.git
+cd my_mastermind
 make
 
 ## Usage
+Run the game with the following command:
 
-./my_mastermind argument1 argument2
+./my_mastermind [-c CODE] [-t ATTEMPTS]
 
+
+### The Core Team
+
+<span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
+<span><img alt='Qwasar SV -- Software Engineering School's Logo' src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px' /></span>

@@ -8,5 +8,5 @@ all: $(TARGET)
 $(TARGET): $(SOURCE)
 	$(CC) $(CFLAGS) -o $@ $<
 
-clean:
+fclean:
 	rm -f $(TARGET)

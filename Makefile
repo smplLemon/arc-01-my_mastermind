@@ -1,12 +1,12 @@
 CC = gcc
-CFCLS = -g -Wall -Wextra -Werror
-SOURCE = my_mastemind.c
-TARGET =  my_mastemind
+CFLSGS = -g -Wall -Wextra -Werror
+SOURCE = my_mastermind.c
+TARGET = my_mastermind
 
-$(TARGET): $(SOURCE)
-	$(CC) $(CFCLS) -o $@ $^
+$(TARGET):$(SOURCE)
+	$(CC) $(CFLSGS) -o $@ $^
 
-.PHONY: flcean
+.PHONY: fclean 
 
-flcean
+fclean:
 	@rm -r $(TARGET)

@@ -1,8 +1,8 @@
 CC = gcc
-TARGET = mastermind
+TARGET = my_mastermind
 CFLAGS = -Wall -Wextra -Werror
-SRC = mastermind.c
-OBJ = mastermind.o 
+SRC = my_mastermind.c
+OBJ = my_mastermind.o 
 
 .PHONY : all clean fclean re
 

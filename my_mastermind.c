@@ -84,9 +84,9 @@ int missplace(char *a, char *b)
     int sum = 0;
     for (int i = 0; i < 4; i++)
     {
-        asci[a[i]] = 1;
-        asci[b[i]] = 1;
-        if (a[i] == b[i])
+        asci[(int)a[i]] = 1;
+        asci[(int)b[i]] = 1;
+        if ((int)a[i] == b[i])
             sum += 1;
     }
     for (int i = 48; i < 57; i++)
@@ -138,7 +138,7 @@ char *my_Key(int argc, char *argv[])
     return key;
 }
 
-void play(int w, int m, int maxRound, int *nowRound, char *secretKey, char *userKey)
+void play(int w, int m, int maxRound, int *nowRound, char *userKey)
 {
     if ((*nowRound < maxRound) && (w != 4) && (checker_char(userKey)))
     {                   
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
         if (my_strcmp(userKey, "EOT") == 0){
             break;
         }
-        play(wellplace(userKey, key), missplace(userKey, key), round, &i, key, userKey);
+        play(wellplace(userKey, key), missplace(userKey, key), round, &i, userKey);
     }
     return 0;
 }

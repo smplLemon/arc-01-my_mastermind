@@ -81,7 +81,7 @@ void create_secret_code(char* secret)
   char temp;
   int i = 0;
   while (i < CODE_LENGTH){
-    temp = rand() % 9 + '0';
+    temp = rand() % 8 + '0';
     if (str_chr(secret, temp) == 0){
       secret[i] = temp;
       i++;
@@ -96,7 +96,7 @@ bool acceptable_prediction(char *guess)
 {
   for (int i = 0; i < CODE_LENGTH; ++i)
   {
-    if ((guess[i] < '0' || guess[i] > '9') || isNumberPresent(guess[i], guess, i))
+    if ((guess[i] < '0' || guess[i] > '8') || isNumberPresent(guess[i], guess, i))
     {
       return false;
     }
@@ -175,16 +175,19 @@ int main(int argc, char **argv)
 {
   char secret_c[CODE_LENGTH + 1];
   create_secret_code(secret_c);
-  if (argc < 2)
-  {
+  if (argc < 2){
     main_f(secret_c, 10);
-  }
-  else if (argc == 3 && (strcmp(argv[1], "-c") == 0))
+  }else if (argc == 3 && (strcmp(argv[1], "-c") == 0))
   {
     main_f(argv[2], 10);
-  }
-  else if (argc == 3 && (strcmp(argv[1], "-t") == 0))
+  }else if (argc == 3 && (strcmp(argv[1], "-t") == 0))
   {
     main_f(secret_c, atoi(argv[2]));
+  }else if (argc == 5 && (strcmp(argv[3], "-t") == 0) && (strcmp(argv[1], "-c") == 0))
+  {
+    main_f(argv[2], atoi(argv[4]));
+  }else if (argc == 5 && (strcmp(argv[1], "-t") == 0) && (strcmp(argv[3], "-c") == 0))
+  {
+    main_f(argv[4], atoi(argv[2]));
   }
 }

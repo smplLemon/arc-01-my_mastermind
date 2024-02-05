@@ -1,27 +1,20 @@
+## Mastermind Game
+
+Mastermind is a classic code-breaking game where one player creates a secret code and the other player tries to guess the code within a limited number of attempts. The code consists of a sequence of colored pegs, and the guessing player must make educated guesses based on feedback provided for each guess.
+
 ## Description
 
-Mastermind is a classic code-breaking game where the player attempts to guess a secret code within a limited number of attempts. The game provides feedback to guide the player towards figuring out the correct code.
+This program implements the Mastermind game in C. It provides a command-line interface for players to interact with the game. The game generates a random secret code or accepts a user-provided code, and the player attempts to guess the code within a specified number of attempts. Feedback is provided after each guess to help the player refine their guesses.
 
-## Task
+## Installation
 
-The objective of the Mastermind game is to guess the secret code created by the computer. The secret code consists of a sequence of colored pegs. As the player, you need to make guesses and receive feedback after each guess, allowing you to deduce the correct code.
+To compile and run the game, you'll need a C compiler installed on your system. 
+Follow these steps:
+Clone the repository or download the source code.
+Open a terminal and navigate to the directory containing the source code.
+Compile the code using the following command: gcc -o mastermind mastermind.c
+Run the game by executing the compiled binary: ./mastermind
 
-## Usage
+## Task 
 
-To play the Mastermind Game, follow these steps:
-1. Compile the code using a C compiler by running the following command in a terminal: gcc main.c -o mastermind_game
-2. Start the game by running the following command: ./mastermind_game (-c <code>) (-t <attempts>)
-
-Optional Arguments:
-
--c <code>: Specify a custom secret code. The code should be a sequence of colored pegs. If not provided, a random secret code will be generated.
--t <attempts>: Specify the number of attempts the player has to guess the code. If not provided, the default value is 10.
-
-#Installation
-
-To install and run the game, follow these steps:
-
-Clone this repository or download the source code files.
-Open a terminal and navigate to the directory containing the source code files.
-Compile the code by running the following command: gcc main.c -o mastermind_game
-Start the game by running the compiled executable: ./mastermind_game
+create mastermind game with makefile without multiply macros and others

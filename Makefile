@@ -1,15 +1,18 @@
-Mastermind MKfile
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-.PHONY: all clean fclean
+TARGET = my_mastermind
 
-all: my_mastermind
+SRCS = my_mastermind.c
 
-my_mastermind: my_mastermind.c
-  $(CC) $(CFLAGS) -o my_mastermind my_mastermind.c
+$(TARGET): $(SRCS)
+  $(CC) $(CFLAGS) $^ -o $@
 
 clean:
-  rm -f my_mastermind
+  rm -f $(TARGET)
 
-fclean: clean
+.PHONY:fclean
+
+fclean:
+  rm -rf $(TARGET)
+

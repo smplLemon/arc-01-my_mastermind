@@ -1,4 +1,4 @@
-## Welcome to my_mastermind
+## Welcome to my_mastermind.c
 
 ## Task
 

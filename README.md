@@ -16,5 +16,5 @@ git branch Jovliyev_Umruzoq
 git switch Jovliyev_Umruzoq
 git add .
 git commit -m "MASTERMIND"
-git push origin https://github.com/4verLEGENDA/arc-01-my_mastermind.git
+git push origin [https://github.com/4verLEGENDA/arc-01-my_mastermind.git](https://github.com/4everLEGENDA/arc-01-my_mastermind.git)https://github.com/4everLEGENDA/arc-01-my_mastermind.git
 

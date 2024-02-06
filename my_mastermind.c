@@ -138,8 +138,8 @@ void my_mastermind(int argc, char **argv)
         if (n <= 4)
         {
             Max_Guess--;
-            continue;
-            // break;
+            printf("Wrong Input Passed !\n");
+            break;
         }
         else
         {
@@ -151,10 +151,12 @@ void my_mastermind(int argc, char **argv)
         {
             printf("Wrong input passed.\n");
             Max_Guess--;
-            continue;
+            break;
         }
         else
+        {
             toInt(guess, buffer);
+        }
 
         for (int i = 0; i < CODE_SIZE; i++)
         {
@@ -179,10 +181,9 @@ void my_mastermind(int argc, char **argv)
         }
         else
         {
-
             printf("Well placed pieces: %d\nMisplaced pieces: %d\n", properlyPlaced, misplaced);
+            Max_Guess--;
         }
-        Max_Guess--;
         free(buffer);
     }
     free(secret_code);

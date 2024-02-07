@@ -1,7 +1,6 @@
 
 # Welcome to arc-01-my_mastermind
   ***
-
  
   ## Task
   Implement the "mastermind.c" file that contains the game logic. This includes functions such as generating a secret code, counting well-placed and misplaced parts, and other auxiliary functions that you will need.

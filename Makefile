@@ -1,15 +1,16 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-TARGET = my_mastermind
+CFLAGS = -Wall -Wextra -std=c99 -g
 
-all: $(TARGET)
+all: mastermind
 
-$(TARGET): my_mastermind.c mastermind.c mastermind.h
-    $(CC) $(CFLAGS) -o $@ $^
+mastermind: mastermind.o my_mastermind.o
+	$(CC) $(CFLAGS) $^ -o $@
+
+mastermind.o: mastermind.c mastermind.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+my_mastermind.o: my_mastermind.c mastermind.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-    rm -f $(TARGET)
-
-fclean: clean
-
-re: fclean all
+	rm -f mastermind *.o

@@ -1,9 +1,9 @@
 #ifndef MASTERMIND_H
 #define MASTERMIND_H
 
-void init(char *kod);
+void init(void);
 void display(int well, int misd);
-int checkgess(char *gess, char *kod);
+int checkGuess(char *guess, char *code); 
 void play(int atm);
 
 #endif

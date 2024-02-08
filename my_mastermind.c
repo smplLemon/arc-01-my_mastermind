@@ -2,25 +2,25 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include "mastermind.h"
+#include "mastermind.h" 
+#define LN 4
 
-int main(int ac, char *av[]){
-    char kod[5]; 
+int main(int ac, char *av[]) {
+    char code[5];
 
-    if(ac > 1 && strcmp(av[1], "-c")== 0 && ac > 2){
-        strncpy(kod, av[2], 4);
-        kod[4] = '\0';
-    }
-    else{
+    if (ac > 1 && strcmp(av[1], "-c") == 0 && ac > 2) {
+        strncpy(code, av[2], LN);
+        code[LN] = '\0'; 
+    } else {
         srand(time(NULL));
-        for(int i = 0; i < 4; ++i){
-            kod[i] = '0' + rand() % 9;
+        for (int i = 0; i < LN; ++i) {
+            code[i] = '0' + rand() % 9;
         }
-        kod[4] = '\0';
+        code[LN] = '\0'; 
     }
 
-    init(kod); 
-    play(10); 
+    init(); 
+    play(10);
+
     return 0;
 }
- 

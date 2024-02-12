@@ -100,7 +100,7 @@ int check_function(char* user_input) {
 }
 
 void game_function(int attempts, char* sc_code) {
-    printf("are you going to find secret code?\nenter the number\n");
+    printf("will you find secret code?\nenter the number\n");
     char* user_input;
     for(int i = 0; i < attempts; i++) {
         printf("---\nRound %d\n", i);
@@ -117,11 +117,11 @@ void game_function(int attempts, char* sc_code) {
         int well = good_func(sc_code, user_input);
         if(well == 4) {
             free(user_input);
-            printf("congratulation you did it!\n");
+            printf("congratulations you did it!\n");
             return;
         } else {
-            printf("well placeded: %d\n", well);
-            printf("miss placeded: %d\n", function_scp(sc_code, user_input));
+            printf("well placed: %d\n", well);
+            printf("miss placed: %d\n", function_scp(sc_code, user_input));
         }
     }
 }

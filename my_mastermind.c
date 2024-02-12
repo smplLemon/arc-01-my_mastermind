@@ -143,4 +143,5 @@ int main(int argc, char** argv){
     game_for_fun(attemm, sec_code);
     free(sec_code);
 return 0;
+    
 }

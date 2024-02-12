@@ -100,7 +100,7 @@ int check_function(char* user_input) {
 }
 
 void game_function(int attempts, char* sc_code) {
-    printf("sirli raqamni topmoqchimisiz\nraqam kiriting\n");
+    printf("are you going to find secret code?\nenter the number\n");
     char* user_input;
     for(int i = 0; i < attempts; i++) {
         printf("---\nRound %d\n", i);
@@ -111,17 +111,17 @@ void game_function(int attempts, char* sc_code) {
         }
         while (check_function(user_input) == 0) {
             free(user_input);
-            printf("xato kiritdingiz!\n");
+            printf("wrong input!\n");
             user_input = my_scanf();
         }
         int well = good_func(sc_code, user_input);
         if(well == 4) {
             free(user_input);
-            printf("tabriklayman! buni uddaladingiz!\n");
+            printf("congratulation you did it!\n");
             return;
         } else {
-            printf("yaxshi joylashtirilgan: %d\n", well);
-            printf("xato joylashtirilgan: %d\n", function_scp(sc_code, user_input));
+            printf("well placeded: %d\n", well);
+            printf("miss placeded: %d\n", function_scp(sc_code, user_input));
         }
     }
 }

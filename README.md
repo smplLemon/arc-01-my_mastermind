@@ -1,168 +1,216 @@
-# arc-01-my_mastermind
-<div class="card-block">
-<div class="row">
-<div class="col tab-content">
-<div class="tab-pane active show" id="subject" role="tabpanel">
-<div class="row">
-<div class="col-md-12 col-xl-12">
-<div class="markdown-body">
-<p class="text-muted m-b-15">
-</p><h1>My Mastermind</h1>
-<p>Remember to git add &amp;&amp; git commit &amp;&amp; git push each exercise!</p>
-<p>We will execute your function with our test(s), please DO NOT PROVIDE ANY TEST(S) in your file</p>
-<p>For each exercise, you will have to create a folder and in this folder, you will have additional files that contain your work. Folder names are provided at the beginning of each exercise under <code>submit directory</code> and specific file names for each exercise are also provided at the beginning of each exercise under <code>submit file(s)</code>.</p>
-<hr>
-<table>
-<thead>
-<tr>
-<th>My Mastermind</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Submit directory</td>
-<td>.</td>
-</tr>
-<tr>
-<td>Submit files</td>
-<td>Makefile - *.c - *.h</td>
-</tr>
-</tbody>
-</table>
-<h3>Description</h3>
-<h3>SPECIFICATIONS</h3>
-<p>Write a program called mastermind; it will be an implementation of the famous game.</p>
-<h3>NAME</h3>
-<p>my_mastermind</p>
-<h3>SYNOPSIS</h3>
-<p>my_mastermind [-ct]</p>
-<h3>DESCRIPTION</h3>
-<p>Mastermind is a game composed of 9 pieces of different colors.
-A secret code is then composed of 4 distinct pieces.</p>
-<p>The player has 10 attempts to find the secret code.
-After each input, the game indicates to the player the number of well placed pieces and the number of misplaced pieces.</p>
-<p>Pieces will be '0' '1' '2' '3' '4' '5' '6' '7' '8'.</p>
-<p>If the player finds the code, he wins, and the game stops.
-A misplaced piece is a piece that is present in the secret code butthat is not in a good position.</p>
-<p>You must read the player's input from the standard input.</p>
-<p>Your program will also receive the following parameters:
--c [CODE]: specifies the secret code. If no code is specified, a random code will be generated.
--t [ATTEMPTS]: specifies the number of attempts; by default, the playerhas 10 attempts.</p>
-<p><strong>Example 00</strong></p>
-<pre class=" language-plain"><code class=" language-plain">PROMPT&gt;./my_mastermind -c "0123"
-Will you find the secret code?
-Please enter a valid guess
+# My Mastermind
+This code is an implementation of the digital version of the famous board game from back in 1970, called *Mastermind*.
+
+The code was written by [Abdussamad Turdixojayev](https://github.com/Abuuu2007).
+
+## Content
+- [Description](#description)
+- [Usage](#usage)
+- [Code Component](#code-component)
+- [Main function](#main-function)
+  
+## Description
+I was given the task of creating a Mastermind that has two parameters:
+1. `-c` - establishing a secret code. If the secret code is not registered, it will be generated randomly.
+2. `-t` - indicating the number of attempts/rounds. If the number of attempts is not specified, then the number is 10.
+
+Instead of 9 different colors, numbers from 0 to 8 inclusive are used.
+
+But with all this, you can use a limited number of functions, namely:
+
+* printf(3)
+* write(2)
+* read(2)
+* rand() (/ srand())
+* time()
+* atoi()
+* strcmp()
+
+When creating, I needed all the functions besides `write()` \:D
+
+## Usage
+### Start the game
+In order to start the game, you need to enter into the console:
+```
+$ ./my_mastermind
+```
+### Secret code
+In order to start the game by setting a secret code, you need to specify the appropriate parameters, for example:
+```
+$ ./my_mastermind -t 5
+```
+### Attempts
+In order to start the game by specifying the number of attempts, you need to specify the appropriate parameters, for example:
+```
+$ ./my_mastermind -c 1234
+```
+If the parameters are entered incorrectly, the corresponding text will be displayed:
+```
+Error! Parameters are incorrect.
+```
 ---
-Round 0
-&gt;1456
-Well placed pieces: 0
+* You can also enter these two parameters at the same time.
+---
+I think there is no need to particularly imagine the game process, because... this information is already available in Qwasar and other platforms where we, Astrum’s students, were given access to complete tasks.
+
+## Code component
+### Function ``my_strlen``
+To begin with, I created a function similar to `strlen`, because... its use was prohibited:
+```c
+int my_strlen(char* p1){
+    int i = 0;
+    while(p1[i] != '\0')
+        i++;
+    return i;
+}
+```
+---
+### Checking the input code `SCRT_CODE`
+Next, I created a macro that checks the value entered through the console by the player for the number of characters and the individuality of each combination:
+```c
+#define SCRT_CODE(str) (my_strlen(str) == 4 && (str[0] >= '0' && str[0] <= '8') && (str[1] >= '0' && str[1] <= '8') && (str[2] >= '0' && str[2] <= '8') && (str[3] >= '0' && str[3] <= '8') && (str[0] != str[1] && str[0] != str[2] && str[0] != str[3] && str[2] != str[1] && str[2] != str[3] && str[3] != str[1] && str[3] != str[2]))
+```
+---
+### Number of correctly and incorrectly placed numbers `wellmisplace`
+This function checks whether the combinations of numbers entered by the player are located correctly:
+```c
+int wellmisplace(char* code, char* secret){
+    int x = 0;
+    int y = 0;
+    for(int i = 0; i < 4; i++){
+        if(code[i] == secret[i])
+            x++;
+        for(int j = 0; j < 4; j++)
+            if(i != j && code[i] == secret[j])
+                y++;
+    }
+    if(x != 4){
+        printf("Well placed pieces: %d\nMisplaced pieces: %d\n", x, y);
+        return 0;
+    }
+    else{
+        printf("Congratz! You did it!\n");
+        return 1;
+    }
+}
+```
+1. If not all entered numbers are correct, the corresponding text is displayed, for example:
+```
+Well placed pieces: 2
 Misplaced pieces: 1
----
-Round 1
-&gt;tata
-Wrong input!
-&gt;4132
-Well placed pieces: 1
-Misplaced pieces: 2
----
-Round 2
-&gt;0123
+```
+2. If the entered code is identical to the secret code, the following text is displayed:
+```
 Congratz! You did it!
-</code></pre>
-<h3>Technical information</h3>
-<ol>
-<li>
-<p>you must create a Makefile, and the ouput is the command itself
-It will contain rule all/clean/fclean (re =&gt; fclean + all)</p>
-</li>
-<li>
-<p>You can use:</p>
-</li>
-</ol>
-<ul>
-<li>printf(3)</li>
-<li>write(2)</li>
-<li>read(2)</li>
-<li>rand() (/ srand())</li>
-<li>time()</li>
-<li>atoi()</li>
-<li>strcmp()</li>
-</ul>
-<ol start="3">
-<li>You can NOT use:</li>
-</ol>
-<ul>
-<li>Any functions/syscalls which does not appear in the previous list</li>
-<li>Yes, it includes <strong>exit</strong>
-</li>
-</ul>
-<ol start="4">
-<li>
-<p>Consider writing a README.md to describe your project and how it works.</p>
-</li>
-<li>
-<p>Your mastermind needs to handle the sequence <code>Ctrl + d</code>. It's End Of File.
-It's consider as a normal execution.</p>
-</li>
-<li>
-<p>read() is a syscall difficult to apprehend, you will have time to deal more with it in a later project. In this project, you should read 1 character by 1 (use read(0, &amp;c, 1)) and add them one by one to a buffer until you encounter a newline.</p>
-</li>
-</ol>
-<p>Example:</p>
-<pre class=" language-plain"><code class=" language-plain">[/tmp/]bash
-bash-3.2$ exit
-[/tmp/]
-</code></pre>
-<p>In this example, bash exited successfully and also printed "exit".</p>
-<h3>Output formats</h3>
-<ol>
-<li>When your program starts, you must display:</li>
-</ol>
-<pre class=" language-plain"><code class=" language-plain">Will you find the secret code?
-Please enter a valid guess
-</code></pre>
-<ol start="2">
-<li>When the user wins, you must display:</li>
-</ol>
-<pre class=" language-plain"><code class=" language-plain">Congratz! You did it!
-</code></pre>
-<ol start="3">
-<li>When the user enters an invalid code, you must respect the following format:</li>
-</ol>
-<pre class=" language-plain"><code class=" language-plain">Well placed pieces: X
-Misplaced pieces: Y
-</code></pre>
-<p>X and Y are two digits with the correct values.</p>
-<h3>Requirements</h3>
-<ul>
-<li>Your code must be compiled with the flags <strong>-Wall -Wextra -Werror</strong>.</li>
-<li>Multiline macros are forbidden</li>
-<li>You should have multiple file .c but it's forbidden to include them (#include another_file.c) use your Makefile to compile them together.</li>
-<li>Macros with logic (while/if/variables/...) are forbidden</li>
-</ul>
-<h3>Advanced Testing</h3>
-<p>Gandalf tests using a synthax similar to this one:</p>
-<pre class=" language-plain"><code class=" language-plain">echo "1234
-2345
-3456" | ./my_mastermind -c 3456
-</code></pre>
-<p>It will hightlight that you are not using read() well.</p>
-<h3>Hint(s)</h3>
-<ul>
-<li>man 2 read</li>
-<li>man rand</li>
-</ul>
-<p><strong>M</strong>akefile, case sensitivity is important.</p>
+```
+---
+### Random generation of secret code `random_code`
+The `random_code` function randomly generates a secret code if the `-c` option is not used:
+```c
+char* random_code(char* code){
+    int num_arr[4];
+    for(int i = 0; i < 4; i++)
+        num_arr[i] = rand() % 9;
+    while(num_arr[1] == num_arr[0] || num_arr[2] == num_arr[0] || num_arr[2] == num_arr[1] || num_arr[3] == num_arr[0] || num_arr[3] == num_arr[1] || num_arr[3] == num_arr[2])
+        for(int i = 0; i < 4; i++)
+            num_arr[i] = rand() % 9;
+    for(int i = 0; i < 4; i++)
+        code[i] = '0' + num_arr[i];
+    code[4] = '\0';
+    return code;
+}
+```
+## `Main` function
+By setting the `argc` and `argv` parameters for passing console arguments, I set a condition so that if the number of arguments is incorrect, the game will stop:
+```c
+int main(int argc, char* argv[]){
+    if(argc == 2 || argc > 5 || argc == 4){
+        printf("Error! Parameters are incorrect.\n");
+        return 1;
+    }
+```
+---
+* For `random_code` to work correctly I use `srand(time(NULL))`.
+* I equate the number of attempts to 9 (indexing starts from 0, that is, 10 attempts).
+* I create a variable `input` for passing the code through the console, and `secret` - for setting the secret code.
+* Using `random_code(secret)` I randomly generate a secret code:
+```c
+srand(time(NULL));
+int round = 0;
+int attempts = 9;
+char input[5];
+char secret[5];
+random_code(secret);
+```
+---
+I'm writing code that takes `-c` and `-t` console arguments to set the secret code and the number of attempts:
+```c
+if(argc > 2){
+    if(strcmp(argv[1], "-c") == 0){
+        if(argc < 3 || !SCRT_CODE(argv[2])){
+            printf("Error! Parameters are incorrect.\n");
+            return 1;
+        }
+        for(int i = 0; i < 4; i++)
+            secret[i] = argv[2][i];
+        secret[4] = '\0';
 
-<p></p>
-</div>
+        if(argc >= 4 && strcmp((argv[3]), "-t") == 0){
+            if(argc < 5 || !attempt_checker(argv, 4)){
+                printf("Error! Parameters are incorrect.\n");
+                return 1;
+            }
+            attempts = atoi(argv[4]) - 1;
+        }
+    }
+    else if(strcmp((argv[1]), "-t") == 0){
+        if(argc < 3 || !attempt_checker(argv, 2)){
+            printf("Error! Parameters are incorrect.\n");
+            return 1;
+        }
+        attempts = atoi(argv[2]) - 1;
 
-</div>
-</div>
-</div>
-<div class="tab-pane" id="resources" role="tabpanel">
-</div>
-</div>
-</div>
-</div>
+        if(argc >= 4 && strcmp(argv[3], "-c") == 0){
+            if(argc < 5 || !SCRT_CODE(argv[4])){
+                printf("Error! Parameters are incorrect.\n");
+                return 1;
+            }
+            for(int i = 0; i < 4; i++)
+                secret[i] = argv[4][i];
+            secret[4] = '\0';
+        }
+    }
+}
+```
+---
+If the arguments are accepted successfully, the code runs, starting the game process:
+```c
+    while(round <= attempts){
+        printf("---\nRound %d\n>", round);
+        char c;
+        int i = 0;
+        while(read(0, &c, 1) && c != '\n'){
+            input[i] = c;
+            i++;
+        }   input[i] = '\0';
+        if(!SCRT_CODE(input))
+            while(!SCRT_CODE(input)){
+                printf("Wrong input!\n>");
+                int i = 0;
+                while(read(0, &c, 1) && c != '\n'){
+                    input[i] = c;
+                    i++;
+                }   input[i] = '\0';
+            }
+        if(wellmisplace(input, secret)){
+            return 0;
+        } round++;
+    }
+    return 0;
+}
+```
+If the player guesses the secret code or the number of attempts runs out, the game ends.
+
+---
+
+### The note! This Readme file was written and translated from Russian, therefore some semantic errors may occur

@@ -1,22 +1,13 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CC=gcc
+CFLAGS=-Wall -Wextra -O2
+TARGET=My_mastermaind
+OBJS=My_mastermaind.o
 
-SRC = My_mastermaid.c
-OBJ = $(SRC:.c=.o)
-TARGET = My_mastermaid
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
 
-all : $(TARGET)
-
-$(TARGET) : $(OBJ)
- $(CC) $(CFLAGS) -o $(TARGET) $(OBJ) 
-
-$(OBJ) : $(SRC)
- $(CC) $(CFLAGS) -c $(SRC)
+main.o: main.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
- rm -f *.o
-
-fclean: clean
- rm -f $(TARGET)
-
-re: fclean all
+	rm -f $(TARGET) $(OBJS)

@@ -1,13 +1,21 @@
 # arc-01-my_mastermind
-Bu kod Komiljonov Komronbek Tomonidan git hub dan berilgan topshiriq asoasida yaratilgan.
+This code was created based on a commit from git hub by Komiljanov Komronbek.
 # Description
- *Bu kod Mastermaid degan kod bolib bu kod sizga tavakal random number chqaradi agar siz u chqargan random nuberni togri topsayz "Congratz! You did it" sizga shu yozuvni chqarib beradi!
- *Agar ish ni xato qilsayz sizga "Misplaced pieces" shu yozuv lar chqadi
- *Mening kod xaqiga description manashulardan iborat edi oqiganiz uchuun raxmat!
+ *This code is a code called Mastermaid, this code will give you a random random number, if you find the correct random number, "Congratz! You did it" will give you this message!
+ *If you make a mistake, "Misplaced pieces" will appear
+ *The description of my code consisted of the following, thanks for reading!
 # Task
- *Mening yaratgan kodimning vazifasi haqida qisqacha tshuntrib otaman!
- *Bu kod szga birinchi bolib kodni generatsiya qladigan funksiya yaratilag u fumksiya sizga 4 ta xonali random raqam chqarib beradi 0 to toqqizgacha bolgan sozlarni chqarib beradi.
- *Endi keyingi funksiya checkGuess degan funksiya bolib u biz joylashtirgan sonlarni koradi  agar  u sonlar 4 tadan ko yoki kam bolgan bolsa sizga Wel placed yoki weel placed degan yozuvni chqarib berad yo bolmasi xato kritilgan jotlarga xam bu yovlar chqadi
-*Endi uchinchi funksiya xaqida gapirib beraman bizda oxirgi "main" funcsiyasi qoldi funksiyasi barcha funksiada shartlarni bajarib bergan xolda bizga shartlar togri ekanligini tekshirib bizga shartlrni bajarib beradi va terminalga chop etadi.
+*We have a compare_guess function that is used to compare the user's code in the Mastermind game with the secret code.
+*It tells us the number of correctly placed numbers (correct) and the number of incorrectly placed numbers (misplaced).
+
+*generate_secret_code function generates a random code.
+*generate_secret_code function generates 4-digit random numbers, but it doesn't show us the numbers
+*The validate_input function is used to validate user input. This function is designed to validate the user's code in the Mastermind game and ensure that it is in the correct format. The function performs the following tasks:
+*Validates the input and checks that it contains only numbers.
+*The main function is the main part of the program.
+*The main function combines all our functions and fulfills our game conditions
 # Instalition
-*Bu kodni instalition gcc orqali uni ishlatamiz bizga son yozishi aytamiz bizda toqqizta roun boladi hammasida togri sinlar kritsayk yutamiz agar sonlani barchasini togri topa olamsayk bizgashun sini topding deb chqadi! 
+*compare_guess: Compares the user's code with the secret code and counts the number of correctly placed and incorrectly placed digits.
+*generate_secret_code: Generates a random secret code.
+*validate_input: Validates user input and accepts only numbers.
+*main: The main function to start the game and output the results.

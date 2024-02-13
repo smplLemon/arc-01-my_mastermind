@@ -1,14 +1,15 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
 TARGET = my_mastermind
+SRC = my_mastermind.c
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(TARGET)
 
-$(TARGET): my_mastermind.c
-	$(CC) $(CFLAGS) -o $@ $<
+$(TARGET): $(SRC)
+	gcc $(CFLAGS) -o $@ $<
 
 clean:
 	rm -f $(TARGET)
-	del $(TARGET).exe
 
-.PHONY: all clean
+fclean: clean
+
+re: fclean all

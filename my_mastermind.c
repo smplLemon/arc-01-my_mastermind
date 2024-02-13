@@ -1,3 +1,4 @@
+///// Libraries /////
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -10,8 +11,7 @@
 #define the_length_of_secret_code 4
 
 
-
-char *scan_func() {
+char *scan_function() {
   int round_size = 8;
   char temp;
   int i = 0;
@@ -33,10 +33,10 @@ char *scan_func() {
   return NULL;
 }
 
-bool isNumberPresent(int number, char *array, int rounds)
+bool isNumberPresent(int number, char *array, int round_size)
 {
     int i = 0;
-    while(i < rounds)
+    while(i < round_size)
     {
         if (array[i] == number)
         {
@@ -46,7 +46,6 @@ bool isNumberPresent(int number, char *array, int rounds)
     }
     return false;
 }
-
 
 char *str_chr(char *a, char b)
 {
@@ -88,16 +87,16 @@ void create_secret_code(char* secret)
 }
 
 
-bool acceptable_prediction(char *build)
+bool acceptable_prediction(char *guess)
 {
   for (int i = 0; i < the_length_of_secret_code; ++i)
   {
-    if ((build[i] < '0' || build[i] > '8') || isNumberPresent(build[i], build, i))
+    if ((guess[i] < '0' || guess[i] > '8') || isNumberPresent(guess[i], guess, i))
     {
       return false;
     }
   }
-  return str_len(build) == the_length_of_secret_code;
+  return str_len(guess) == the_length_of_secret_code;
 }
 
 
@@ -106,37 +105,34 @@ char *assessGuess()
   printf(">");
   fflush(stdout);
 
-  char *build = scan_func();
+  char *guess = scan_function();
 
-  while (!acceptable_prediction(build))
+  while (!acceptable_prediction(guess))
   {
-  if (build == NULL){return NULL;}
-  }
-
-if (!acceptable_prediction(build))
+  if (guess == NULL){return NULL;}
+    if (!acceptable_prediction(guess))
     {
       printf("Wrong input!\n");
       printf(">");
       fflush(stdout);
-      free(build);
-      build = scan_func();
+      free(guess);
+      guess = scan_function();
     }
-    return build;
   } 
-  
+  return guess;
+}
 
-
-void evaluateGuess(char *secret_code, char *build)
+void evaluateGuess(char *secret_code, char *guess)
 {
   int wellPlaced = 0;
   int missplaced = 0;
   for (int i = 0; i < the_length_of_secret_code; ++i)
   {
-    if (build[i] == secret_code[i])
+    if (guess[i] == secret_code[i])
     {
       wellPlaced++;
     }
-    else if (str_chr(secret_code, build[i]) != NULL)
+    else if (str_chr(secret_code, guess[i]) != NULL)
     {
       missplaced++;
     }
@@ -152,17 +148,17 @@ void main_f(char *secret_code, int move) {
   for (int round = 0; round < move; round++) {
     printf("---\n");
     printf("Round %d\n", round);
-    char *build = assessGuess();
-    if (build == NULL)
+    char *guess = assessGuess();
+    if (guess == NULL)
       return;
-    if (strcmp(secret_code, build) == 0) {
+    if (strcmp(secret_code, guess) == 0) {
       printf("Congratz! You did it!\n");
-      free(build);
+      free(guess);
       exit(0);
     }else
     {
-      evaluateGuess(secret_code, build);
-    }free(build);
+      evaluateGuess(secret_code, guess);
+    }free(guess);
   }
 }
 

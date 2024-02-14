@@ -17,7 +17,7 @@ void generateSecretCode(char* secretCode) {
     secretCode[CODE_LENGTH] = '\0';
 }
 
-void evaluateGuess(char* secretCode, char* guess, int* wellPlaced, int* misplaced) {
+void evaluateGuess(const char* secretCode, const char* guess, int* wellPlaced, int* misplaced) {
     *wellPlaced = 0;
     *misplaced = 0;
 
@@ -50,28 +50,24 @@ void evaluateGuess(char* secretCode, char* guess, int* wellPlaced, int* misplace
     *misplaced -= *wellPlaced;
 }
 
-int isValidGuess(char* guess) {
-    if (guess[CODE_LENGTH] != '\0') {
+int isValidGuess(const char* guess) {
+    if (strlen(guess) != CODE_LENGTH) {
         return 0;
     }
-
     for (int i = 0; i < CODE_LENGTH; i++) {
-        int valid = 0;
-        for (int j = 0; j < (int)(sizeof(PIECES) - 1); j++) {
-            if (guess[i] == PIECES[j]) {
-                valid = 1;
-                break;
-            }
-        }
-        if (!valid) {
+        if (guess[i] < '0' || guess[i] > '8') {
             return 0;
         }
+        for (int j = i + 1; j < CODE_LENGTH; j++) {
+            if (guess[i] == guess[j]) {
+                return 0;
+            }
+        }
     }
-
     return 1;
 }
 
-int isStopCommand(char* guess) {
+int isStopCommand(const char* guess) {
     char command[5];
     strncpy(command, guess, 4);
     command[4] = '\0';
@@ -81,30 +77,37 @@ int isStopCommand(char* guess) {
     return (strcmp(command, "stop") == 0);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     char secretCode[CODE_LENGTH + 1];
+    char guess[CODE_LENGTH + 1];
     int attempts = MAX_ATTEMPTS;
-
-    generateSecretCode(secretCode);
+    int opt;
+    while ((opt = getopt(argc, argv, "c:t:")) != -1) {
+        switch (opt) {
+            case 'c':
+                strncpy(secretCode, optarg, CODE_LENGTH);
+                secretCode[CODE_LENGTH] = '\0';
+                break;
+            case 't':
+                attempts = atoi(optarg);
+                break;
+            default:
+                fprintf(stderr, "Usage: %s [-c CODE] [-t ATTEMPTS]\n", argv[0]);
+                exit(EXIT_FAILURE);
+        }
+    }
+    if (secretCode[0] == '\0') {
+        generateSecretCode(secretCode);
+    }
 
     printf("Will you find the secret code?\nPlease enter a valid guess\n");
 
-    char guess[CODE_LENGTH + 1];
     int wellPlaced, misplaced;
 
     for (int round = 0; round < attempts; round++) {
-        printf("---\n");
-        printf("Round %d\n>", round);
+        printf("---\nRound %d\n>", round);
 
-        int result = scanf("%s", guess);
-
-        if (result == EOF) {
-            printf("End of input. Exiting...\n");
-            break;
-        }
-
-        if (isStopCommand(guess)) {
-            printf("Game stopped by the player. Exiting...\n");
+        if (scanf("%4s", guess) == EOF) {
             break;
         }
 

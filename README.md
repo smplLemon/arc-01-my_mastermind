@@ -5,8 +5,6 @@ The player has a limited number of attempts to find the secret code, and after e
 # Task
 Task is to create the full inplementation of MASTERMIND game
 # Usage
-Too youse this code we use VSCODE 
-and we need to compile to compile this code
 "gcc mastermind.c -o mastermind"
 ./mastermind
 after we made make file result of code shows on screen automatically 

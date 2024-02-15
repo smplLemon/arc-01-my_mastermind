@@ -5,14 +5,14 @@ TARGET = my_mastermind
 
 SRCS = my_mastermind.c
 
-$(TARGET): $(SRCS)
+  $(TARGET): $(SRCS)
   $(CC) $(CFLAGS) $^ -o $@
 
-clean:
+  clean:
   rm -f $(TARGET)
 
-.PHONY:fclean
+  .PHONY:fclean
 
-fclean:
+  fclean:
   rm -rf $(TARGET)
 

@@ -1,41 +1,31 @@
-## Overview
-Mastermind or Master Mind is a code-breaking game for two players invented in Israel. It resembles an earlier pencil and paper game called Bulls and Cows that may date back a century.
-The idea of the game is for one player (the code-breaker) to guess the secret code chosen by the other player (the code-maker). The code is a sequence of 4 colored pegs chosen from six colors available. The code-breaker makes a serie of pattern guesses - after each guess the code-maker gives feedback in the form of 2 numbers, the number of pegs that are of the right color and in the correct position, and the number of pegs that are of the correct color but not in the correct position - these numbers are usually represented by small black and white pegs.
+# Welcome to "Mastermind"
 
-## Features
+This program is a simple implementation of the Mastermind game in C. The Mastermind game is a code guessing game in which the player tries to guess a secret code in a certain number of attempts.
 
-- Interactive Mastermind game with a user-friendly interface.
-- Customizable game settings, such as code length and the number of allowed guesses.
-- Well-designed feedback to help the codebreaker refine their guesses.
+## Instructions
 
-## Getting Started
+1. **Compiling**: Compile the code using a C compiler. For example: gcc mastermind.c -o mastermind
 
-### Installation
+2. **Launch**:
+- Run the program without command line arguments to play the game with a randomly generated secret code.
+- Run the program with secret code as command line argument to play with specific code. For example:
+   ```
+   ./mastermind -c 1234
+   ```
 
-Navigate to the project directory:
+3. **Gameplay**:
+- The player has 10 attempts to guess the secret code.
+- The player must enter a 4-digit number without repeating digits.
+- After each attempt, the program will give feedback on the correctness of the guess.
 
-```bash
- cd my_mastermind
-```
+4. **Feedback**:
+- "Correctly positioned" indicates the number of digits in the correct position.
+- "Incorrectly positioned" indicates the number of correct digits in the incorrect position.
 
-Build the project using the provided Makefile:
+5. **End game**:
+- If the player guesses the secret code correctly, he wins.
+- If the player exhausts all attempts, the secret code will be revealed.
 
-```bash
- make -f Makefile.mak
-```
 
-### Usage
-
-- Start the game:
-
-  ```bash
-    ./mastermind [-c secret_code] [-t attempts]
-  ```
-
-- Optional command line arguments:
-
--c: Set the secret code manually. If not provided, a random code will be generated.
--t: Set the number of attempts. Default is 10.
-
-- Gameplay
-  Follow the on-screen prompts to make guesses. The game provides feedback on each guess, and you can enter "stop" at any time to end the game.
+<span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
+<span><img alt="Qwasar SV -- Software Engineering School's Logo" src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px'></span>

@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,16 +25,15 @@ void set_secret(int secret[4], int input)
 
 int get_user_guess(int guess[4])
 {
-    char buffer[MAX_DIGITS + 2]; 
+    char buffer[MAX_DIGITS + 2];
     ssize_t len = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
     if (len <= 0)
     {
         return -1;
     }
-    buffer[MAX_DIGITS] = '\0';
-    int input;
-    sscanf(buffer, "%4d", &input);
-    if (input < 1000 || input > 9999)
+    buffer[len] = '\0';
+    int input = atoi(buffer);
+    if (input < 1000 || input > 9999 || (input % 1111 == 0))
     {
         return 0;
     }
@@ -47,7 +44,6 @@ int get_user_guess(int guess[4])
     }
     return 1;
 }
-
 
 void give_feedback(int secret[4], int guess[4], int *black, int *white)
 {
@@ -98,7 +94,6 @@ int main(int argc, char *argv[])
         int ret = get_user_guess(guess);
         if (ret == -1)
         {
-            printf("Game ended by user.\n");
             return 0;
         }
         else if (ret == 0)
@@ -116,7 +111,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    printf("Game over!\nYou couldn't find the secret code.\nThe secret code was: ");
+    printf("\nThe secret code was: ");
     for (int i = 0; i < 4; i++)
     {
         printf("%d", secret[i]);

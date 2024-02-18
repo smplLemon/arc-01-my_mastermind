@@ -2,10 +2,12 @@
 
 ## Description
 My Mastermind is an implementation of the famous Mastermind game. The game is composed of 9 pieces of different colors. A secret code is then composed of 4 distinct pieces. The player has 10 attempts to find the secret code. After each input, the game indicates to the player the number of well-placed pieces and the number of misplaced pieces.
-However in this implementation we will use numbers ranging from 0 to 8 instead of colors.
-
+However we will use numbers ranging from 0 to 8 instead of colors.
 ## Usage
-The program receives following parameters: -c [CODE]: specifies the secret code. And also there -t [ATTEMPTS] option to ease your life if you are just starting. If no code is specified, a random code will be generated, as well as the default number of attempts is 10. 
+
+The program receives following parameters: -c and -t. Former for manipulating the secret code while the latter one to change the number of attempts. by defaults secret code is generated and attempts is defaulted to 10.
+
+./my_mastermind -c "0123" -t 8
 
 ## Examples
 Will you find the secret code?
@@ -25,7 +27,7 @@ Misplaced pieces: 2
 ---
 Round 2
 >0123
-Congratz! You did it!
+Congratz! You did it
 
 ## License
-I wish this project was licensed under MIT but no it's not.
+I wish it was licensed under MIT but no it's not.

@@ -4,6 +4,13 @@
 #include <time.h>
 #include <unistd.h>
 
+size_t custom_strlen(const char *str) {
+    size_t len = 0;
+    while (str[len])
+        len++;
+    return len;
+}
+
 void copying(char* dest, char* src){
   while (*src){
     *dest++ = *src++;
@@ -75,7 +82,7 @@ void printError(){
 }
 
 int invalidInput(char* input){
-  int inputLength = strlen(input);
+  int inputLength = custom_strlen(input);
   if(inputLength != 4 || !Unique(input)){
     printError();
     return 1;
@@ -85,8 +92,11 @@ int invalidInput(char* input){
 
 int checkWin(char* secretCode, char* input){
   int wellPlaced = 0, misplaced = 0;
-  for(int i = 0; input[i]; i++){
-    for(int j = 0; secretCode[j]; j++){
+  int secretLength = custom_strlen(secretCode);
+  int inputLength = custom_strlen(input);
+
+  for(int i = 0; i < inputLength; i++){
+    for(int j = 0; j < secretLength; j++){
       if(input[i] == secretCode[j]){
         if(i != j){
           misplaced++;
@@ -127,7 +137,7 @@ int main(int argc, char** argv){
   int roundCount = 10;
   for(int i = 0; i < argc; i++){
     if(compareSt(argv[i], "-c") == 0){
-      if(argv[i + 1] && strlen(argv[i + 1]) == 4 && Unique(argv[i + 1])){
+      if(argv[i + 1] && custom_strlen(argv[i + 1]) == 4 && Unique(argv[i + 1])){
         secretCode = argv[i + 1];
       } 
       else{

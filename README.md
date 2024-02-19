@@ -1,28 +1,22 @@
-Description
-This C program implements the classic game of Mastermind, where the player attempts to guess a secret code within a limited number of rounds. The code offers a command-line interface for customizing the game parameters and provides feedback on the player's guesses.
+## Description
+This program is a simple implementation of the Mastermind game in C. The Mastermind game involves guessing a secret code within a limited number of attempts. The code provides feedback on the correctness of the guessed code.
 
-Game Overview
-In Mastermind, the player must decipher a secret code consisting of four unique numbers between 0 and 8. The game allows a specified number of rounds for the player to guess the code. After each guess, the game provides feedback on the correctness of the guess, indicating the number of well-placed and misplaced pieces.
+## Task
+The task of the program is to allow the user to guess the secret code within a specified number of rounds. The code evaluates each guess and provides feedback on the number of well-placed and misplaced pieces.
 
-Features
-Customizable Secret Code: Players can either input their own secret code or have one generated randomly by the program.
-Variable Number of Rounds: The number of rounds can be adjusted via command-line arguments.
-Feedback Mechanism: After each guess, the game provides feedback to guide the player towards the correct solution.
-Error Handling: The program validates user input to ensure it meets the game's requirements.
-Tasks
-Secret Code Handling: The program generates or accepts a secret code from the user.
-Input Validation: Validates user input to ensure it meets the game's criteria.
-Game Loop: Executes the game loop, allowing the player to make guesses until the code is cracked or the rounds are exhausted.
-Feedback Generation: Provides feedback on the correctness of the player's guesses.
-Win Condition Check: Determines if the player has correctly guessed the secret code.
-Usage
-Compile the code: gcc -o mastermind mastermind.c
+## Usage
+To use the program, follow these steps:
 
-Run the executable: ./mastermind [options]
+Compilation: Compile the program using a C compiler. For example:
+Copy code
+gcc -o mastermind mastermind.c
+Execution: Execute the compiled program with optional command-line arguments. -c <secret_code>: Specify a custom secret code consisting of 4 unique digits.
+-t <round_count>: Specify the number of rounds (default is 10).
+bash
+Copy code
+./mastermind -c 1234 -t 15
+Gameplay: Follow the prompts to enter guesses for the secret code. Enter 4 unique digits for each guess.
+Outcome: The program will provide feedback after each guess, indicating the number of well-placed and misplaced pieces. If the secret code is guessed correctly within the specified number of rounds, the game ends with a congratulatory message.
 
-Options:
-
--c [code]: Set the secret code manually (must be 4 unique digits).
--t [rounds]: Set the number of rounds (default is 10).
-Installation
-Ensure you have a C compiler installed, such as GCC, to compile and run the program.
+## Installation
+No installation is required. Simply compile the provided C code using a C compiler, and the executable will be generated for execution. Ensure that the necessary C standard libraries are available in your environment for compilation.

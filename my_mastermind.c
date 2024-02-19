@@ -1,110 +1,201 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
 #include <unistd.h>
+#include <time.h>
 
-#define LENGTH(str) strlen(str)
+#define MAX_ROUNDS 10
+#define LENGTH_CODE 4
 
-void copy(char* dest, const char* source) {
-    for (int i = 0; i < LENGTH(source); i++) dest[i] = source[i];
+int *generateSecretCode(int *secretCode)
+{
+    int counter = 0;
+    do
+    {
+        secretCode[counter++] = rand() % 10;
+    } while (counter < LENGTH_CODE);
+
+    return secretCode;
 }
 
-int string(const char* str, char c) {
-    for (int i = 0; i < LENGTH(str); i++) if (str[i] == c) return 1;
+int checkCharacters(char character)
+{
+    if (character >= '0' && character <= '9')
+    {
+        return 1;
+    }
     return 0;
 }
 
-char* skan() {
-    printf(">");
-    fflush(stdout);
-    char* input = calloc(5, sizeof(char));
-    char temp;
+int readIndexs(int guessCode[LENGTH_CODE])
+{
+    char c;
     int i = 0;
-    while (read(0, &temp, 1)) {
-        if (temp == '\n') return input;
-        input[i++] = temp;
+
+    while (read(STDIN_FILENO, &c, 1) > 0 && i <= LENGTH_CODE)
+    {
+        if (c >= '0' && c <= '9')
+        {
+            if (i < LENGTH_CODE)
+            {
+                guessCode[i++] = c - '0';
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else if (c == '\n')
+        {
+            break;
+        }
+        else
+        {
+            return -1;
+        }
     }
-    return NULL;
+    if(c == '\0')
+    {
+        return 0;
+    }
+    if (i < LENGTH_CODE)
+    {
+        return -1;
+    }
+    return i;
 }
 
-char* randomayzer() {
-    char* random = calloc(5, sizeof(char));
+int printWellAndMisPlaces(int guessCode[LENGTH_CODE], int secretCode[LENGTH_CODE])
+{
+    int wellCount = 0;
+    int MisCount = 0;
     int i = 0;
+    int j = 0;
+
+    do
+    {
+        if (guessCode[i] == secretCode[i])
+        {
+            wellCount++;
+        }
+        else
+        {
+            for (j = 0; j < LENGTH_CODE; j++)
+            {
+                if (j != i && guessCode[i] == secretCode[j])
+                {
+                    MisCount++;
+                    break;
+                }
+            }
+        }
+        i++;
+    } while (i < LENGTH_CODE);
+
+    if (wellCount == LENGTH_CODE)
+    {
+        return 1;
+    }
+
+    printf("Well placed pieces: %d\n", wellCount);
+    printf("Misplaced pieces: %d\n", MisCount);
+
+    return 0;
+}
+
+int Rounds(int guessCode[LENGTH_CODE], int secretCode[LENGTH_CODE], int lengthRounds, int countRounds)
+{
+    printf("Will you find the secret code?\nPlease enter a valid guess:\n");
+    int round = MAX_ROUNDS;
+    int attemp = 0;
+
+    if (countRounds > 0)
+    {
+        round = lengthRounds;
+    }
+
+    while (attemp < round)
+    {
+        printf("---\nRound: %d\n>", attemp + 1);
+
+        int readResult = readIndexs(guessCode);
+        if (readResult == -1)
+        {
+            printf("\nWrong input!\n");
+            continue;
+            return 0;
+        }
+        else if (readResult == 0)
+        {
+            printf("\nGame over! Game ended!\n");
+            return 0;
+        }
+
+        int resultPrintWelMisPlaces = printWellAndMisPlaces(guessCode, secretCode);
+
+        if (resultPrintWelMisPlaces == 1)
+        {
+            printf("Congratz! You did it!\n");
+            break;
+        }
+
+        if (attemp == round - 1)
+        {
+            printf("You didn't find the secret code.\nThe secret code was: ");
+            for (int i = 0; i < LENGTH_CODE; i++)
+            {
+                printf("%d", secretCode[i]);
+            }
+            printf("\n");
+        }
+        attemp++;
+    }
+    return 0;
+}
+
+int main(int argc, char **argv)
+{
     srand(time(0));
-    while (i < 4) {
-        char temp = rand() % 9 + 48;
-        if (!string(random, temp)) random[i++] = temp;
-    }
-    return random;
-}
+    int secretCode[LENGTH_CODE];
+    int guessCode[LENGTH_CODE];
+    int lengthMaxRounds = 0;
+    int countRounds = 0;
+    int i, j;
+    int codeProvided = 0;
 
-int checking_alpha(const char* input) {
-    for (int i = 0; i < LENGTH(input); i++) if (!(input[i] >= 48 && input[i] <= 56)) return 0;
-    return 1;
-}
+    for (i = 1; i < argc; i++)
+    {
+        if (strcmp(argv[i], "-c") == 0)
+        {
+            char *codeBuffer = argv[i + 1];
 
-int checkingdup(const char* input) {
-    for (int i = 0; i < LENGTH(input); i++) for (int j = i + 1; j < LENGTH(input); j++) if (input[i] == input[j]) return 0;
-    return 1;
-}
-
-int welplaced(const char* sc_code, const char* users_vvod) {
-    int count = 0;
-    for (int i = 0; i < LENGTH(sc_code); i++) if (sc_code[i] == users_vvod[i]) count++;
-    return count;
-}
-
-int misplaced(const char* sc_code, const char* users_vvod) {
-    int count = 0;
-    for (int i = 0; i < LENGTH(sc_code); i++) for (int j = 0; j < LENGTH(users_vvod); j++) if (sc_code[i] == users_vvod[j] && i != j) count++;
-    return count;
-}
-
-int gen_checkning(const char* input) {
-    if (LENGTH(input) != 4 || !checking_alpha(input) || !checkingdup(input)) return 0;
-    return 1;
-}
-
-void main_func(int attempts, const char* sc_code) {
-    printf("Will you find the secret code?\nPlease enter a valid guess\n");
-    char* input;
-    for (int i = 0; i < attempts; i++) {
-        printf("---\nRound %d\n", i);
-        input = skan();
-        if (input == NULL) return;
-        while (!gen_checkning(input)) {
-            free(input);
-            printf("Wrong input!\n");
-            input = skan();
+            for (j = 0; j < LENGTH_CODE && codeBuffer[j] != '\0'; j++)
+            {
+                secretCode[j] = codeBuffer[j] - '0';
+            }
+            if (j < LENGTH_CODE)
+            {
+                printf("Error: The secret code must be a 4-digit number.\n");
+                return -1;
+            }
+            codeProvided = 1;
         }
-        int well = welplaced(sc_code, input);
-        int miss = misplaced(sc_code, input);
-        if (well == 4) {
-            printf("Congrats! You did it!\n");
-            return;
-        } else {
-            printf("Well placed pieces: %d\n", well);
-            printf("Misplaced pieces: %d\n", miss);
+        else if (strcmp(argv[i], "-t") == 0)
+        {
+            lengthMaxRounds = atoi(argv[i + 1]);
+            if (lengthMaxRounds > MAX_ROUNDS)
+            {
+                lengthMaxRounds = MAX_ROUNDS;
+            }
+            countRounds = 1;
         }
     }
-}
 
-int main(int argc, char** argv) {
-    int index = 0, attempts = 10;
-    char* secret_code = NULL;
-    while (index < argc) {
-        if (strcmp(argv[index], "-c") == 0) {
-            index++;
-            secret_code = malloc(sizeof(char) * 5);
-            copy(secret_code, argv[index]);
-        } else if (strcmp(argv[index], "-t") == 0) {
-            index++;
-            attempts = atoi(argv[index]);
-        }
-        index++;
+    if (codeProvided == 0)
+    {
+        generateSecretCode(secretCode);
     }
-    if (secret_code == NULL) secret_code = randomayzer();
-    main_func(attempts, secret_code);
+
+    Rounds(guessCode, secretCode, lengthMaxRounds, countRounds);
+
     return 0;
 }

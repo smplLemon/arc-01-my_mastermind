@@ -4,9 +4,9 @@ SOURCE = my_mastermind.c
 TARGET = my_mastermind
 
 $(TARGET):$(SOURCE)
-	$(CC) $(CFLSGS) -o $@ $^
+  $(CC) $(CFLSGS) -o $@ $^
 
 .PHONY: fclean 
 
 fclean:
-	@rm -r $(TARGET)
+  @rm -r $(TARGET)

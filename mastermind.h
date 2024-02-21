@@ -3,7 +3,7 @@
 
 void init(void);
 void display(int well, int misd);
-int checkGuess(char *guess, char *code); 
-void play(int atm);
+int checkGuess(char *gues, char *code, int LEN);
+void play(int atm, char *code, int LEN);
 
 #endif

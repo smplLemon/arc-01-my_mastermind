@@ -32,17 +32,31 @@ int my_scanf(char *str) {
     return 0;
 }
 
-void generator_secret_numbers(char secret_numbers[]) {
-    int used[9] = {0}; // Adjusted to cover numbers from 0 to 8
-    srand(time(NULL));
-    for (int i = 0; i < len_num; i++) {
-        int num;
-        num = rand() % 9; // Generating numbers from 0 to 8
-        while (used[num]) {
+void my_strcpy(char *param_1, char *param_2) {
+    while (*param_2 != '\0') {
+        *param_1 = *param_2;
+        param_1++;
+        param_2++;
+    }
+    *param_1 = '\0';
+}
+
+
+void generator_secret_numbers(char secret_numbers[], char *code) {
+    if (code != NULL && my_strlen(code) == len_num) {
+        my_strcpy(secret_numbers, code);
+    } else {
+        int used[9] = {0};
+        srand(time(NULL));
+        for (int i = 0; i < len_num; i++) {
+            int num;
             num = rand() % 9;
+            while (used[num]) {
+                num = rand() % 9;
+            }
+            used[num] = 1;
+            secret_numbers[i] = num + '0';
         }
-        used[num] = 1;
-        secret_numbers[i] = num + '0';
     }
 }
 
@@ -93,14 +107,24 @@ void conmpare(char secret_numbers[], char guess_numbers[], int *wellPlaced, int 
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     char secret_numbers[len_num];
-    generator_secret_numbers(secret_numbers);
-
+    char *code = NULL;
     int attempts = 10;
     int wellPlaced, misplaced;
     char guess_numbers[len_num + 1];
     int round = 0;
+
+
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-c") == 0 && i + 1 < argc) {
+            code = argv[i + 1];
+        } else if (strcmp(argv[i], "-t") == 0 && i + 1 < argc) {
+            attempts = atoi(argv[i + 1]);
+        }
+    }
+
+    generator_secret_numbers(secret_numbers, code);
 
     printf("Will you find the secret code? \nPlease enter a valid numbers\n");
 
@@ -116,7 +140,7 @@ int main() {
         }
         attempts--;
     }
-////
+
     if (attempts == 0) {
         printf("Sorry, you couldn't find the secret code.\n");
     }

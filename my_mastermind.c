@@ -1,26 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
-#include "mastermind.h" 
-#define LN 4
+#include <time.h>
+#include "mastermind.h"
+#define LEN 4
+#define NUMS 9
+#define DFLT_ATM 10
 
 int main(int ac, char *av[]) {
-    char code[5];
+    char code[LEN + 1];
+    int atm = DFLT_ATM;
 
-    if (ac > 1 && strcmp(av[1], "-c") == 0 && ac > 2) {
-        strncpy(code, av[2], LN);
-        code[LN] = '\0'; 
-    } else {
-        srand(time(NULL));
-        for (int i = 0; i < LN; ++i) {
-            code[i] = '0' + rand() % 9;
+    srand(time(NULL));
+
+    for(int i = 1; i < ac; i += 2){
+        if(strcmp(av[i], "-c") == 0){
+            strncpy(code, av[i + 1], LEN);
+            code[LEN] = '\0';
+        } else if(strcmp(av[i], "-t") == 0){
+            atm = atoi(av[i + 1]);
         }
-        code[LN] = '\0'; 
     }
 
-    init(); 
-    play(10);
+    if(code[0] == '\0'){
+        for(int i = 0; i < LEN; ++i){
+            code[i] = '0' + rand() % NUMS;
+        }
+        code[LEN] = '\0';
+    }
+
+    init();
+    play(atm, code, LEN);
 
     return 0;
 }

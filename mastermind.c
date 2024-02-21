@@ -1,37 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
-#include <unistd.h> 
+#include <time.h>
 #include "mastermind.h"
-#define LN 4
-#define ou 0
 
-void init(void) {
-    printf("Find the Code\nGuess...\n");
-    printf("---\n");
+void init(void){ 
+    printf("Will you find the secret code?\nPlease enter a valid guess\n");
 }
 
-void display(int well, int misd) {
-    printf("Well-placed: %d\nMis-placed: %d\n---\n", well, misd);
+void display(int well, int misd){
+    printf("Well placed pieces: %d\nMisplaced pieces: %d\n", well, misd);
 }
 
-int checkGuess(char *guess, char *code) {
-    int well = ou;
-    int misd = ou;
-    int usdcd[LN] = {ou}; 
+int checkGuess(char *guess, char *code, int LEN){
+    int well = 0, misd = 0;
+    int *usd_cds = (int *)calloc(LEN, sizeof(int));
 
-    for(int i = ou; i < LN; ++i) {
-        if(guess[i] == code[i]) {
+    for(int i = 0; i < LEN; ++i){
+        if(guess[i] == code[i]){
             well++;
-            usdcd[i] = 1;
+            usd_cds[i] = 1;
         }
     }
 
-    for(int i = ou; i < LN; ++i) {
-        if(!usdcd[i]) {
-            for(int j = ou; j < LN; ++j) {
-                if(i != j && guess[i] == code[j]) {
+    for(int i = 0; i < LEN; ++i){
+        if(!usd_cds[i]){
+            for(int j = 0; j < LEN; ++j){
+                if(i != j && guess[i] == code[j]){
                     misd++;
                     break;
                 }
@@ -40,39 +35,35 @@ int checkGuess(char *guess, char *code) {
     }
 
     display(well, misd);
-    return well == LN;
+    free(usd_cds);
+    return well == LEN;
 }
 
-void play(int atm) {
-    char guess[5];
+void play(int attempts, char *code, int LEN){
+    char guess[LEN + 1];
 
-    for(int round = 1; round <= atm; ++round) {
-        printf("Round %d\n>", round);
+    for(int round = 0; round < attempts; ++round){
+        printf("\nRound %d\n>", round + 1);
 
-        for(int i = ou; i < LN; ++i) {
-            char c;
-            if(read(ou, &c, 1) == -1) {
-                perror("Error reading input");
-                exit(EXIT_FAILURE);
-            }
-            if(c == '\n') { 
-                i--; 
-                continue;
-            }
-            if(!isdigit(c)) { 
-                printf("Invalid input! Please enter digits.\n");
-                i--; 
-                continue;
-            }
-            guess[i] = c; 
+        if(fgets(guess, LEN + 2, stdin) == NULL){
+            perror("Error reading input");
+            exit(EXIT_FAILURE);
         }
-        guess[LN] = '\0'; 
 
-        if(checkGuess(guess, "4321")) {
-            printf("Congrats!\n");
+        if(guess[strlen(guess) - 1] != '\n'){
+            printf("Invalid input! Please enter %d digits.\n", LEN);
+            while (getchar() != '\n'); 
+            round--;
+            continue;
+        }
+
+        guess[strcspn(guess, "\n")] = '\0';
+
+        if(checkGuess(guess, code, LEN)){
+            printf("Congratz! You did it!\n");
             return;
         }
     }
 
-    printf("Game over! You lost.\n"); 
+    printf("Game over! You are failed.\n");
 }

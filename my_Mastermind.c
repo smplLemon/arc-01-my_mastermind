@@ -82,7 +82,7 @@ char *my_scanf()
     char *approximate_code = calloc(sizeof(char), 6);
     char n;
     int i = 0;
-    printf("→");
+    printf(">");
     
     fflush(stdout);
     while (read(0, &n, 1))
@@ -104,7 +104,7 @@ int incorrect_input_checking(char *approximate_code)
     }
     for (int i = 0; i < 4; i++)
     {
-        if (approximate_code[i] < '0' || approximate_code[i] > '9')
+        if (approximate_code[i] < '0' || approximate_code[i] > '8')
         {
             return 0;
         }
@@ -152,7 +152,7 @@ void right_try_wrong_try(char *hiddenCode, char *guessCode)
         printf("Great, you did it! Keep it up!\n");
         exit(0);
     }
-    printf("Correct guess: %d\nWrong guess: %d\n", right_try, wrong_try);
+    printf("Well placed pieces: %d\nMis placed pieces: %d\n", right_try, wrong_try);
 }
 void my_game(int argc, char **argv)
 {
@@ -173,23 +173,23 @@ void my_game(int argc, char **argv)
         }
     }
         if (hidden_code == NULL)
-    {
-        hidden_code = my_random_code();
-    }
-        printf("► 0 - Round ◄\n<••••>\n");
+        {
+           hidden_code = my_random_code();
+        }
+        printf("Round 0\n---\n");
         char *approximate_code;
     while (number_of_attempts > 0)
     {
         approximate_code = my_scanf();
         while ((incorrect_input_checking(approximate_code)) == 0)
         {
-            printf("Error input\n");
+            printf("Wrong input\n");
             approximate_code = my_scanf();
         }
         right_try_wrong_try(hidden_code, approximate_code);
         if (number_of_attempts > 1) 
         {
-            printf("<••••>\n► %d - Round ◄\n", l - j);
+            printf("---\nRound %d\n", l - j);
         }
         number_of_attempts--;
         j--;

@@ -12,12 +12,12 @@ void display(int well, int misd){
     printf("Well placed pieces: %d\nMisplaced pieces: %d\n", well, misd);
 }
 
-int checkGuess(char *guess, char *code, int LEN){
+int checkgues(char *gues, char *code, int LEN){
     int well = 0, misd = 0;
     int *usd_cds = (int *)calloc(LEN, sizeof(int));
 
     for(int i = 0; i < LEN; ++i){
-        if(guess[i] == code[i]){
+        if(gues[i] == code[i]){
             well++;
             usd_cds[i] = 1;
         }
@@ -26,7 +26,7 @@ int checkGuess(char *guess, char *code, int LEN){
     for(int i = 0; i < LEN; ++i){
         if(!usd_cds[i]){
             for(int j = 0; j < LEN; ++j){
-                if(i != j && guess[i] == code[j]){
+                if(i != j && gues[i] == code[j]){
                     misd++;
                     break;
                 }
@@ -39,27 +39,27 @@ int checkGuess(char *guess, char *code, int LEN){
     return well == LEN;
 }
 
-void play(int attempts, char *code, int LEN){
-    char guess[LEN + 1];
+void play(int atm, char *code, int LEN){
+    char gues[LEN + 1];
 
-    for(int round = 0; round < attempts; ++round){
-        printf("\nRound %d\n>", round + 1);
+    for(int rnd = 0; rnd < atm; ++rnd){
+        printf("\nRound %d\n>", rnd + 1);
 
-        if(fgets(guess, LEN + 2, stdin) == NULL){
+        if(fgets(gues, LEN + 2, stdin) == NULL){
             perror("Error reading input");
             exit(EXIT_FAILURE);
         }
 
-        if(guess[strlen(guess) - 1] != '\n'){
+        if(gues[strlen(gues) - 1] != '\n'){
             printf("Invalid input! Please enter %d digits.\n", LEN);
             while (getchar() != '\n'); 
-            round--;
+            rnd--;
             continue;
         }
 
-        guess[strcspn(guess, "\n")] = '\0';
+        gues[strcspn(gues, "\n")] = '\0';
 
-        if(checkGuess(guess, code, LEN)){
+        if(checkgues(gues, code, LEN)){
             printf("Congratz! You did it!\n");
             return;
         }

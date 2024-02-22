@@ -16,7 +16,7 @@ in bash:
 Copy code firstly
 ./mastermind -c 1234 -t 15
 Gameplay: Follow the prompts to enter guesses for the secret code. Enter 4 unique digits for each guess.
-Outcome: The program will provide feedbeck after each guess, indicating the number of well-placed and misplaced pieces. If the secret code is guessed correctly within the specified number of rounds, the game ends with a congratulatory message.
+Outcome: The program will provide feedbeck after each guess, indicating the number of well-placed and misplaced pieces. If the secret code is guessed correctly within the specified number of rounds, the game ends with a congratz! you did it! message.
 
 ## Installation
-No installation is required. Simply compile the provided C code using a C compiler, and the executable will be generated for execution. Ensure that the necessary C standard libraries are available in your environment for compilation.
+No installation is required. Simply compile the provided C code using a C compiler, for example in VsCode, and the executable will be generated for execution. Ensure that the necessary C standard libraries are available in your workspace for compilation.

@@ -1,80 +1,112 @@
+# Mastermind Game
 
-# my_mastermind
+This is a simple command-line implementation of the Mastermind game in C.
 
-Welcome to my_mastermind! This is a simple implementation of the classic code-breaking game, Mastermind, developed in [insert programming language here].
+## Description
 
-## Overview
+Mastermind is a code-breaking game where the player tries to guess a secret code within a limited number of attempts. In this implementation, the player must guess a 4-digit code consisting of digits 0-8. After each guess, the program provides feedback indicating the number of correctly placed digits and the number of misplaced digits.
 
-Mastermind is a code-breaking game where one player (the code-maker) sets a secret code, and the other player (the code-breaker) tries to guess the code within a certain number of attempts. The code-breaker receives feedback after each guess to help refine subsequent guesses.
+## Usage
 
-This implementation allows you to play Mastermind against the computer. You can set the length of the code and the number of attempts allowed.
+To run the game, compile the code using a C compiler. You can specify the number of attempts using the `-t` option and provide a custom secret code using the `-c` option.
 
-## Features
+$ gcc mastermind.c -o mastermind
+$ ./mastermind -t 10 -c 1234
 
-- Customizable game settings (code length, number of attempts).
-- Clear and user-friendly interface.
-- Feedback mechanism to help guide the player's guesses.
-- Randomly generated secret code.
-
-## Installation
-
-1. Clone or download the repository:
-
-```bash
-git clone https://github.com/your_username/my_mastermind.git
-Navigate into the project directory:
-bash
-Copy code
-cd my_mastermind
-[Insert any additional installation instructions if necessary, such as dependencies or environment setup.]
-Usage
-Run the main script:
-bash
-Copy code
-python main.py
-Follow the prompts to set up the game and start playing.
-
-Enter your guesses based on the feedback provided after each attempt.
-
-Keep guessing until you either break the code or run out of attempts.
-
-Enjoy the game!
-
-Contributing
-Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
-
-Fork the repository.
-
-Create a new branch:
-
-bash
-Copy code
-git checkout -b feature/my-feature
-Make your changes and commit them:
-bash
-Copy code
-git commit -am 'Add some feature'
-Push to the branch:
-bash
-Copy code
-git push origin feature/my-feature
-Create a new pull request.
-Please make sure to update tests as appropriate.
-
-License
-[Insert license information here. Example: This project is licensed under the MIT License - see the LICENSE.md file for details.]
-
-Acknowledgements
-[Insert acknowledgements here if you used any external libraries, resources, or tutorials.]
-
-Contact
-[Insert your contact information here if you want to be reached for questions, feedback, or collaboration.]
-
-sql
+markdown
 Copy code
 
-Replace the placeholders such as `[insert programming language here]`, `[Insert license information here]`, and `[Insert acknowledgements here]` with relevant information specific to your project. Additionally, make sure to update the instructions and descriptions according to your actual project setup and requirements.
+If you don't provide the `-c` option, a random code will be generated for you.
+
+## Options
+
+- `-t <attempts>`: Set the number of attempts allowed (default is 10).
+- `-c <code>`: Set a custom secret code for the game.
+
+## How to Play
+
+1. Run the program.
+2. Enter your guess when prompted.
+3. The program will provide feedback on your guess.
+4. Keep guessing until you either correctly guess the code or run out of attempts.
+
+## Example
+
+$ ./mastermind -t 5
+Will you find the secret code?
+Please enter a valid guess:
+Round 1
+
+1234
+Correctly placed pieces: 2
+Misplaced pieces: 1
+
+Round 2
+
+5678
+Correctly placed pieces: 0
+Misplaced pieces: 2
+...
+Congratulations! You did it!
+
+csharp
+Copy code
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.# Mastermind Game
+
+This is a simple command-line implementation of the Mastermind game in C.
+
+## Description
+
+Mastermind is a code-breaking game where the player tries to guess a secret code within a limited number of attempts. In this implementation, the player must guess a 4-digit code consisting of digits 0-8. After each guess, the program provides feedback indicating the number of correctly placed digits and the number of misplaced digits.
+
+## Usage
+
+To run the game, compile the code using a C compiler. You can specify the number of attempts using the `-t` option and provide a custom secret code using the `-c` option.
+
+$ gcc mastermind.c -o mastermind
+$ ./mastermind -t 10 -c 1234
+
+markdown
+Copy code
+
+If you don't provide the `-c` option, a random code will be generated for you.
+
+## Options
+
+- `-t <attempts>`: Set the number of attempts allowed (default is 10).
+- `-c <code>`: Set a custom secret code for the game.
+
+## How to Play
+
+1. Run the program.
+2. Enter your guess when prompted.
+3. The program will provide feedback on your guess.
+4. Keep guessing until you either correctly guess the code or run out of attempts.
+
+## Example
+
+$ ./mastermind -t 5
+Will you find the secret code?
+Please enter a valid guess:
+Round 1
+
+1234
+Correctly placed pieces: 2
+Misplaced pieces: 1
+
+Round 2
+
+5678
+Correctly placed pieces: 0
+Misplaced pieces: 2
+...
+Congratulations! You did it!
 
 
 
+## License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

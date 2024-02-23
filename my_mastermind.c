@@ -9,9 +9,7 @@ int my_strlen(char *str)
 {
   int len = 0;
   while (str[len] != '\0')
-  {
     len++;
-  }
   return len;
 }
 
@@ -21,19 +19,21 @@ int my_strcmp(char *str1, char *str2)
   int len2 = my_strlen(str2);
 
   if (len1 != len2)
-  {
     return len1 - len2;
-  }
 
   for (int i = 0; i < len1; i++)
   {
     if (str1[i] != str2[i])
-    {
       return str1[i] - str2[i];
-    }
   }
-
   return 0;
+}
+
+char *my_strchr(char *s, int c)
+{
+  while (*s && *s != c)
+    s++;
+  return (*s == c) ? (char *)s : NULL;
 }
 
 int isddigit(char *sam)
@@ -42,60 +42,98 @@ int isddigit(char *sam)
   for (int k = 0; k < str_length; k++)
   {
     if (!(sam[k] >= '0' && sam[k] <= '8'))
-      return 1;
+    {
+      printf("Invalid digit detected\n");
+      return -1;
+    }
   }
   return 0;
 }
 
 void toInt(int *code, char *str)
 {
-  for (int i = 0; str[i] != '\0'; i++)
+  int result = 0;
+  for (int i = 0; str[i] >= '0' && str[i] <= '8'; i++)
   {
-    code[i] = str[i] - '0';
+    result = result * 10 + (str[i] - '0');
+    code[i] = result;
   }
 }
 
-int *genSecretCode()
+char *genSecretCode()
 {
-  int *code = malloc(CODE_SIZE * sizeof(int));
-  int numbs_used[9] = {0};
+  char *number = malloc(5 * sizeof(char));
   srand(time(NULL));
-
-  for (int i = 0; i < CODE_SIZE; i++)
+  for (int i = 0; i < 4; i++)
   {
-    int Random_nums = rand() % 10;
-
-    while (numbs_used[Random_nums] == 1)
+    int digit;
+    int found = 1;
+    while (found)
     {
-      Random_nums = rand() % 10;
+      digit = rand() % 10;
+      found = 0;
+      for (int j = 0; j < i; j++)
+      {
+        if (number[j] == digit + '0')
+        {
+          found = 1;
+          break;
+        }
+      }
     }
-    code[i] = Random_nums;
-    numbs_used[Random_nums] = 1;
+    number[i] = digit + '0';
   }
-  return code;
+  number[4] = '\0';
+  return number;
 }
 
-int checkInputErrors(char *buffer, int n, int *guess)
+char *readInpVal()
 {
-
-  if (n - 1 != CODE_SIZE  || buffer[n - 1] != '\n')
+  char *buffer = calloc((CODE_SIZE + 1), sizeof(char));
+  char tempChar;
+  int i = 0;
+  while ((read(0, &tempChar, 1)) > 0)
   {
-    return -1;
-  }
-
-  for (int i = 0; i < n - 1; i++)
-  {
-    if (!(buffer[i] >= '0' && buffer[i] <= '9'))
+    if (tempChar != '\n')
+      buffer[i++] = tempChar;
+    else if (tempChar == EOF)
     {
-      return -1;
+      printf("\nCtrl+D pressed. Stopping the program.\n");
+      break;
+    }
+    else
+      break;
+  }
+  return buffer;
+}
+
+int CheckDuplicates(char *input)
+{
+  int len = my_strlen(input);
+  for (int i = 0; i < len; i++)
+  {
+    for (int j = i + 1; j < len; j++)
+    {
+      if (input[i] == input[j])
+      {
+        printf("Duplicate digits detected!\n");
+        return -1;
+      }
     }
   }
-
-  toInt(guess, buffer);
   return 0;
 }
 
-void CheckCorrection(int *secretCode, int *guess)
+int CheckInputErrors(char *outerGuess)
+{
+  int bufferLeng = my_strlen(outerGuess);
+  if ((bufferLeng != CODE_SIZE) || ((isddigit(outerGuess)) != 0) || ((CheckDuplicates(outerGuess)) != 0))
+    return -1;
+  else
+    return 0;
+}
+
+int CheckCorrection(int *secretCode, int *guess)
 {
   int WellPlaced = 0, MissPlaced = 0;
   for (int i = 0; i < CODE_SIZE; i++)
@@ -117,75 +155,84 @@ void CheckCorrection(int *secretCode, int *guess)
   if (WellPlaced == CODE_SIZE)
   {
     printf("Congratz! You did it!\n");
+    return 0;
   }
   else
-  {
     printf("\nWell placed pieces: %d\nMisplaced pieces: %d\n", WellPlaced, MissPlaced);
-  }
+  return -1;
 }
 
-void my_mastermind(int argc, char **argv)
+void myMastermind(int argc, char **argv)
 {
   int *secret_code = NULL;
-  int Max_Guess = 10, rounds = 0;
-  int *guess = malloc(CODE_SIZE * sizeof(int));
+  int Max_Guess = 10, rounds = 1;
+  char *guess;
 
-  if (argc > 2)
+  for (int i = 1; i < argc; i++)
   {
-    if ((isddigit(argv[2]) != 0) || (my_strlen(argv[2]) != CODE_SIZE))
+    if (my_strcmp(argv[i], "-c") == 0)
     {
-      printf("Wrong input %s passed\n", argv[2]);
-      secret_code = genSecretCode();
+      secret_code = calloc(CODE_SIZE, sizeof(int));
+      toInt(secret_code, argv[i + 1]);
     }
-    else
+    if (my_strcmp(argv[i], "-t") == 0)
     {
-      if (my_strcmp(argv[1], "-c") == 0)
+      Max_Guess = atoi(argv[i + 1]);
+      if (Max_Guess > 10)
       {
-        secret_code = malloc(CODE_SIZE * sizeof(int));
-        toInt(secret_code, argv[2]);
-      }
-      else if (my_strcmp(argv[1], "-t") == 0)
-      {
-        Max_Guess = atoi(argv[2]);
-        if (Max_Guess > 10)
-        {
-          Max_Guess = 10;
-        }
+        printf("Guess limit 10!\n");
+        Max_Guess = 10;
       }
     }
   }
-  else
-  {
-    secret_code = genSecretCode();
-  }
-  printf("Will you find the secret code?\nPlease enter a valid guess\n");
 
+  if (secret_code == NULL)
+  {
+    secret_code = calloc(CODE_SIZE, sizeof(int));
+    char *gen_secret_code = genSecretCode();
+    if (CheckDuplicates(gen_secret_code) != 0)
+    {
+      gen_secret_code = genSecretCode();
+      printf("Secret code was re-generated\n");
+    }
+    toInt(secret_code, gen_secret_code);
+  }
+  printf("\nWill you find the secret code?\nPlease enter a valid guess\n");
   printf("\n---\nRound %d\n>", rounds);
-  while (Max_Guess >= 0)
+  while (Max_Guess > 0)
   {
-    char *buffer = malloc((CODE_SIZE + 1) * sizeof(char));
-    int n = read(STDIN_FILENO, buffer, CODE_SIZE + 1);
-
-    if (checkInputErrors(buffer, n, guess) >= 0)
+    guess = readInpVal();
+    if (guess[0] == '\0')
+      break;
+    if (CheckInputErrors(guess) == 0)
     {
       rounds++;
       Max_Guess--;
-      CheckCorrection(secret_code, guess);
-      printf("\n---\nRound %d.\n>", rounds);
+      int *tempArr = calloc(CODE_SIZE, sizeof(int));
+
+      toInt(tempArr, guess);
+      if (CheckCorrection(secret_code, tempArr) == 0)
+        break;
+      else
+      {
+        if (Max_Guess == 0)
+          printf("\nGame Over!\n");
+        else
+          printf("\n---\nRound %d\n>", rounds);
+      }
     }
     else
     {
-      printf("\nWrong Input Passed !\n");
+      printf("Wrong Input Passed !\n");
       printf("\n---\nRound %d\n>", rounds);
     }
-    free(buffer);
   }
-  free(secret_code);
   free(guess);
+  free(secret_code);
 }
 
 int main(int argc, char **argv)
 {
-  my_mastermind(argc, argv);
+  myMastermind(argc, argv);
   return 0;
 }

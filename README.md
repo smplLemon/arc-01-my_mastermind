@@ -1,16 +1,22 @@
 
- # Welcome to arc-01-my_mastermind
-   ***
+  # Welcome to arc-01-my_mastermind
+    ***
 
-   ## Task
-   Implement the "mastermind.c" file that contains the game logic. This includes functions such as generating a secret code, counting well-placed and misplaced parts, and other auxiliary functions that you will need.
+ ## Installation
+ To compile the program, use the provided Makefile and ensure the code is compiled with the flags -Wall -Wextra -Werror.
 
-   ## Description
+ ## Usage
+ Execute the program my_mastermind with the appropriate parameters and follow the prompts to input guesses for the secret code. 
+    ## Task
+    Implement the "mastermind.c" file that contains the game logic. This includes functions such as generating a secret code, counting well-placed and misplaced parts, and other auxiliary functions that you will need.
 
- There are two players in the game: the code maker and the code breaker. The code generator generates a secret code consisting of colored blocks or a sequence of numbers. The goal of a code cracker is to guess the secret code within a limited number of attempts.
+ ## Description
 
- These functions implement the main functions of the My Mastermind game. The rest of the program controls the flow of the game using these functions.
- ### The Core Team
+  There are two players in the game: the code maker and the code breaker. The code generator generates a secret code consisting of colored blocks or a sequence of numbers. The goal of a code cracker is to guess the secret code within a limited number of attempts.
+
+  These functions implement the main functions of the My Mastermind game. The rest of the program controls the flow of the game using these functions.
+  ### The Core Team
+
 
 
 

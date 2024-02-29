@@ -1,12 +1,17 @@
 CC = gcc
-CFSCV = -g -Wall -Wextra -Werror
-SOURCE = my_mastermind.c
+CFLAGS = -Wall -Wextra -Werror
+
 TARGET = my_mastermind
 
-$(TARGET):$(SOURCE)
-	$(CC) $(CFSCV) -o $@ $^
+SRCS = my_mastermind.c
 
-.PHONY: fclean
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) $^ -o $@
 
-fclean:
-	@rm -r $(TARGET)
+clean:
+	rm -f $(TARGET)
+
+.PHONY:fclean
+
+fclean: 
+	rm -rf $(TARGET)

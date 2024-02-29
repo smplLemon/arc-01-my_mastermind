@@ -3,9 +3,9 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-
+#include <getopt.h>
 #define CODE_LENGTH 4
-#define MAX_ATTEMPTS 10
+#define MAX_ATTEMPTS  10 
 
 void generateSecretCode(char* secretCode) {
     const char pieces[] = "012345678";
@@ -15,8 +15,6 @@ void generateSecretCode(char* secretCode) {
     }
     secretCode[CODE_LENGTH] = '\0';
 }
-
-
 int my_strlen(const char* str) {
     int length = 0;
     while (str[length] != '\0') {
@@ -24,8 +22,6 @@ int my_strlen(const char* str) {
     }
     return length;
 }
-
-
 void evaluateGuess(const char* secretCode, const char* guess, int* wellPlaced, int* misplaced) {
     *wellPlaced = 0;
     *misplaced = 0;
@@ -44,7 +40,6 @@ void evaluateGuess(const char* secretCode, const char* guess, int* wellPlaced, i
         }
     }
 }
-
 int isValidGuess(const char* guess) {
     if (my_strlen(guess) != CODE_LENGTH) {
         return 0;
@@ -61,7 +56,6 @@ int isValidGuess(const char* guess) {
     }
     return 1;
 }
-
 void playGame() {
     char secretCode[CODE_LENGTH + 1];
     char guess[CODE_LENGTH + 1];
@@ -96,7 +90,7 @@ void parseCommandLineArgs(char* secretCode, int argc, char* argv[]) {
     while ((opt = getopt(argc, argv, "c:t:")) != -1) {
         switch (opt) {
             case 'c':
-                strncpy(secretCode, optarg, CODE_LENGTH);
+                strncpy(secretCode,optarg, CODE_LENGTH);
                 secretCode[CODE_LENGTH] = '\0';
                 break;
             default:
@@ -109,7 +103,6 @@ void parseCommandLineArgs(char* secretCode, int argc, char* argv[]) {
         generateSecretCode(secretCode);
     }
 }
-
 int main(int argc, char* argv[]) {
     char secretCode[CODE_LENGTH + 1] = "";
     parseCommandLineArgs(secretCode, argc, argv);

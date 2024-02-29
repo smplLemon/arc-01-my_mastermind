@@ -1,6 +1,6 @@
 Welcome to My Mastermind 
 
-My_Matermind project
+The name of this project My_Matermind 
 
 # Task
 To create a function which you should find the secret numbers

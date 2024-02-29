@@ -2,122 +2,165 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
-void my_strcpy(char* s1, const char* s2) {
-    while ((*s1++ = *s2++))
-        ;
+int values(char *main_in) {
+  int i = 0;
+  while (main_in[i] != '\0') {
+    i++;
+  }
+  return i;
 }
 
-int my_strcmp(const char* s1, const char* s2) {
-    while (*s1 && (*s1 == *s2)) {
-        s1++;
-        s2++;
+char *strln(char *param_1, char *param_2) {
+  int i = 0;
+  for (; param_2[i] != '\0'; i++) {
+    param_1[i] = param_2[i];
+  }
+  param_1[i] = '\0';
+  return param_1;
+}
+
+int new_strchr(char *numbers, char num) {
+  for (int i = 0; numbers[i] != '\0'; i++) {
+    if (numbers[i] == num) {
+      return i;
     }
-    return *(unsigned char*)s1 - *(unsigned char*)s2;
+  }
+  return -1;
 }
 
-int is_exist(const char* s, char c) {
-    for (int i = 0; s[i]; i++) {
-        if (s[i] == c) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-char* code_generator() {
-    char* str = calloc(5, sizeof(char));
-    srand((unsigned)time(NULL));
-    char n;
-    for (int i = 0; i < 4;) {
-        if (!is_exist(str, n = (char)(rand() % 9 + '0'))) {
-            str[i++] = n;
-        }
-    }
-    return str;
-}
-
-char* my_readline(char* input) {
-    printf("> ");
-    return fgets(input, 10, stdin);
-}
-
-int is_uniq(const char* input) {
-    for (int i = 0; input[i]; i++) {
-        if (is_exist(input, input[i]) != 1 || input[i] < '0' || input[i] > '8') {
-            return 0;
-        }
-    }
+int new_input(char param_1) {
+  if (param_1 >= '0' && param_1 <= '8') {
     return 1;
+  }
+  return 0;
 }
 
-void print_err() {
+int bubble(char *main_in) {
+  int last = values(main_in);
+  for (int i = 0; i < last - 1; i++) {
+    for (int j = i + 1; j < last; j++) {
+      if (main_in[i] == main_in[j]) {
+        return 1;
+      }
+    }
+  }
+  return 0;
+}
+
+int nested(char *main_in, char *numbeses) {
+  int b = 0;
+  int c = 0;
+  for (int i = 0; main_in[i] != '\0'; i++) {
+    for (int j = 0; numbeses[j] != '\0'; j++) {
+      if (main_in[i] == numbeses[j] && i != j) {
+        c++;
+      } else if (main_in[i] == numbeses[j]) {
+        b++;
+      }
+    }
+  }
+  if (b == 4) {
+    printf("Congratz! You did it!\n");
+    return 1;
+  }
+
+  printf("Well placed numbers: %d\nMisplaced numbers: %d\n", b, c);
+  return 0;
+}
+
+char *inrct() {
+  int i = 0;
+  char j;
+  char *inclusion = malloc(6);
+  write(1, ">", 1);
+  while (read(0, &j, 1)) {
+    if (j == '\n') {
+      inclusion[i] = '\0';
+      return inclusion;
+    }
+    inclusion[i++] = j;
+  }
+  return "stop";
+}
+
+char *numbers() {
+  int i = 0;
+  char *numbers = malloc(sizeof(char) * 5);
+  numbers[4] = '\0';
+  char num;
+  while (i < 4) {
+    num = rand() % 9 + 48;
+    if (new_strchr(numbers, num) == -1) {
+      numbers[i] = num;
+      i++;
+    }
+  }
+  return numbers;
+}
+
+int error(char *main_in) {
+  int len = values(main_in);
+  int i = 0;
+  if ((len != 4) || (bubble(main_in) == 1)) {
     printf("Wrong input!\n");
+    return 1;
+  }
+  while (i < len) {
+    if ((new_input(main_in[i]) == 0)) {
+      printf("Wrong input!\n");
+      return 1;
+    }
+    i++;
+  }
+  return 0;
 }
 
-int is_input_wrong(const char* input) {
-    size_t input_length = strlen(input);
-    if (input_length != 4 || !is_uniq(input)) {
-        print_err();
-        return 1;
+void begin(int round, char *numbeses) {
+  printf("Will you find the secret code?\n");
+  printf("Please enter a valid guess\n");
+  char *input_value;
+  int flag = 0;
+  int i = 0;
+  while (i < round) {
+    printf("---\n");
+    printf("Round %d\n", i);
+    if (strcmp(input_value = inrct(), "stop") == 0)
+      return;
+    flag = error(input_value);
+    if (flag == 0) {
+      if (1 == nested(input_value, numbeses)) {
+        return;
+      }
+      i++;
     }
-    return 0;
+  }
+
+  if (flag == 0)
+  {
+    exit(0);
+  }
+  
 }
 
-int win_check(const char* mistery_code, const char* input) {
-    int well_placed_pieces = 0;
-    int miss_placed_pieces = 0;
-    for (int i = 0; input[i]; i++) {
-        for (int j = 0; mistery_code[j]; j++) {
-            if (input[i] == mistery_code[j]) {
-                if (i != j) {
-                    miss_placed_pieces++;
-                } else {
-                    well_placed_pieces++;
-                }
-            }
-        }
+void replace(int argc, char **argv) {
+  int i = 1;
+  int round = 10;
+  char *numbeses = numbers();
+  while (i < argc) {
+    if (strcmp(argv[i], "-c") == 0) {
+      numbeses = argv[i + 1];
+      i += 2;
+    } else if (strcmp(argv[i], "-t") ==0) {
+      round = atoi(argv[i + 1]);
+      i += 2;
     }
-    if (well_placed_pieces == 4) {
-        printf("Congratz! You did it!\n");
-        return 1;
-    }
-    printf("Well placed pieces: %d\n", well_placed_pieces);
-    printf("Misplaced pieces: %d\n", miss_placed_pieces);
-    return 0;
+  }
+  begin(round, numbeses);
 }
 
-void mastermind_game(const char* mistery_code, int round_counter) {
-    printf("Will you find the secret code?\nPlease enter a valid guess\n---\n");
-    char input[10];
-    for (int i = 0; i < round_counter;) {
-        printf("Round %d\n", i);
-        if (!my_readline(input)) {
-            return;
-        }
-        if (!is_input_wrong(input)) {
-            if (win_check(mistery_code, input) == 1) {
-                return;
-            }
-            i++;
-        }
-    }
-}
-
-int main(int argc, char** argv) {
-    char* mistery_code = NULL;
-    int round_counter = 10;
-    for (int i = 1; i < argc; i++) {
-        if (my_strcmp(argv[i], "-c") == 0 && i + 1 < argc) {
-            mistery_code = argv[++i];
-        } else if (my_strcmp(argv[i], "-t") == 0 && i + 1 < argc) {
-            round_counter = atoi(argv[++i]);
-        }
-    }
-    if (!mistery_code) {
-        mistery_code = code_generator();
-    }
-    mastermind_game(mistery_code, round_counter);
-    free(mistery_code);
-    return 0;
+int main(int argc, char **argv) {
+  replace(argc, argv);
+  return 0;
 }

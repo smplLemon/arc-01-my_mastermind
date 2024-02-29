@@ -1,11 +1,17 @@
+CC = gccc
 CFLAGS = -Wall -Wextra -Werror
+SOURCE = my_mastermind.c
 TARGET = my_mastermind
 SRC = my_mastermind.c 
 
 $(TARGET) : $(SRC)
-	gcc $(CFLAGS) -o $(TARGET) $(SRC)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
 
-.Phony: fclean 
+$(OBJECT) : $(SOURCE)
+	 $(CC) $(CFLAGS) -C $(SOURCE)
+
+clean :
+    rm -f *.o
 
 
 fclean:

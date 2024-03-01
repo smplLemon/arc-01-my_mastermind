@@ -28,6 +28,15 @@ int my_strcmp(char *str1, char *str2)
   }
   return 0;
 }
+void my_strncpy(char *dest, char *src, int n)
+{
+  int i;
+  for (i = 0; i < n && src[i] != '\0'; i++)
+  {
+    dest[i] = src[i];
+  }
+  dest[i] = '\0';
+}
 
 int isddigit(char *sam)
 {
@@ -36,26 +45,15 @@ int isddigit(char *sam)
   {
     if (!(sam[k] >= '0' && sam[k] <= '8'))
     {
-      printf("Invalid digit detected\n");
       return -1;
     }
   }
   return 0;
 }
 
-void toInt(int *code, char *str)
-{
-  int result = 0;
-  for (int i = 0; str[i] >= '0' && str[i] <= '8'; i++)
-  {
-    result = result * 10 + (str[i] - '0');
-    code[i] = result;
-  }
-}
-
 char *genSecretCode()
 {
-  char *number = malloc(5 * sizeof(char));
+  char *number = calloc(CODE_SIZE + 1, sizeof(char));
   srand(time(NULL));
   for (int i = 0; i < 4; i++)
   {
@@ -76,7 +74,7 @@ char *genSecretCode()
     }
     number[i] = digit + '0';
   }
-  number[4] = '\0';
+  number[CODE_SIZE] = '\0';
   return number;
 }
 
@@ -91,7 +89,6 @@ char *readInpVal()
       buffer[i++] = tempChar;
     else if (tempChar == EOF)
     {
-      printf("\nCtrl+D pressed. Stopping the program.\n");
       break;
     }
     else
@@ -108,10 +105,7 @@ int CheckDuplicates(char *input)
     for (int j = i + 1; j < len; j++)
     {
       if (input[i] == input[j])
-      {
-        printf("Duplicate digits detected!\n");
         return -1;
-      }
     }
   }
   return 0;
@@ -126,21 +120,21 @@ int CheckInputErrors(char *outerGuess)
     return 0;
 }
 
-int CheckCorrection(int *secretCode, int *guess)
+int CheckCorrection(char *secretCode, char *guess)
 {
-  int WellPlaced = 0, MissPlaced = 0;
+  int WellPlaced = 0;
+  int MissPlaced = 0;
   for (int i = 0; i < CODE_SIZE; i++)
   {
     if (secretCode[i] == guess[i])
       WellPlaced++;
     else
     {
-      for (int j = 0; j < CODE_SIZE; j++)
+      for (int j = 0; j < CODE_SIZE && j != i; j++)
       {
-        if (secretCode[i] == guess[j] && i != j)
+        if (secretCode[i] == guess[j])
         {
           MissPlaced++;
-          break;
         }
       }
     }
@@ -151,47 +145,40 @@ int CheckCorrection(int *secretCode, int *guess)
     return 0;
   }
   else
+  {
     printf("Well placed pieces: %d\nMisplaced pieces: %d\n", WellPlaced, MissPlaced);
-  return -1;
+    return -1;
+  }
 }
 
 void myMastermind(int argc, char **argv)
 {
-  int *secret_code = NULL;
+  char *secret_code = NULL;
   int Max_Guess = 10, rounds = 1;
-  char *guess;
+  char *guess = NULL;
 
   for (int i = 1; i < argc; i++)
   {
     if (my_strcmp(argv[i], "-c") == 0)
     {
-      secret_code = calloc(CODE_SIZE, sizeof(int));
-      toInt(secret_code, argv[i + 1]);
+      secret_code = calloc((CODE_SIZE + 1), sizeof(char));
+      my_strncpy(secret_code, argv[i + 1], CODE_SIZE);
     }
     if (my_strcmp(argv[i], "-t") == 0)
     {
       Max_Guess = atoi(argv[i + 1]);
       if (Max_Guess > 10)
       {
-        printf("Guess limit 10!\n");
         Max_Guess = 10;
       }
     }
   }
-
   if (secret_code == NULL)
   {
-    secret_code = calloc(CODE_SIZE, sizeof(int));
-    char *gen_secret_code = genSecretCode();
-    if (CheckDuplicates(gen_secret_code) != 0)
-    {
-      gen_secret_code = genSecretCode();
-      printf("Secret code was re-generated\n");
-    }
-    toInt(secret_code, gen_secret_code);
+    secret_code = genSecretCode();
   }
-  printf("\nWill you find the secret code?\nPlease enter a valid guess\n");
-  printf("\n---\nRound %d\n", rounds);
+  printf("Will you find the secret code?\nPlease enter a valid guess\n");
+  printf("---\nRound %d\n", rounds);
   write(1, ">", 1);
   while (Max_Guess > 0)
   {
@@ -202,15 +189,13 @@ void myMastermind(int argc, char **argv)
     {
       rounds++;
       Max_Guess--;
-      int *tempArr = calloc(CODE_SIZE, sizeof(int));
 
-      toInt(tempArr, guess);
-      if (CheckCorrection(secret_code, tempArr) == 0)
+      if (CheckCorrection(secret_code, guess) == 0)
         break;
       else
       {
         if (Max_Guess == 0)
-          printf("\nGame Over!\n");
+          break;
         else
         {
           printf("---\nRound %d\n", rounds);

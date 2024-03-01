@@ -1,6 +1,6 @@
+//ctrl + d ni oriniga ctrl + c ishni bajarayapti
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include <time.h>
 char *code_random_generate() {

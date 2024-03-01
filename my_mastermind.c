@@ -18,15 +18,23 @@ void showError();
 char* readGuess();
 void playGame(char* secretCode, int attempts);
 
+#define MAX_ROUNDS 10
+
+void playGame(char* secretCode, int max_rounds);
+
 int main(int argc, char** argv) {
     char* secretCode = NULL;
-    int attempts = MAX_ATTEMPTS;
+    int max_rounds = MAX_ROUNDS;
 
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-c") == 0 && i + 1 < argc) {
             secretCode = argv[i + 1];
         } else if (strcmp(argv[i], "-t") == 0 && i + 1 < argc) {
-            attempts = atoi(argv[i + 1]);
+            max_rounds = atoi(argv[i + 1]);
+            if (max_rounds < 1 || max_rounds > MAX_ROUNDS) {
+                printf("Invalid maximum rounds. Using default value (%d).\n", MAX_ROUNDS);
+                max_rounds = MAX_ROUNDS;
+            }
         }
     }
 
@@ -34,10 +42,11 @@ int main(int argc, char** argv) {
         secretCode = generateRandomCode();
     }
 
-    playGame(secretCode, attempts);
+    playGame(secretCode, max_rounds);
 
     return 0;
 }
+
 
 int isDuplicate(char* str, int index) {
     for (int i = 0; i < index; i++) {
@@ -109,10 +118,27 @@ char* readGuess() {
     char* guess = malloc(CODE_LENGTH + 1);
     char ch;
     int i;
+    int seen[10] = {0};
+
     for (i = 0; read(0, &ch, 1); i++) {
         if (ch == '\n') {
             guess[i] = '\0';
-            if (validateInput(guess)) {
+            
+            int valid = 1;
+            for (int j = 0; guess[j] != '\0'; j++) {
+                if (guess[j] < '0' || guess[j] > '9') {
+                    valid = 0;
+                    break;
+                }
+                int digit = guess[j] - '0';
+                if (seen[digit]) {
+                    valid = 0;
+                    break;
+                }
+                seen[digit] = 1;
+            }
+            
+            if (valid && i == CODE_LENGTH) {
                 return guess;
             } else {
                 showError();
@@ -120,16 +146,18 @@ char* readGuess() {
                 return readGuess();
             }
         }
+        
         guess[i] = ch;
     }
+
     free(guess);
     return "abc";
 }
 
-void playGame(char* secretCode, int attempts) {
+void playGame(char* secretCode, int max_rounds) {
     showGameInstructions();
     char* guess;
-    for (int i = 0; i < attempts; i++) {
+    for (int i = 0; i < max_rounds; i++) { 
         displayRound(i);
         guess = readGuess();
         if (strcmp(guess, "abc") == 0) {
@@ -143,5 +171,4 @@ void playGame(char* secretCode, int attempts) {
             printf("Well placed pieces: %d\nMisplaced pieces: %d\n", wellPlaced, countMisplaced(guess, secretCode));
         }
     }
-    printf("Sorry, you couldn't guess the code. The code was: %s\n", secretCode);
 }

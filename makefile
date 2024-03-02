@@ -4,6 +4,8 @@ SOURCE = my_mastermind.c
 TARGET = my_mastermind
 SRC = my_mastermind.c 
 
+all: $(TARGET)
+
 $(TARGET) : $(SRC)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRC)
 

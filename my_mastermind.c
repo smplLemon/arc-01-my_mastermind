@@ -97,7 +97,8 @@ char *get_user_input()
     {
         if (c == '\n' || i == 5)
         {
-            break;
+            user_input[i] = '\0';
+            return user_input;
         }
         user_input[i++] = c;
     }
@@ -136,49 +137,63 @@ int valid_input_check(char *user_input)
     return repetition_check(user_input);
 }
 
-int count_well_placed(char *secret_code, char *user_input) {
+int count_well_placed(char *secret_code, char *user_input)
+{
     int well_placed = 0;
-    for (size_t i = 0; i < CODE_LENGTH; i++) {
-        if (secret_code[i] == user_input[i]) {
+    for (size_t i = 0; i < CODE_LENGTH; i++)
+    {
+        if (secret_code[i] == user_input[i])
+        {
             well_placed++;
         }
     }
     return well_placed;
 }
 
-int count_misplaced(char *secret_code, char *user_input) {
+int count_misplaced(char *secret_code, char *user_input)
+{
     int misplaced = 0;
-    for (size_t i = 0; i < CODE_LENGTH; i++) {
-        if (secret_code[i] != user_input[i] && check_character(secret_code, user_input[i])) {
+    for (size_t i = 0; i < CODE_LENGTH; i++)
+    {
+        if (secret_code[i] != user_input[i] && check_character(secret_code, user_input[i]))
+        {
             misplaced++;
         }
     }
     return misplaced;
 }
 
-void print_placement_results(int well_placed, int misplaced) {
-    if (well_placed == CODE_LENGTH) {
-        printf("Congratz! You did it!\n");
+void print_placement_results(int well_placed, int misplaced)
+{
+    if (well_placed == CODE_LENGTH)
+    {
+        printf("Congratulations! You did it!\n");
         exit(0);
-    } else {
+    }
+    else
+    {
         printf("Well placed pieces: %d\nMisplaced pieces: %d\n", well_placed, misplaced);
     }
 }
 
-void check_placement(char *secret_code, char *user_input) {
+void check_placement(char *secret_code, char *user_input)
+{
     int well_placed = count_well_placed(secret_code, user_input);
     int misplaced = count_misplaced(secret_code, user_input);
     print_placement_results(well_placed, misplaced);
 }
 
-void print_round_header(size_t round) {
+void print_round_header(size_t round)
+{
     printf("---\nRound %zu\n", round);
 }
 
-void play_mastermind_round(int *remaining_attempts, char *secret_code) {
+void play_mastermind_round(int *remaining_attempts, char *secret_code)
+{
     char *user_input = get_user_input();
 
-    while (!valid_input_check(user_input)) {
+    while (!valid_input_check(user_input))
+    {
         printf("wrong input\n");
         user_input = get_user_input();
     }
@@ -187,18 +202,19 @@ void play_mastermind_round(int *remaining_attempts, char *secret_code) {
     (*remaining_attempts)--;
 }
 
-void play_mastermind(int attempts, char *secret_code) {
+void play_mastermind(int attempts, char *secret_code)
+{
     int remaining_attempts = attempts;
     size_t round = 0;
+    printf("Will you find the secret code?\nPlease enter a valid guess\n");
 
-    printf("---\nRound 0\n");
-
-    while (remaining_attempts > 0) {
+    while (remaining_attempts > 0)
+    {
+        print_round_header(round++);
         play_mastermind_round(&remaining_attempts, secret_code);
-        print_round_header(++round);
     }
 
-    printf("Sorry, you ran out of attempts. The secret code was: %s\n", secret_code);
+    printf("You didn't find the secret code. Try again!\n");
 }
 
 int main(int argc, char **argv)

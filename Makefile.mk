@@ -1,6 +1,6 @@
-TARGET = my_ngram
+TARGET = my_mastermind
 CC = gcc 
-SRC = my_ngram.c
+SRC = my_mastermind.c
 FLAGS = -Wall -Wextra -Werror 
 
 all : $(TARGET)

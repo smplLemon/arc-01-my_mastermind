@@ -1,37 +1,30 @@
-## Welcome to my Mastermind
 
-### Description
+<h1>Mastermind Game</h1>
 
-This program is a simple implementation of the Mastermind game, showcased in Codespace. Mastermind involves guessing a secret code within a limited number of attempts, typically set to 10 or customizable by the user. The code provides feedback on the correctness of the guessed code.
+<h2>Task</h2>
+<p>The task is to implement a simple Mastermind game in C. The game generates a secret code, and the player must guess the code within a limited number of attempts.</p>
 
-### Task
+<h2>Description</h2>
+<p>This C program implements a simple Mastermind game where the player has to guess a secret code. The secret code can either be randomly generated or provided as a command-line argument. The player has a limited number of attempts to guess the code correctly. After each guess, the program provides feedback on the number of correctly placed digits and the number of misplaced digits. The game continues until the player correctly guesses the code or exhausts all attempts.</p>
 
-The program's task is to enable users to guess the secret code within a specified number of rounds, primarily set to 10. It calculates each guess and provides feedback on the number of correctly placed and misplaced pieces.
+<h2>Installation</h2>
+<p>To compile the program, make sure you have a C compiler (e.g., gcc) installed on your system. Then follow these steps:</p>
+<ol>
+    <li>Clone or download the repository to your local machine.</li>
+    <li>Open a terminal and navigate to the directory containing the source code files.</li>
+    <li>Run the <code>make</code> command to compile the program.</li>
+    <li>After successful compilation, you will find an executable named <code>game</code> in the same directory.</li>
+</ol>
 
-### Usage
-
-To use the program, follow these steps:
-
-1. **Compilation**: Compile the program using a C compiler. For example:
-
-    ```
-    gcc -o mastermind mastermind.c
-    ```
-
-2. **Execution**: Execute the compiled program with optional command-line arguments.
-    - `-c <secret_code>`: Choose a secret code consisting of 4 unique digits.
-    - `-t <round_counter>`: Set the number of rounds for the game (default is 10).
-    
-    Example in bash:
-
-    ```
-    ./mastermind -c 1234 -t 15
-    ```
-
-3. **Gameplay**: Follow the prompts to enter guesses for the secret code. Enter 4 unique digits for each guess.
-
-4. **Outcome**: After each guess, the program will provide feedback, indicating the number of well-placed and misplaced pieces. If the secret code is guessed correctly within the specified number of rounds, the game ends with a "Congratz! You did it!" message.
-
-### Installation
-
-No installation is required. Simply compile the provided C code using a C compiler, such as in VsCode, and the executable will be generated for execution. Ensure that the necessary C standard libraries are available in your workspace for compilation.
+<h2>Usage</h2>
+<p>Once the program is compiled, you can run it from the terminal. The program accepts the following command-line arguments:</p>
+<ul>
+    <li><code>-c &lt;code&gt;</code>: Provide the secret code manually. <code>&lt;code&gt;</code> should be a 4-digit number with no repeating digits.</li>
+    <li><code>-t &lt;max_rounds&gt;</code>: Set the maximum number of rounds (attempts) for the game. The default value is 10.</li>
+</ul>
+<p>If no command-line arguments are provided, the program generates a random secret code and uses the default maximum rounds value.</p>
+<p>To run the program with command-line arguments:</p>
+<pre>./game -c &lt;code&gt; -t &lt;max_rounds&gt;</pre>
+<p>Example:</p>
+<pre>./game -c 1234 -t 15</pre>
+<p>Follow the on-screen instructions to play the game. Enter your guesses when prompted and press Enter.</p>

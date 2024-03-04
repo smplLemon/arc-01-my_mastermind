@@ -1,12 +1,13 @@
 CC = gcc
-CFGC = -g -Wall -Wextra -Werror
-SOURCE = my_mastermind.c
-TARGET = my_mastermind
+CFLAGS = -Wall -Wextra -std=c11
 
-$(TARGET):$(SOURCE)
-	$(CC) $(CFGC) -o $@ $^
+all: mastermind
 
-.PHONY:fclean
+mastermind: mastermind.o
+    $(CC) $(CFLAGS) -o mastermind mastermind.o
 
-fclean:
-	@rm -r $(TARGET)
+mastermind.o: mastermind.c
+    $(CC) $(CFLAGS) -c mastermind.c
+
+clean:
+    rm -f mastermind mastermind.o

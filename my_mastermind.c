@@ -124,18 +124,26 @@ int CheckCorrection(char *secretCode, char *guess)
 {
   int WellPlaced = 0;
   int MissPlaced = 0;
+  int usedInSecret[CODE_SIZE] = {0};
+
   for (int i = 0; i < CODE_SIZE; i++)
   {
     if (secretCode[i] == guess[i])
-      WellPlaced++;
-    else
     {
-      for (int j = 0; j < CODE_SIZE && j != i; j++)
+      WellPlaced++;
+      usedInSecret[i] = 1;
+    }
+  }
+
+  for (int i = 0; i < CODE_SIZE; i++)
+  {
+    for (int j = 0; j < CODE_SIZE; j++)
+    {
+      if ((secretCode[j] == guess[i]) && (usedInSecret[j] == 0))
       {
-        if (secretCode[i] == guess[j])
-        {
-          MissPlaced++;
-        }
+        MissPlaced++;
+        usedInSecret[j] = 1;
+        break;
       }
     }
   }

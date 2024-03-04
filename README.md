@@ -35,7 +35,7 @@ Your mastermind needs to handle the sequence Ctrl + d. It's End Of File. It's co
 read() is a syscall difficult to apprehend, you will have time to deal more with it in a later project. In this project, you should read 1 character by 1 (use read(0, &c, 1)) and add them one by one to a buffer until you encounter a newline.
 
 # Installation
-Download Code and Run
+make
 
 # Usage
 

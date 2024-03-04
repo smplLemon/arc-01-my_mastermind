@@ -213,7 +213,7 @@ void myMastermind(int argc, char **argv)
     }
     else
     {
-      printf("Wrong Input Passed !\n");
+      printf("Wrong Input!\n");
       printf("---\nRound %d\n", rounds);
       write(1, ">", 1);
     }

@@ -1,5 +1,5 @@
 
-<h1>Mastermind Game</h1>
+<h1>Welcome to my Mastermind</h1>
 
 <h2>Task</h2>
 <p>The task is to implement a simple Mastermind game in C. The game generates a secret code, and the player must guess the code within a limited number of attempts.</p>

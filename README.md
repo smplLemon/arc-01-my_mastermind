@@ -27,10 +27,9 @@ The player has 10 attempts to find the secret code. After each input, the game i
 - **String Manipulation Functions:**
   - `my_strlen`: Measures the length of a string.
   - `my_strcmp`: Compares two strings.
-  - `my_strchr`: Locates a character in a string.
+  - `my_strncpy`: Copies characters from the source string src to the destination string dest, up to a maximum of n characters.
 - **Input Validation Functions:**
   - `isddigit`: Checks if a string contains only valid digits (0-8).
-  - `toInt`: Converts a string of digits to an integer array.
   - `CheckDuplicates`: Ensures a string doesn't contain duplicate digits.
   - `CheckInputErrors`: Validates user input for length, digit content, and duplicates.
 - **Game Logic Functions:**

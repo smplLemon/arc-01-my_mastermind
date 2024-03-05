@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,24 +48,8 @@ int isIncorrectInput(char *input) {
     
     return 0;
 }
-  
-int main(int argc, char **argv) {
-    int attempts = 10;
-    char *code = NULL;
-    
-    for (int i = 0; i < argc; i++) {
-        if (strcmp(argv[i], "-t") == 0) {
-            attempts = atoi(argv[i + 1]);
-        }
-        if (strcmp(argv[i], "-c") == 0) {
-            code = argv[i + 1];
-        }
-    }
-    
-    if (code == NULL) {
-        code = generateRandomCode();
-    }
-    
+
+void playGame(int attempts, char *code) {
     printf("Will you find the secret code?\nPlease enter a valid guess:\n");
     char input[15] = {0};
     char c = 0;
@@ -89,7 +74,7 @@ int main(int argc, char **argv) {
             }
             
             if (flag == 0) {
-                return 0;
+                return;
             }
         } while (isIncorrectInput(input));
         
@@ -112,12 +97,32 @@ int main(int argc, char **argv) {
         
         if (correctPlacements == 4) {
             printf("Congratulations! You did it!\n");
-            return 0;
+            return;
         } else {
             printf("Correct placements: %d\n", correctPlacements);
             printf("Incorrect placements: %d\n", incorrectPlacements);
         }
     }
+}
+
+int main(int argc, char **argv) {
+    int attempts = 10;
+    char *code = NULL;
+    
+    for (int i = 0; i < argc; i++) {
+        if (strcmp(argv[i], "-t") == 0) {
+            attempts = atoi(argv[i + 1]);
+        }
+        if (strcmp(argv[i], "-c") == 0) {
+            code = argv[i + 1];
+        }
+    }
+    
+    if (code == NULL) {
+        code = generateRandomCode();
+    }
+
+    playGame(attempts, code);
     
     return 0;
 }

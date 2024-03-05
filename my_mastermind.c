@@ -5,13 +5,13 @@
 #define CODELEN 4
 typedef unsigned short flag;
 
-//the matched array keeps track of which pieces have been counted so that a piece doesn't get counted as both well placed and misplaced
 static flag matched[CODELEN];
 
 void mystrcpy(char *, char *);
 void readinput(char *);
 int count_wellplaced(char *, char *);
 int count_misplaced(char *, char *);
+
 void mystrcpy(char *s1, char *s2){
     while((*s1++ = *s2++))
         ;
@@ -26,31 +26,36 @@ void readinput(char *buf){
         moon = 0;
         i = 0;
 
-        //exits loop on EOF(ctrl+d)(read returns 0) or \n(2nd condition)
-        while(read(0, &c, 1) > 0 && c != '\n')
-            if (c >= '0' && c <= '8' && i < CODELEN)
-                *(buf + i++) = c;
-            else
+        while(read(0, &c, 1) > 0 && c != '\n') {
+            if (c >= '0' && c <= '8' && i < CODELEN) {
+                if (i > 0) {
+                    for (int j = 0; j < i; j++) {
+                        if (*(buf + j) == c) {
+                            moon = 1;
+                            break;
+                        }
+                    }
+                }
+                if (!moon) {
+                    *(buf + i++) = c;
+                } else {
+                    printf("Duplicate input!\n");
+                    break;
+                }
+            } else {
+                printf("Wrong input!\n");
                 moon = 1;
+                break;
+            }
+        }
 
-        *(buf + CODELEN) = '\0';
-
-        if (c != '\n')
-            printf("\n");
-        
-        if (!moon && (i == CODELEN))
-            break;
-        
-        // this is needed to pass gandalf
-        if (i == 0) {
-            for(i = 0; i < CODELEN; i++)
-                *(buf + i) = -1;
+        if (moon || i != CODELEN) {
+            printf("Wrong input!\n");
+        } else {
+            *(buf + CODELEN) = '\0';
             break;
         }
-        
-        printf("Wrong input!\n");
-
-        } while (1);
+    } while (1);
 }
 
 int count_wellplaced(char *guess, char *codeval){
@@ -76,9 +81,20 @@ int count_misplaced(char *guess, char *codeval){
     return misplaced;
 }
 
+void generate_unique_code(char *codeval) {
+    int i, j;
+    char digits[] = "012345678";
+    srand((unsigned)time(NULL));
+    for (i = 0; i < CODELEN; i++) {
+        j = rand() % (9 - i);
+        codeval[i] = digits[j];
+        digits[j] = digits[8 - i];
+    }
+    codeval[CODELEN] = '\0';
+}
+
 int main(int argc, char **argv){
 
-    // handles incorrect args
     if(!(argc % 2)){
         write( 2, "Usage: -t [TRIES] -c [CODE]\n", 31);
         return 1;
@@ -88,7 +104,6 @@ int main(int argc, char **argv){
     int i;
     char codeval[CODELEN + 1] = {};
 
-    //checks & assigns program arguments
     while(--argc){
         if(**++argv == '-'){
             argc--;
@@ -103,6 +118,14 @@ int main(int argc, char **argv){
                     if (i < CODELEN || codeval[i]){
                         write(2, "Error: moon code length\n", 27);
                         return 1;
+                    }
+                    for (i = 0; i < CODELEN; i++) {
+                        for (int j = i + 1; j < CODELEN; j++) {
+                            if (codeval[i] == codeval[j]) {
+                                write(2, "Error: Duplicate pieces in code\n", 33);
+                                return 1;
+                            }
+                        }
                     }
                     break;
                 case 't':
@@ -123,11 +146,8 @@ int main(int argc, char **argv){
     char guess[CODELEN + 1];
     int misplaced, wellplaced, j;
 
-    //generates a random code
     if (!codeval[0]){
-        srand((unsigned) time(NULL));
-        for(i = 0; i < CODELEN; i++)
-            codeval[i] = '0' + (rand() % 8);
+        generate_unique_code(codeval);
     }
 
     i = 0;
@@ -136,7 +156,7 @@ int main(int argc, char **argv){
         printf("---\nRound %d\n", i);
         for (j = 0; j < CODELEN; j++)
             matched[j] = 0;
-readinput(guess);        
+        readinput(guess);        
         
         wellplaced = count_wellplaced(guess, codeval);
         misplaced = count_misplaced(guess, codeval);

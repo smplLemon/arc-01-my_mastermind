@@ -26,8 +26,6 @@ But with all this, I am allowed to use a limited number of functions, namely:
 * atoi()
 * strcmp()
 
-When creating, I needed all the functions besides `write()` \:D
-
 ## Usage
 ### Start the game
 In order to start the game, you need to enter into the console:
@@ -102,12 +100,12 @@ int code_check(char* str){
 ### Reading code from the console
 ```c
 int read_input(char* input){
-    int i;
-    for (i = 0; read(0, &input[i], 1) && input[i] != '\n'; i++);
-    if(input[0] == EOF)
-        return 0;
-    input[i] = '\0';
-    return 1;
+    for(int i = 0; read(0, &input[i], 1); i++)
+        if(input[i] == '\n'){
+            input[i] = '\0';
+            return 1;
+        }
+    return 0;
 }
 ```
 ### Number of correct and incorrect placements
@@ -181,16 +179,21 @@ int param_check(int argc, char* argv[], int* attempts, char* secret){
 void game(char* secret, int attempts, char* input){
     printf("Will you find the secret code?\nPlease enter a valid guess\n");
     for(int round = 0; round < attempts; round++){
-        printf("---\nRound %d\n>", round);
+        printf("---\nRound %d\n", round);
+        write(1, ">", 1);
         if(!read_input(input))
             break;
         while(!code_check(input)){
-            printf("Wrong input!\n>");
-            if(!read_input(input))
+            printf("Wrong input!\n");
+            write(1, ">", 1);
+            if(!read_input(input)){
+                attempts = 0;
                 break;
+            }
         }
-        if(wellmisplace(input, secret) || !input[0])
-            break;
+        if(round < attempts)
+            if(wellmisplace(input, secret))
+                break;
     }
 }
 ```

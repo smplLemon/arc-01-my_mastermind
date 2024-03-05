@@ -108,7 +108,6 @@ void playGame(int attempts, char *code) {
 int main(int argc, char **argv) {
     int attempts = 10;
     char *code = NULL;
-    
     for (int i = 0; i < argc; i++) {
         if (strcmp(argv[i], "-t") == 0) {
             attempts = atoi(argv[i + 1]);
@@ -117,12 +116,9 @@ int main(int argc, char **argv) {
             code = argv[i + 1];
         }
     }
-    
     if (code == NULL) {
         code = generateRandomCode();
     }
-
     playGame(attempts, code);
-    
     return 0;
 }

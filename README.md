@@ -22,10 +22,6 @@ This project implements the Mastermind game in C, allowing players to play the g
 ### Compilation
 
 ```bash
-gcc mastermind.c -o mastermind
-```
-- **Or** 
-```bash
 make 
 ```
 
@@ -48,7 +44,7 @@ make
 ## Example
 
 ```bash
-./mastermind -c "RBYG"
+./mastermind -c 1234
 ```
 
 This command starts a game of Mastermind with a secret code set to "RBYG".

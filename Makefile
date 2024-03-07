@@ -1,4 +1,4 @@
-SRC = mastermind.c funciones.c errno.c
+SRC = mastermind.c funciones.c init.c logica.c errno.c
 OBJ = $(SRC:.c=.o)
 
 CC = gcc
@@ -6,8 +6,8 @@ CFLAGS = -Wall -Wextra -Werror
 TARGET = my_mastermind
 
 .PHONY: all clean fclean re
-all: $(TARGET)
 
+all: $(TARGET)
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 

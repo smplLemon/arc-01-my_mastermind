@@ -4,7 +4,8 @@
 #include <time.h>
 #include <unistd.h>
 #include "mastermind_h.h"
-#define CD_LEN 4
+#include "master_h.h"
+#define CD_LEN 4 
 
 void guess(char* gues, char* scrt_cd, int* well_plcd, int* misplcd){
     *well_plcd = 0;
@@ -15,32 +16,49 @@ void guess(char* gues, char* scrt_cd, int* well_plcd, int* misplcd){
     for(int i = 0; i < CD_LEN; i++){
         if(gues[i] == scrt_cd[i]){
            (*well_plcd)++;
-        } else{
+        } 
+        else{
             gues_hist[gues[i] - '0']++;
             secret_hist[scrt_cd[i] - '0']++;
         }
     }
     for(int i = 0; i < 10; i++){
         if(secret_hist[i] < gues_hist[i]){
-            *misplcd += secret_hist[i];
-        } else{
-            *misplcd += gues_hist[i];
+            *misplcd += secret_hist[i]; 
+        } 
+        else{
+            *misplcd += gues_hist[i]; 
         }
     }
 }
 
-char* randit(char* random_code){
-    const char num[] = "0123456789";
+char* randit(char* rndm_cd){
+    const char num[] = "012345678";
     for(int i = 0; i < CD_LEN; i++){
-        random_code[i] = num[rand() % 10];
+        rndm_cd[i] = num[rand() % 10];
     }
-    random_code[CD_LEN] = '\0';
-    return random_code;
+    rndm_cd[CD_LEN] = '\0';
+    return rndm_cd;
 }
-int validation(char* input){
-    if(strlen(input) != CD_LEN) return 0;
+
+int validation(char* inpt){
+    if(strlen(inpt) != CD_LEN){
+        printf("Wrong input!\n");
+        return 0; 
+    }
+    int dig[10] = {0}; 
+
     for(int i = 0; i < CD_LEN; i++){
-        if(input[i] < '0' || input[i] > '9') return 0;
+        if(inpt[i] < '0' || inpt[i] > '9' || inpt[i] == '9'){
+            printf("Wrong input!\n");
+            return 0; 
+        }
+        dig[inpt[i] - '0']++; 
+
+        if(dig[inpt[i] - '0'] > 1){
+            printf("Wrong input!\n");
+            return 0; 
+        }
     }
     return 1;
 }

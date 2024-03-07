@@ -4,7 +4,6 @@
 #include <time.h>
 #include <unistd.h>
 
-// Function prototypes
 int my_strlen(char* string);
 char* my_strchr(const char* str, int c);
 int well_placed(char* secret_code, char* users_input);
@@ -27,7 +26,7 @@ void initialize_random_seed();
 char generate_random_digit();
 char* generate_unique_code();
 
-// Function definitions
+
 int my_strlen(char* string) {
     return strlen(string);
 }

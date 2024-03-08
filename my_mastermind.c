@@ -99,7 +99,7 @@ void check_guess(char *code, char *guess, int *well_placed, int *misplaced) {
     }
 }
 
-int handle_guess(char *code, char *guess, int attempts) {
+int handle_guess(char *code, char *guess) {
     int well_placed = 0;
     int misplaced = 0;
 
@@ -126,7 +126,7 @@ void game_loop(char *code, int attempts) {
             free(guess);
             return;
         }
-        if (handle_guess(code, guess, attempts)) {
+        if (handle_guess(code, guess)) {
             free(guess);
             free(code);
             return;

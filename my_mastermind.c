@@ -1,11 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-#include <getopt.h>
-#define CODE_LENGTH 4
-#define MAX_ATTEMPTS  10 
+
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <time.h>
+ #include <unistd.h>
+ #include <getopt.h>
+ #define CODE_LENGTH 4
+ #define MAX_ATTEMPTS  10 
 
 void generateSecretCode(char* secretCode) {
     const char pieces[] = "012345678";
@@ -23,8 +24,8 @@ int my_strlen(const char* str) {
     return length;
 }
 void evaluateGuess(const char* secretCode, const char* guess, int* wellPlaced, int* misplaced) {
-    *wellPlaced = 0;
-    *misplaced = 0;
+     *wellPlaced = 0;
+     *misplaced = 0;
 
     for (int i = 0; i < CODE_LENGTH; i++) {
         if (guess[i] == secretCode[i]) {
@@ -69,7 +70,7 @@ void playGame() {
         scanf("%s", guess);
         if (!isValidGuess(guess)) {
             printf("Wrong input!\n");
-            continue;
+        continue;
         }
         int wellPlaced, misplaced;
         evaluateGuess(secretCode, guess, &wellPlaced, &misplaced);
@@ -84,29 +85,37 @@ void playGame() {
     }
     printf("Game over! ");
 }
-void parseCommandLineArgs(char* secretCode, int argc, char* argv[]) {
+void parseCommandLineArgs(char* secretCode, int* maxAttempts, int argc, char* argv[]) {
     int opt;
+    int isCodeSpecified = 0;
 
     while ((opt = getopt(argc, argv, "c:t:")) != -1) {
         switch (opt) {
             case 'c':
-                strncpy(secretCode,optarg, CODE_LENGTH);
+                strncpy(secretCode, optarg, CODE_LENGTH);
                 secretCode[CODE_LENGTH] = '\0';
+                isCodeSpecified = 1;
+                break;
+            case 't':
+                *maxAttempts = atoi(optarg);
                 break;
             default:
-                fprintf(stderr, "Usage: %s [-c CODE]\n", argv[0]);
+                fprintf(stderr, "Usage: %s [-c CODE] [-t MAX_ATTEMPTS]\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
     }
 
-    if (secretCode[0] == '\0') {
+    if (!isCodeSpecified) {
         generateSecretCode(secretCode);
     }
 }
 int main(int argc, char* argv[]) {
     char secretCode[CODE_LENGTH + 1] = "";
-    parseCommandLineArgs(secretCode, argc, argv);
+    int maxAttempts = MAX_ATTEMPTS;
+    parseCommandLineArgs(secretCode, &maxAttempts, argc, argv);
     playGame();
     return 0;
 }
+
+
 

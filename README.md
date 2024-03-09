@@ -1,14 +1,17 @@
 
   # Welcome to arc-01-my_mastermind
-    ***
-
+    
  ## Installation
- To compile the program, use the provided Makefile and ensure the code is compiled with the flags -Wall -Wextra -Werror.
+Compiling the program: Use the provided Makefile to compile the program. Simply run the "make" command in the terminal. The Makefile should handle the compilation process and create an executable for "my_mastermind".
 
+   To compile the program, use the provided Makefile and ensure the code is compiled with the flags -Wall -Wextra -std=c11.
+
+ ## Task
+  Implement the "mastermind.c" file that contains the game logic. This includes functions such as generating a secret code, counting well-placed and misplaced parts, and other auxiliary functions that you will need.
  ## Usage
- Execute the program my_mastermind with the appropriate parameters and follow the prompts to input guesses for the secret code. 
-    ## Task
-    Implement the "mastermind.c" file that contains the game logic. This includes functions such as generating a secret code, counting well-placed and misplaced parts, and other auxiliary functions that you will need.
+  Continue entering guesses until you either guess the secret code correctly or exhaust the specified number of attempts.
+
+  Execute the program my_mastermind with the appropriate parameters and follow the prompts to input guesses for the secret code.
 
  ## Description
 
@@ -20,6 +23,5 @@
 
 
 
-
-   <span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
-   <span><img alt='Qwasar SV -- Software Engineering School's Logo' src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px'></span>
+  <span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
+    <span><img alt='Qwasar SV -- Software Engineering School's Logo' src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px'></span>

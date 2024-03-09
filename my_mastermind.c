@@ -62,7 +62,12 @@ void validate_input(char *guess) {
 void getin(char *guess) {
     write(1, ">", 1);
     get_input(guess);
-    validate_input(guess);
+    if (guess[0] == '\0') {
+        char eot = 4;
+        write(0, &eot, 1);
+    } else {
+        validate_input(guess);
+    }
 }
 
 void print_round(int round) {

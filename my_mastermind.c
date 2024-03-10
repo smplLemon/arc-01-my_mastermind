@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <unistd.h>
+#include <unistd.h>
 #include <time.h> 
 #define Secret_Code_Length  4
 int Stoper = 0;

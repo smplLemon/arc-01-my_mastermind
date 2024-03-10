@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+// #include <unistd.h>
 #include <time.h> 
 #define Secret_Code_Length  4
 int Stoper = 0;
 
-// exit() funksiyasidan foydalanish mumkin emas deganizda mastermindni qoidasi o'qib chiqdim va exit() dan tashqari yana scanf funksiyasini ham ishlatish mumkin emasligi 
 char *The_Scan_Function() {
     int the_size_array = 10, the_index = 0;
     char *the_user_input = calloc(sizeof(char), the_size_array), temp;
@@ -39,8 +38,6 @@ int Checking_Function(char* users_guess){
     return 0;
 }
 
-//tekshiruv va xatolarni tekshirish paytida Generate_Secret_code funksiyasida xato borligini bildim va shu xatolikni to'g'irladim
-
 int Checking_Function_for_Generator(char* secret_code, char letter) {
     int length = My_Str_Len(secret_code);
     for (int i = 0; i < length; ++i) {
@@ -63,13 +60,16 @@ void Generate_Secret_Code(char* string) {
 
 int The_Checker(char* the_secret_code, char* the_user_input){
     int well_placed = 0, miss_placed = 0 ;
-    for (int i = 0; i < Secret_Code_Length; ++i){
+    for (int i = 0; i < Secret_Code_Length; ++i) {
         for (int j = 0; j < Secret_Code_Length; ++j){
-            if (the_secret_code[j] == the_user_input[i] && the_secret_code[i] != the_user_input[i]) miss_placed++;
+            if (the_secret_code[j] == the_user_input[i] && the_secret_code[i] != the_user_input[i]) {
+                miss_placed++;
+            }
         }
     }
     for (int i = 0; i < Secret_Code_Length; ++i) {
-        if (the_secret_code[i] == the_user_input[i]) well_placed++;
+        if (the_secret_code[i] == the_user_input[i])
+            well_placed++;
     }
     if (well_placed == 4) {
         printf("Congratz! You did it!\n");
@@ -109,13 +109,17 @@ int main(int argc, char** argv) {
     if (argc > 1) {
         for (int i = 0; i < argc; ++i) {
             if ((argc == 3 && strcmp(argv[i],"-c") == 0) || (argc == 5 && strcmp(argv[i],"-c") == 0)) {
-                strncpy(secret_code, argv[i+1], Secret_Code_Length);
+                for (int j = 0; j < Secret_Code_Length && argv[i+1][j] != '\0'; ++j) {
+                    secret_code[j] = argv[i+1][j];
+                }
                 secret_c = 0;
             }
-            if ((argc == 3 && strcmp(argv[i],"-t") == 0) || (argc == 5 && strcmp(argv[i],"-t") == 0)) rounds = atoi(argv[i+1]);
+            if ((argc == 3 && strcmp(argv[i],"-t") == 0) || (argc == 5 && strcmp(argv[i],"-t") == 0)){
+                rounds = atoi(argv[i+1]);
+            }
         }
     }
     if (argc == 2 || argc == 4 || argc > 5) Stoper += 1;
-    if (secret_c == 1) Generate_Secret_Code(secret_code);   
+    if (secret_c == 1) Generate_Secret_Code(secret_code);
     if (rounds != 0 && Stoper == 0) The_Second_Main_Function(secret_code, rounds);
 }

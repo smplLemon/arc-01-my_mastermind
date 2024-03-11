@@ -1,13 +1,15 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11
+CFLAGS = -Wall -Wextra
 
-all: mastermind
+TARGET = mastermind
 
-mastermind: mastermind.o
-    $(CC) $(CFLAGS) -o mastermind mastermind.o
+all: $(TARGET)
 
-mastermind.o: mastermind.c
-    $(CC) $(CFLAGS) -c mastermind.c
+$(TARGET): main.o
+    $(CC) $(CFLAGS) -o $@ $^
+
+main.o: main.c
+    $(CC) $(CFLAGS) -c $<
 
 clean:
-    rm -f mastermind mastermind.o
+    rm -f $(TARGET) *.o

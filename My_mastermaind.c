@@ -7,7 +7,6 @@
 int compare_strings(const char *str1, const char *str2) {
     return strcmp(str1, str2) == 0;
 }
-
 char *code_random_generate() {
     static int initialized = 0;
     if (!initialized) {
@@ -25,9 +24,7 @@ char *code_random_generate() {
     }
     code[4] = '\0';
     return code;
-
 }
-
 int argument_length_error(const char *input) {
    if (strlen(input) != 4) {
         printf("Wrong input!\n");
@@ -41,7 +38,6 @@ int argument_length_error(const char *input) {
     }
     return 0;
 }
-
 int incorrect_range(const char *input) {
     for (int i = 0; i < 4; i++) {
         if (input[i] < '0' || input[i] > '8') {
@@ -51,7 +47,6 @@ int incorrect_range(const char *input) {
     }
     return 0;
 }
-
 int incorrect_duplicates(const char *input) {
     for (int i = 0; i < 4; i++) {
         for (int j = i + 1; j < 4; j++) {
@@ -63,7 +58,6 @@ int incorrect_duplicates(const char *input) {
     }
     return 0;
 }
-
 char *receive_information() {
     char input[4] = {0};
     char c = 0;
@@ -83,7 +77,6 @@ char *receive_information() {
     } while (argument_length_error(input) || incorrect_range(input) || incorrect_duplicates(input));
     return strdup(input);
 }
-
 int find_true_or_false_codes(const char *code, const char *guess) {
     int well = 0, missed = 0;
     int code_used = 0, input_used = 0;
@@ -100,7 +93,6 @@ int find_true_or_false_codes(const char *code, const char *guess) {
     missed -= well;
     return well * 10 + missed;
 }
-
 void result_game(const char *code, const char *guess) {
     int result = find_true_or_false_codes(code, guess);
     int well = result / 10;
@@ -112,7 +104,6 @@ void result_game(const char *code, const char *guess) {
         printf("Misplaced pieces: %d\n", missed);
     }
 }
-
 void play_game(int attempts, const char *code) {
     printf("Will you find the secret code?\nPlease enter a valid guess\n");
     for (int i = 0; i < attempts; i++) {
@@ -126,7 +117,6 @@ void play_game(int attempts, const char *code) {
 void parse_arguments(int argc, char **argv, int *attempts, const char **code) {
     *attempts = 9;
     *code = NULL;
-    
     if (argc >= 3) {
         for (int i = 1; i < argc; i++) {
             if (compare_strings(argv[i], "-t")) {
@@ -144,9 +134,7 @@ void parse_arguments(int argc, char **argv, int *attempts, const char **code) {
 int main(int argc, char **argv) {
  int attempts;
     const char *code;
-    
     parse_arguments(argc, argv, &attempts, &code);
     play_game(attempts, code);
-    
     return 0;
 }

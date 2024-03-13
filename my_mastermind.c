@@ -107,18 +107,22 @@ void ReadGuess(char *guess)
 
 int CounterPlaces(char *secretCode, char *guessCode)
 {
-    int well_placed = 0, misplaced = 0;
-    for (int i = 0; i < CODE_LENGTH; i++)
-    {
-        if (secretCode[i] == guessCode[i])
-        {
+    int well_placed = 0, misplaced = 0, i = 0, j = 0;
+
+    do{
+        if (secretCode[i] == guessCode[i]){
             well_placed++;
         }
-        else if (my_strlen(secretCode) != my_strlen(guessCode) && my_strcmp(secretCode, guessCode) != 0)
-        {
-            misplaced++;
+        else{
+            do{
+                misplaced++;
+                j++;
+                break;
+            } while (j < CODE_LENGTH);
         }
-    }
+        i++;
+    } while (i < CODE_LENGTH);
+    
 
     if (well_placed == CODE_LENGTH)
     {

@@ -15,5 +15,16 @@ make
 - The game continues until the player guesses the correct code or runs out of attempts.
 - The player can specify the secret code and the number of attempts using the command-line options -c (code) and -t (attemts) respectively.
 
-## installation 
-none 
+## Installation
+To play My Mastermind game, follow these steps:
+
+1. Compile the code using the following command:
+
+2. Run the executable to start the game:
+./my_mastermind
+
+3. Follow the on-screen instructions to input your guesses and receive feedback on the correctness of your guesses.
+
+If you want to specify the secret code or the number of attempts, you can use the command-line options `-c` for the code and `-t` for the number of attempts.
+
+Enjoy playing My Mastermind!

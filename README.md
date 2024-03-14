@@ -28,3 +28,5 @@ To play My Mastermind game, follow these steps:
 If you want to specify the secret code or the number of attempts, you can use the command-line options `-c` for the code and `-t` for the number of attempts.
 
 Enjoy playing My Mastermind!
+
+

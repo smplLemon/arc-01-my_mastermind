@@ -1,12 +1,12 @@
-#Welcome to My Mastermind
-##Qwasar
+# Welcome to My Mastermind
+## Qwasar
 
-##Task
+## Task
 The task is to implement a command-line Mastermind game in C, where the player has to guess a secret code within a limited number of attempts.
 
 The game should indicate to the player the number of well-placed and misplaced pieces after each guess.
 
-##Description
+## Description
 
 To solve the problem, the provided C code uses several helper functions to read user input, count well-placed and misplaced pieces, and generate a random secret code if none is provided as a command-line argument.
 
@@ -20,7 +20,7 @@ The count_misplaced function counts the number of misplaced pieces (correct piec
 
 The main function handles command-line arguments, generates a random code if needed, and runs the game loop until the player wins or exhausts all attempts.
 
-##Installation
+## Installation
 
 The project seems to be a simple C program, and it doesn't require any special installation steps other than compiling the code.
 

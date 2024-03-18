@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
-
 int compare_strings(const char *str1, const char *str2) {
     return strcmp(str1, str2) == 0;
 }
@@ -13,7 +12,7 @@ char *code_random_generate() {
         srand(time(NULL));
         initialized = 1;
     }
-    char *code = (char *)malloc(sizeof(char) * 4);
+    char *code = (char *)malloc(sizeof(char) * 5);
     int used = 0, count = 0;
     while (count < 4) {
         int num = rand() % 8;
@@ -26,7 +25,7 @@ char *code_random_generate() {
     return code;
 }
 int argument_length_error(const char *input) {
-   if (strlen(input) != 4) {
+    if (strlen(input) != 4) {
         printf("Wrong input!\n");
         return 1;
     }
@@ -59,7 +58,7 @@ int incorrect_duplicates(const char *input) {
     return 0;
 }
 char *receive_information() {
-    char input[4] = {0};
+    char input[5] = {0};
     char c = 0;
     int j = 0, flag = 1;
     do {
@@ -86,8 +85,8 @@ int find_true_or_false_codes(const char *code, const char *guess) {
         input_used |= (1 << (guess[i] - '0'));
     }
     int common = code_used & input_used;
-    for (int i = 0; i < 8; i++) {
-        if (common & (1 << i))
+    for (int i = 0; i < 4; i++) {
+        if (common & (1 << (code[i] - '0')))
             missed++;
     }
     missed -= well;
@@ -98,7 +97,7 @@ void result_game(const char *code, const char *guess) {
     int well = result / 10;
     int missed = result % 10;
     if (well == 4) {
-        printf("Congratz! You did it!   \n");
+        printf("Congratz! You did it!\n");
     } else {
         printf("Well placed pieces: %d\n", well);
         printf("Misplaced pieces: %d\n", missed);
@@ -132,7 +131,7 @@ void parse_arguments(int argc, char **argv, int *attempts, const char **code) {
         *code = code_random_generate();
 }
 int main(int argc, char **argv) {
- int attempts;
+    int attempts;
     const char *code;
     parse_arguments(argc, argv, &attempts, &code);
     play_game(attempts, code);

@@ -3,9 +3,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
-int compare_strings(const char *str1, const char *str2) {
-    return strcmp(str1, str2) == 0;
-}
 char *code_random_generate() {
     static int initialized = 0;
     if (!initialized) {
@@ -118,10 +115,10 @@ void parse_arguments(int argc, char **argv, int *attempts, const char **code) {
     *code = NULL;
     if (argc >= 3) {
         for (int i = 1; i < argc; i++) {
-            if (compare_strings(argv[i], "-t")) {
+            if (strcmp(argv[i], "-t") == 0) {
                 *attempts = atoi(argv[i + 1]);
                 i++;    
-            } else if (compare_strings(argv[i], "-c")) {
+            } else if (strcmp(argv[i], "-c") == 0) {
                 *code = argv[i + 1];
                 i++;
             }

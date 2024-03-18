@@ -1,16 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 
 char *my_rand(){
     srand(time(NULL));
     char *secret_code = calloc(5, sizeof(char));
+    int used[9] = {0};
     for(int i = 0; i < 4; i++){
-        secret_code[i] = '0' + rand() % 10;
+        int rand_num = rand() % 9;
+        if(!used[rand_num]){
+            secret_code[i] = '0' + rand_num;
+            used[rand_num] = 1;
+        }else{
+            i--;
+        }
     }
     return secret_code;
-    free(secret_code);
 }
 
 int my_strlen(char *len){
@@ -53,8 +60,15 @@ void read_input(char *insert_code){
 
 void check_input(char *insert_code){
     while(!check_code(insert_code)){
-        printf("Wrong input!\n>");
-        read_input(insert_code);
+        if(insert_code[0] == '\0'){
+            char eot = 4;
+            write(0, &eot, 1);
+            return;
+        } else {
+            printf("Wrong input!\n");
+            write(1, ">", 1);
+            read_input(insert_code);
+        }
     }
 }
 

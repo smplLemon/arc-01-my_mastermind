@@ -33,27 +33,32 @@ void print_round(int round) {
 }
 
 int is_valid_input(const char *input) {
-    if(strlen(input) != CODE_LENGTH) {
+    int input_length = 0;
+    while (input[input_length] != '\0') {
+        input_length++;
+    }
+
+    if (input_length != CODE_LENGTH) {
         printf("Wrong input!\n");
         return 0;
-    } 
-    
-    for(int i = 0; i < CODE_LENGTH; i++) {
-        if(input[i] < '0' || input[i] > '8') {
+    }
+
+    for (int i = 0; i < CODE_LENGTH; i++) {
+        if (input[i] < '0' || input[i] > '8') {
             printf("Wrong input!\n");
             return 0;
         }
     }
-    
-    for(int i = 0; i < CODE_LENGTH; i++) {
-        for(int j = i + 1; j < CODE_LENGTH; j++) {
-            if(input[i] == input[j]) {
+
+    for (int i = 0; i < CODE_LENGTH; i++) {
+        for (int j = i + 1; j < CODE_LENGTH; j++) {
+            if (input[i] == input[j]) {
                 printf("Wrong input!\n");
                 return 0;
             }
         }
     }
-    
+
     return 1;
 }
 
@@ -138,4 +143,5 @@ int main(int argc, char **argv) {
     
     return 0;
 }
+
 

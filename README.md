@@ -8,7 +8,10 @@ Compiling the program: Use the provided Makefile to compile the program. Simply 
 
  ## Task
   Implement the "mastermind.c" file that contains the game logic. This includes functions such as generating a secret code, counting well-placed and misplaced parts, and other auxiliary functions that you will need.
+ You will need to create a folder and in this folder will be additional files containing your work.
+ Folder names must start with special file names and also contain ( Makefile - _.c - _.h).
  ## Usage
+ 
   Continue entering guesses until you either guess the secret code correctly or exhaust the specified number of attempts.
 
   Execute the program my_mastermind with the appropriate parameters and follow the prompts to input guesses for the secret code.

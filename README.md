@@ -1,5 +1,3 @@
-# Welcome to Your Project Name
-
 ## Task
 The challenge lies in implementing the game logic, including generating a random secret code, receiving and validating user input, evaluating the guess, and providing feedback to the player.
 

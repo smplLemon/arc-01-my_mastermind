@@ -6,9 +6,25 @@
 #include "mastermind_h.h"  
 #define CD_LEN 4
 
+// strlen funksiyasi 
+unsigned int my_strlen(const char* str){
+    unsigned int len = 0;
+    while(str[len] != '\0'){
+        len++;
+    }
+    return len;
+}
+
+// strcpy funksiyasi 
+char* my_strcpy(char* dest, const char* src){
+    char* start = dest;
+    while((*dest++ = *src++) != '\0');
+    return start;
+}
+
 // logikasi
 int play_game(char* scrt_cd, int MX_ATMT){
-    if(strlen(scrt_cd) != CD_LEN){
+    if(my_strlen(scrt_cd) != CD_LEN){
         srand(time(NULL));
         randit(scrt_cd);
     }
@@ -19,7 +35,7 @@ int play_game(char* scrt_cd, int MX_ATMT){
     while(round < MX_ATMT){
         printf("---\nRound %d\n>", round);
         fflush(stdout);
-
+        
         if(rd_input(gues) != 0){
             printf("Wrong input!\n");
             continue;  
@@ -88,20 +104,21 @@ int is_correct(int wlplcd){
     }
     return 0;
 }
+
 void prnt_res(int wlplcd, int misd){
     printf("Well-placed pieces: %d\nMisplaced pieces: %d\n", wlplcd, misd);
 }
 
-// funksiyzlari
+// funksiyalari
 void guess(char* gues, char* scrt_cd, int* well_plcd, int* misplcd){
     *well_plcd = 0;
     *misplcd = 0;
-    int gues_hist[10] = {0}; 
-    int secret_hist[10] = {0}; 
+    int gues_hist[10] ={0}; 
+    int secret_hist[10] ={0}; 
 
     for(int i = 0; i < CD_LEN; i++){
         if(gues[i] == scrt_cd[i]){
-            (*well_plcd)++;
+           (*well_plcd)++;
         } 
         else{
             gues_hist[gues[i] - '0']++;
@@ -113,7 +130,6 @@ void guess(char* gues, char* scrt_cd, int* well_plcd, int* misplcd){
     }
 }
 
-
 char* randit(char* rndm_cd){
     const char num[] = "012345678";
     for(int i = 0; i < CD_LEN; i++){
@@ -124,11 +140,11 @@ char* randit(char* rndm_cd){
 }
 
 int validation(char* inpt){
-    if(strlen(inpt) != CD_LEN){
+    if(my_strlen(inpt) != CD_LEN){
         printf("Wrong input!\n");
         return 0; 
     }
-    int dig[10] = {0}; 
+    int dig[10] ={0}; 
 
     for(int i = 0; i < CD_LEN; i++){
         if(inpt[i] < '0' || inpt[i] > '9' || inpt[i] == '9'){
@@ -145,7 +161,7 @@ int validation(char* inpt){
     return 1;
 }
 
-// -c va -t larni initializi
+// -c va -t larni ishga tushirilishi
 char* initialize_game(int ac, char** av, int* MX_ATMT){
     char* scrt_cd = calloc(sizeof(char), CD_LEN + 1);
     if(scrt_cd == NULL){
@@ -155,7 +171,7 @@ char* initialize_game(int ac, char** av, int* MX_ATMT){
 
     for(int i = 1; i < ac; i++){
         if(strcmp(av[i], "-c") == 0 && i + 1 < ac){
-            strncpy(scrt_cd, av[i + 1], CD_LEN);
+            my_strcpy(scrt_cd, av[i + 1]);
             scrt_cd[CD_LEN] = '\0';
         } 
         else if(strcmp(av[i], "-t") == 0 && i + 1 < ac){

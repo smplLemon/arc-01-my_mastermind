@@ -4,6 +4,7 @@
 #include <time.h>
 #include <string.h>
 #include <ctype.h>
+#include <unistd.h>
 
 bool step(int argc, char *argv[], int *code, int *round);
 bool inputC(int argc, char *argv[], int *code);
@@ -31,29 +32,32 @@ int main(int argc, char *argv[])
     return play(code, &round);
 }
 
-bool step(int argc, char *argv[], int *code, int *round)
-{
-    if (argc == 1)
-    {
+bool step(int argc, char *argv[], int *code, int *round) {
+    bool codeProvided = false;
+    bool roundProvided = false;
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-c") == 0 && i + 1 < argc) {
+            char *codeStr = argv[i + 1];
+            for (int j = 0; j < 4; j++) {
+                code[j] = codeStr[j] - '0';}
+            codeProvided = true;
+            i++;
+            } else if (strcmp(argv[i], "-t") == 0) {
+            *round = (i + 1 < argc) ? atoi(argv[i + 1]) : 10;
+            roundProvided = true;
+            if (i + 1 < argc)
+                i++;}
+    }if (!codeProvided) {
         generate(code);
-        return true;
-    }
-    if (inputC(argc, argv, code))
-        return true;
-    if (inputT(argc, argv, round))
-    {
-        generate(code);
-        return true;
-    }
-
-    return false;
+    }if (!roundProvided) {
+        *round = 10;}
+    return true;
 }
 
 bool inputT(int argc, char *argv[], int *round)
 {
     for (int i = 1; i < argc; i++)
-        if (strcmp(argv[i], "-t") == 0)
-        {
+        if (strcmp(argv[i], "-t") == 0){
             *round = (i + 1 < argc) ? atoi(argv[i + 1]) : 10;
             return true;
         }
@@ -63,11 +67,9 @@ bool inputT(int argc, char *argv[], int *round)
 bool inputC(int argc, char *argv[], int *code)
 {
     for (int i = 1; i < argc; i++)
-        if (strcmp(argv[i], "-c") == 0 && i + 1 < argc)
-        {
+        if (strcmp(argv[i], "-c") == 0 && i + 1 < argc){
             char *codeStr = argv[i + 1];
-            for (int j = 0; j < 4; j++)
-            {
+            for (int j = 0; j < 4; j++){
                 code[j] = codeStr[j] - '0';
             }
             return true;
@@ -79,15 +81,13 @@ int generate(int *code)
 {
     srand(time(NULL));
     bool unique = false;
-    while (!unique)
-    {
+    while (!unique){
         unique = true;
         for (int i = 0; i < 4; i++)
             code[i] = rand() % 8;
         for (int i = 0; i < 4; i++)
             for (int j = i + 1; j < 4; j++)
-                if (code[i] == code[j])
-                {
+                if (code[i] == code[j]){
                     unique = false;
                     break;
                 }
@@ -95,42 +95,34 @@ int generate(int *code)
     return 0;
 }
 
-int play(int code[], int *roundI)
-{
+int play(int code[], int *roundI) {
     int round = 0;
-    while (round <= *roundI || round <= 10)
-    {
+    while (round < *roundI && round < 10) {
         int guess = getGuessFromUser(round);
-        if (guess == EOF)
-            return 1;
-        else if (guess == -1)
-        {
-            continue;
-        }
-        else
-        {
-            int temp = playRound(code, guess);
-            if (temp == 1)
-            {
+        if (guess == EOF) {
+            return 0; 
+        } else if (guess == -1) { continue;} else {
+            int result = playRound(code, guess);
+            if (result == 1) {
                 congrats();
-                return 1;
-            }
-            else if (temp == 0)
+                return 1; 
+            } else if (result == 0) {
                 round++;
-            if (*roundI == round)
-                break;
+            } else if (result == -1) {
+                continue;}
         }
+    }if (round == *roundI) {
+        printf("You didn't find the code!\n");
     }
-    printf("You didn't find the code :(\n");
-    return 0;
+    return 0; 
 }
+
 
 int countDigits(int guess)
 {
     int numDigits = 0;
     int temp = guess;
-    while (temp != 0)
-    {
+    while (temp != 0){
         temp /= 10;
         numDigits++;
     }
@@ -140,8 +132,7 @@ int countDigits(int guess)
 bool containsInvalidDigit(int guess)
 {
     int temp = guess;
-    while (temp != 0)
-    {
+    while (temp != 0){
         int digit = temp % 10;
         if (digit < 0 || digit > 8)
             return true;
@@ -153,8 +144,7 @@ bool containsInvalidDigit(int guess)
 bool containsRepeatedDigits(int guess)
 {
     int digits[10] = {0};
-    while (guess != 0)
-    {
+    while (guess != 0){
         int digit = guess % 10;
         if (digits[digit] == 1)
             return true;
@@ -167,13 +157,11 @@ bool containsRepeatedDigits(int guess)
 int inputCheck(int guess)
 {
     int numDigits = countDigits(guess);
-    if (numDigits != 4 || containsInvalidDigit(guess))
-    {
+    if (numDigits != 4 || containsInvalidDigit(guess)){
         printf("Wrong input!\n");
         return -1;
     }
-    if (containsRepeatedDigits(guess))
-    {
+    if (containsRepeatedDigits(guess)){
         printf("Wrong input!\n");
         return -1;
     }
@@ -202,8 +190,7 @@ int countWellPlacedPieces(int code[], int guess)
     guess_digits[2] = (guess / 10) % 10;
     guess_digits[3] = guess % 10;
 
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++){
         if (code[i] == guess_digits[i])
             mp++;
     }
@@ -218,14 +205,10 @@ int countMisplacedPieces(int code[], int guess)
     guess_digits[1] = (guess / 100) % 10;
     guess_digits[2] = (guess / 10) % 10;
     guess_digits[3] = guess % 10;
-    for (int i = 0; i < 4; i++)
-    {
-        if (code[i] != guess_digits[i])
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                if (j != i && code[j] == guess_digits[i])
-                {
+    for (int i = 0; i < 4; i++){
+        if (code[i] != guess_digits[i]){
+            for (int j = 0; j < 4; j++){
+                if (j != i && code[j] == guess_digits[i]){
                     wp++;
                     break;
                 }
@@ -252,20 +235,21 @@ void congrats()
 
 int getGuessFromUser(int round)
 {
-    int guess;
+    char buffer[6];
     printf("---\nRound %d \n>", round);
-    int result = scanf("%d", &guess);
-    if (result == EOF)
-    {
-        printf("\n");
+    ssize_t bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer));
+    if (bytes_read == -1){
+        perror("Error reading input");
+        exit(EXIT_FAILURE);
+    }else if (bytes_read == 0){
         return EOF;
-    }
-    else if (result != 1)
-    {
-        printf("Wrong input!\n");
-        while (getchar() != '\n')
-            ;
+    }else if (bytes_read == 1 && buffer[0] == '\n'){
+        printf("Invalid input. Please enter a valid number.\n");
         return -1;
+    }else{
+        buffer[bytes_read - 1] = '\0';
+        return atoi(buffer);
     }
-    return guess;
 }
+
+

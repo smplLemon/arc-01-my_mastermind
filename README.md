@@ -12,7 +12,31 @@ The program generates a secret code consisting of four digits. The player has mu
 
 ## Installation
 
-No installation is required. Simply compile the provided C code using a C compiler, and the executable will be generated for execution. Ensure that the necessary C standard libraries are available in your environment for compilation.
+To install and run the `my_mastermind` game, follow these steps:
+
+1. Clone the repository to your local machine:
+
+   ```
+   git clone <repository-url>
+   ```
+
+2. Navigate to the cloned directory:
+
+   ```
+   cd my_mastermind
+   ```
+
+3. Compile the program:
+
+   ```
+   gcc -o my_mastermind my_mastermind.c
+   ```
+
+4. Run the program:
+
+   ```
+   ./my_mastermind
+
 
 ## Usage
 
@@ -34,8 +58,3 @@ Copy code firstly
 Gameplay: Follow the prompts to enter guesses for the secret code. Enter 4 unique digits for each guess.
 Outcome: The program will provide feedback after each guess, indicating the number of well-placed and misplaced pieces. If the secret code is guessed correctly within the specified number of rounds, the game ends with a congratulatory message.
 Outcome:
-
-### The Core Team
-
-<span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
-<span><img alt='Qwasar SV -- Software Engineering School's Logo' src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px'></span>

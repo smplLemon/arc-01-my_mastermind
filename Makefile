@@ -1,14 +1,17 @@
-SRC = my_mastermind.c
-TARGET = my_mastermind
+
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
-$(TARGET): $(SRC)
-	$(CC) $(CFLAGS) -o $@ $^  
+SOURCES = my_mastermind.c 
+TARGET = my_mastermind
 
-.PHONY: fclean
+$(TARGET):$(SOURCES)
+	$(CC) $(CFLAGS) -o $@ $^
 
-fclean:
-	rm -rf $(TARGET)
+.PHONY: clean
 
-re: fclean
+clean:
+	@rm -r $(TARGET)
+
+fclean: clean
+	@rm -f $(TARGET)

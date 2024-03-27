@@ -25,7 +25,7 @@ Mastermind is a classic board game invented by Mordecai Meirowitz in 1970. It ga
 The program offers customization options to tailor the gameplay experience:
 
 - **Setting the Secret Code**: Players can set the secret code manually using the `-c <code>` command-line option. The code must adhere to the format rules (4 digits, each ranging from 0 to 8, and no repeating digits).
-  
+
 - **Adjusting the Number of Rounds**: Players can specify the maximum number of rounds allowed using the `-t <rounds>` command-line option.
 
 If customization options are not provided, the program generates a random secret code and sets the default maximum rounds to 10.

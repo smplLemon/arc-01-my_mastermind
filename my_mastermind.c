@@ -98,7 +98,7 @@ int CounterPlaces(char *secretCode, char *guessCode){
         }
         i++;
     } while (i < CODE_LENGTH);
-    
+
     if (well_placed == CODE_LENGTH){
         return 1;
     }

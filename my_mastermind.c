@@ -1,7 +1,9 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 #define CODE_LENGTH 4
 #define MAX_ATTEMPTS 10
@@ -67,6 +69,24 @@ int isValidGuess(const char* guess) {
     return 1;
 }
 
+int my_scanf(char* str) {
+    int index = 0;
+    char letter;
+    write(1, ">", 1);
+    while (read(STDIN_FILENO, &letter, 1) > 0) {
+        if (letter == '\n' || index == CODE_LENGTH + 1) {
+            str[index] = '\0';
+            return 1;
+        }
+        str[index++] = letter;
+    }
+    if (index == 0) {
+        printf("\nCtrl+D pressed. Exiting...\n");
+        exit(0);
+    }
+    return 0;
+}
+
 void playGame(const char* secretCode, int maxAttempts) {
     char guess[CODE_LENGTH + 1];
     int attempts = maxAttempts;
@@ -74,7 +94,10 @@ void playGame(const char* secretCode, int maxAttempts) {
     printf("Will you find the secret code?\nPlease enter a valid guess\n");
     while (attempts > 0) {
         printf("---\nRound %d/%d\n>", round, maxAttempts);
-        scanf("%s", guess);
+        if (!my_scanf(guess)) {
+            printf("Wrong input!\n");
+            continue;
+        }
         if (!isValidGuess(guess)) {
             printf("Wrong input!\n");
             continue;
@@ -116,7 +139,6 @@ int main(int argc, char* argv[]) {
     playGame(secretCode, maxAttempts);
     return 0;
 }
-
 
 
 

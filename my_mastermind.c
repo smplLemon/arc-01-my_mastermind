@@ -110,20 +110,24 @@ int get_user_input(char *input) {
                 input[input_complete] = '\0';
                 break;
             }
+            if(input_index == 4) return 1;
             input[input_complete] = input_index;
             input_complete++;
-        }
-        if(read_status == 0) return 1;
-        if(is_valid_input(input)) break;
+        } if(read_status == 0) exit(0);
+          if(is_valid_input(input)) break;
     }
     return 0;
 }
+
 
 void handle_round(char *secret_code, int max_attempts) {
     char input[CODE_LENGTH + 1] = {0};
     for(int i = 0; i < max_attempts; i++) {
         print_round(i);
-        get_user_input(input);
+        if(get_user_input(input)) {
+            printf("Exiting game (Ctrl+D)\n");
+            return;
+        }
         if(check_guess(secret_code, input)) {
             break;
         }

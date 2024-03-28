@@ -1,51 +1,41 @@
-Certainly! Writing a README file is a good practice to provide guidance on how to use your program. Below is an example README file for your Mastermind game:
+# arc-01-my_mastermind
 
----
+This simple C program implements a Mastermind game where the user tries to guess a secret 4-digit code. The game provides feedback to the user after each guess, indicating the number of correct digits in the correct position and the number of correct digits in the wrong position.
 
-# Mastermind Game
+## Features
 
-**Introduction:**
+- **Random Code Generation:** The secret code is randomly generated at the start of each game. The code consists of 4 unique digits between 0 and 9.
+  
+- **User Input Validation:** The program ensures that user input for guessing the code is valid. Invalid inputs such as non-numeric characters, inputs of incorrect length, or repeated digits are rejected with appropriate error messages.
 
-This is a simple implementation of the Mastermind game in C. The program generates a secret code, and the user's goal is to guess the code based on feedback provided by the program.
+- **Feedback Mechanism:** After each guess, the program provides feedback to the user indicating the number of digits correctly guessed and placed in the correct position, as well as the number of correct digits guessed but placed in the wrong position.
 
-**How to Play:**
+- **Limited Attempts:** The game allows the user a limited number of attempts to guess the code. If the user fails to guess the code within the specified number of attempts, the game ends.
 
-1. **Compile the Program:**
-   - Ensure you have a C compiler installed on your system.
-   - Compile the program using the following command:
-     ```
-     gcc mastermind.c -o mastermind
-     ```
+## Usage
 
-2. **Run the Program:**
-   - Execute the compiled program:
-     ```
-     ./mastermind
-     ```
+1. **Compilation and Execution:**
+   - Use the `make` command in the terminal to compile the code.
+   - Run the generated executable using the `./mastermind` command in the terminal.
+   - Upon starting the program, the user is prompted to enter the number of attempts they want for the game.
 
-3. **Gameplay:**
-   - The program will generate a secret code, and you will be prompted to guess the code.
-   - Enter your guess following the on-screen instructions.
-   - The program will provide feedback on your guess, indicating the number of well-placed and misplaced pieces.
-   - Continue guessing until you find the correct code.
+2. **Gameplay:**
+   - The user is prompted to enter a 4-digit guess.
+   - After each guess, the program provides feedback on the correctness of the guess.
+   - The game continues until the user correctly guesses the 4-digit secret code or exhausts all attempts.
 
-4. **Winning the Game:**
-   - If you correctly guess the entire code, the program will congratulate you, and the game will end.
+3. **Winning and Losing:**
+   - If the user correctly guesses the secret code within the specified number of attempts, they win the game.
+   - If the user fails to guess the code within the given attempts, they lose the game, and the secret code is revealed.
 
-**Code Structure:**
+## Development
 
-- `mastermind.c`: The main C source code file containing the implementation of the Mastermind game.
+- **Language:** The code is written in the C programming language.
+- **Dependencies:** No external dependencies are required to compile or run the program.
+- **Modularity:** The code is structured into separate functions for code generation, input validation, guess evaluation, and gameplay.
+- **Memory Management:** Dynamic memory allocation is used for generating the secret code and capturing user guesses. Memory is properly deallocated to prevent memory leaks.
 
-**Dependencies:**
+## License
 
-- This program relies on the standard C libraries and should work on most systems with a C compiler.
+This code is not licensed under any license, and its usage, modification, and distribution are unrestricted.
 
-**Note:**
-
-- The program uses a simple algorithm to generate a random secret code and provides feedback on the correctness of the user's guesses.
-
-Feel free to modify the code or adapt it according to your preferences. Happy playing!
-
----
-
-This README file provides users with information on how to compile and run the program, the rules of the game, and an overview of the code structure. You can customize it further based on your specific requirements.

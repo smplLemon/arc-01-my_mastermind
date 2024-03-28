@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -93,7 +92,7 @@ void playGame(const char* secretCode, int maxAttempts) {
     int round = 0;
     printf("Will you find the secret code?\nPlease enter a valid guess\n");
     while (attempts > 0) {
-        printf("---\nRound %d/%d\n>", round, maxAttempts);
+        printf("---\nRound %d/%d\n", round, maxAttempts);
         if (!my_scanf(guess)) {
             printf("Wrong input!\n");
             continue;
@@ -104,8 +103,7 @@ void playGame(const char* secretCode, int maxAttempts) {
         }
         int wellPlaced, misplaced;
         evaluateGuess(secretCode, guess, &wellPlaced, &misplaced);
-        printf("Well-placed pieces: %d\n", wellPlaced);
-        printf("Misplaced pieces: %d\n", misplaced);
+        printf("Well placed pieces: %d\nMisplaced pieces: %d\n", wellPlaced, misplaced);
         if (wellPlaced == CODE_LENGTH) {
             printf("Congratz! You did it!");
             return;
@@ -139,9 +137,4 @@ int main(int argc, char* argv[]) {
     playGame(secretCode, maxAttempts);
     return 0;
 }
-
-
-
-
-
 

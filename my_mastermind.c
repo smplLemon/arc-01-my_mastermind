@@ -67,6 +67,10 @@ void get_input(char *input) {
             j++;
         }
     } while (valid_input_test (input));
+
+    if (abort == 0) {
+        return 0;
+    }
 }
 
 void gameplay(int attempts, char *secret_code) {

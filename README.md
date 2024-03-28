@@ -4,7 +4,7 @@
  ## Installation
 Compiling the program: Use the provided Makefile to compile the program. Simply run the "make" command in the terminal. The Makefile should handle the compilation process and create an executable for "my_mastermind".
 
-   To compile the program, use the provided Makefile and ensure the code is compiled with the flags -Wall -Wextra -std=c99.
+   To compile the program, use the provided Makefile and ensure the code is compiled with the flags -Wall -Wextra -Werror
 
  ## Task
   Implement the "mastermind.c" file that contains the game logic. This includes functions such as generating a secret code, counting well-placed and misplaced parts, and other auxiliary functions that you will need.

@@ -1,123 +1,163 @@
-#include "stdio.h"
-#include "string.h"
-#include "unistd.h"
-#include "math.h" 
-#include "stdlib.h"
-#include "time.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
 
-int check_yn(char*str,char c){
-    for(int i = 0; str[i] !='\0'; i++){
-        if(str[i] == c){
+#define NEW_INPUT_LENGTH 6
+
+char* code_random_generate() {
+    static int initialized = 0;
+    if (!initialized) {
+        srand(time(NULL));
+        initialized = 1;
+    }
+    char* code = (char* )malloc(sizeof(char) * 5);
+    int used = 0, count = 0;
+    while (count < 4) {
+        int num = rand() % 8;
+        if (!(used & (1 << num))) {
+            code[count++] = num + '0';
+            used |= (1 << num);
+        }
+    }
+    code[4] = '\0';
+    return code;
+}
+int argument_length_error(const char* input) {
+    if (strlen(input) != 4) {
+        printf("Wrong input!\n");
+        return 1;
+    }
+    for (int i = 0; i < 4; i++) {
+        if (input[i] == '9') {
+            printf("Wrong input!\n");
             return 1;
         }
     }
     return 0;
 }
-
-char* my_rand_num(){
-    srand(time(NULL));
-    char c;
-    char* ret_str = (char*)malloc(sizeof(char)*4);
-    for(int i = 0; i < 4;){
-        c = rand() % 9 +'0';
-        if(check_yn(ret_str,c) == 0){
-            ret_str[i++] = c;
-        }
-    }
-    return ret_str;
-}
-
-char* my_scanf(){
-    char* ret_str = (char*)malloc(sizeof(char) *25);
-    char c;
-    int i = 0,k;
-    while((k =read(0,&c,1)) >= 0){
-        if(k == 0) exit(0);
-        if(c == '\n'){
-            return ret_str;
-        }else{
-            ret_str[i] = c;
-            i++;
-        }
-    }
-    return ret_str;
-}
-
-int my_slen(char* str){
-    int i = 0;
-    for(; str[i] !='\0';){
-        i++;
-    }
-    return i;
-}
-
-int is_tr(char*str){
-    if(my_slen(str) != 4){
-        return 1;
-    }
-    for(int i = 0 ; i < 4; i++){
-        if(str[i] > '9' || str[i] < '0'){
+int incorrect_range(const char* input) {
+    for (int i = 0; i < 4; i++) {
+        if (input[i] < '0' || input[i] > '8') {
+            printf("Wrong input!\n");
             return 1;
         }
     }
-    for(int i = 0; i < 3; i++){
-        for(int j = i+1; j < 4; j++){
-            if(str[i] == str[j]){
+    return 0;
+}
+int incorrect_duplicates(const char* input) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = i + 1; j < 4; j++) {
+            if (input[i] == input[j]) {
+                printf("Wrong input!\n");
                 return 1;
             }
         }
     }
     return 0;
 }
+char* receive_information() {
+    char* input = (char *)malloc(NEW_INPUT_LENGTH + 1); 
+    if (input == NULL) {
+        return NULL;
+    }
 
-int main(int argc, char*argv[])
-{
-    char*secret_code;
-    int flag = 0;
-    int raund = 10;
-    
-    for(int i = 1; i < argc; i++){
-        if(strcmp(argv[i],"-t") == 0){
-          raund = atoi(argv[i+1]);   
+    char c = 0;
+    int j = 0, flag = 1;
+    do {
+        printf("> ");
+        j = 0;
+        while ((flag = read(0, &c, 1)) > 0) {
+            if (c == '\n') {
+                input[j] = '\0';
+                break;
+            }
+            input[j++] = c;
         }
-    }
-    for(int i = 1; i < argc; i++){
-        if(strcmp(argv[i],"-c") == 0){
-            secret_code = argv[i+1];
-            flag = 1;
+        if (flag == 0) {
+            free(input);
+            return NULL;
         }
+    } while (argument_length_error(input) || incorrect_range(input) || incorrect_duplicates(input));
+
+    return input;
+}
+int find_true_or_false_codes(const char* code, const char *guess) {
+    int well = 0, missed = 0;
+    int code_used = 0, input_used = 0;
+    for (int i = 0; i < 4; i++) {
+        if (code[i] == guess[i]) well++;
+        code_used |= (1 << (code[i] - '0'));
+        input_used |= (1 << (guess[i] - '0'));
     }
-    if(flag == 0){
-        secret_code = my_rand_num();
+    int common = code_used & input_used;
+    for (int i = 0; i < 4; i++) {
+        if (common & (1 << (code[i] - '0')))
+            missed++;
     }
-    
-    int wp = 0, mp = 0;
+    missed -= well;
+    return well * 10 + missed;
+}
+int result_game(const char *code, const char *guess) {
+    int result = find_true_or_false_codes(code, guess);
+    int well = result / 10;
+    int missed = result % 10;
+    if (well == 4) {
+        printf("Congratz! You did it!\n");
+        return 1;
+    } else {
+        printf("Well placed pieces: %d\n", well);
+        printf("Misplaced pieces: %d\n", missed);
+        return 0;
+    }
+}
+void play_game(int attempts, const char *code) {
     printf("Will you find the secret code?\nPlease enter a valid guess\n");
-    for(int r = 0; r < raund;r+=1){
-        printf("---\nRound %d\n",r);
-        while(1){
-            write(0,">",1);
-            char*g_code = my_scanf();
-            if(strcmp(g_code,secret_code)==0){
-                    printf("Congratz! You did it!");
-                    return 0;
-                }
-                if(is_tr(g_code)==1){
-                    printf("Wrong Input!\n");
-                }else{
-                    for(int kl = 0; kl < 4; kl++){
-                        if(g_code[kl] == secret_code[kl]){
-                            wp+=1;
-                        }
-                        if(check_yn(g_code,secret_code[kl]) && g_code[kl] != secret_code[kl]){
-                            mp+=1;
-                        }
-                    }
-                    printf("Well placed pieces: %d\nMisplaced pieces: %d\n",wp,mp);
-                    wp-=wp,mp-=mp;
+    for (int i = 0; i < attempts; i++) {
+        printf("---\nRound %d\n", i + 1);
+        char *guess = receive_information();
+        if(guess == NULL) return;
+        find_true_or_false_codes(code, guess);
+        if(result_game(code, guess)) return;
+        free(guess);
+    }
+}
+void parse_arguments(int argc, char** argv, int* attempts, const char** code) {
+    *attempts = 9;
+    *code = NULL;
+    if (argc >= 2) {
+        int arg_attempts = atoi(argv[1]);
+        if (arg_attempts > 0 && arg_attempts <= 10) {
+            *attempts = arg_attempts;
+        }
+    }
+    if (argc >= 3) {
+        const char* arg_code = argv[2];
+        if (strlen(arg_code) == 4) {
+            int valid = 1;
+            for (int i = 0; i < 4; i++) {
+                if (arg_code[i] < '0' || arg_code[i] > '8') {
+                    valid = 0;
                     break;
+                }
+            }
+            if (valid) {
+                *code = arg_code;
             }
         }
+    }
+}
+int main(int argc, char **argv) {
+    int attempts;
+    const char *code;
+    parse_arguments(argc, argv, &attempts, &code);
+    if (code == NULL) {
+        code = code_random_generate();
+        printf("Generated secret code: %s\n", code);
+    }play_game(attempts, code);
+    if (code != NULL && code != argv[2]) {
+        free((char *)code);
     }
     return 0;
 }

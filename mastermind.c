@@ -10,12 +10,15 @@ int MX_ATMT = 10;
 
 char* initialize_game(int ac, char** av, int* MX_ATMT);
 int play_game(char* scrt_cd, int MX_ATMT);
+void play_game_loop(char* scrt_cd, int MX_ATMT);
 void guess(char* gues, char* scrt_cd, int* well_plcd, int* misplcd);
 char* randit(char* rndm_cd);
 int validation(char* inpt);
 int rd_input(char* user_guess);
 int is_correct(int wlpcd);
 void prnt_res(int wlpcd, int misd);
+unsigned int my_strlen(const char* str);
+char* my_strcpy(char* dest, const char* src);
 
 // strlen funksiyasi 
 unsigned int my_strlen(const char* str){
@@ -33,71 +36,65 @@ char* my_strcpy(char* dest, const char* src){
     return start;
 }
 
-// logikasi
+// logikasi 
 int play_game(char* scrt_cd, int MX_ATMT){
+    printf("Will you find the secret code? \nPlease enter valid numbers.\n");
     if(my_strlen(scrt_cd) != CD_LEN){
         srand(time(NULL));
         randit(scrt_cd);
-    } char gues[CD_LEN + 1];
-    int wel_plcd, misplcd, round = 0;
-    printf("Will you find the secret code? \nPlease enter a valid numbers\n");
+    }
+    play_game_loop(scrt_cd, MX_ATMT);
+    return EXIT_FAILURE; 
+}
 
+void play_game_loop(char* scrt_cd, int MX_ATMT){
+    char gues[CD_LEN + 1];
+    int wel_plcd = 0, misplcd = 0, round = 0;
     while(round < MX_ATMT){
         printf("---\nRound %d\n>", round);
         fflush(stdout);
-        
         if(rd_input(gues) != 0){
             printf("Wrong input!\n");
             continue;  
         } gues[CD_LEN] = '\0';
-
-        if(!validation(gues)){
+        if(!validation(gues)) 
             continue;  
-        } guess(gues, scrt_cd, &wel_plcd, &misplcd);
-
+        guess(gues, scrt_cd, &wel_plcd, &misplcd);
         if(is_correct(wel_plcd)){
-            free(scrt_cd);
-            return EXIT_SUCCESS;
-        } prnt_res(wel_plcd, misplcd); round++;
-        if(round == 10){
+            printf("Congratulations! You found the secret code.\n");
+            return; 
+        } prnt_res(wel_plcd, misplcd);
+        round++;
+        if(round == MX_ATMT){
             printf("Sorry, you couldn't find the secret code.\n");
-        }
-    } free(scrt_cd); return EXIT_FAILURE;
-}
+            return; } } }
 
-// errorlari
+//errorlari
 int rd_input(char* guess){
-    int chars_read = 0;
+    int chars_read = 0, frst_rn = 1, count;
     char result;
-    int frst_rn = 1;
-    int count;
-
     while((count = read(STDIN_FILENO, &result, 1)) != -1){
-        if(frst_rn && !count){
+        if(frst_rn && !count)
             exit(0);
-        } if(frst_rn){
+        if(frst_rn)
             frst_rn = 0;
-        } if(result == '\n'){   
+        if(result == '\n'){   
             guess[chars_read] = '\0';
             return 0;
         } else if(chars_read >= CD_LEN){
             while(read(STDIN_FILENO, &result, 1) && result != '\n');
             return 1;
         } else if(result < '0' || result > '9'){
-            if(result == '\n'){
+            if(result == '\n')
                 exit(0);
-            } while(read(STDIN_FILENO, &result, 1) && result != '\n');
+            while(read(STDIN_FILENO, &result, 1) && result != '\n');
             return 1;
         } guess[chars_read++] = result;
     } return 1;
 }
 
 int is_correct(int wlplcd){
-    if(wlplcd == 4){
-        printf("Congratz! You did it!\n");
-        return 1;
-    }
-    return 0;
+    return(wlplcd == CD_LEN);
 }
 
 void prnt_res(int wlplcd, int misd){
@@ -113,7 +110,7 @@ void guess(char* gues, char* scrt_cd, int* well_plcd, int* misplcd){
 
     for(int i = 0; i < CD_LEN; i++){
         if(gues[i] == scrt_cd[i]){
-           (*well_plcd)++;
+          (*well_plcd)++;
         } else{
             gues_hist[gues[i] - '0']++;
             secret_hist[scrt_cd[i] - '0']++;

@@ -1,4 +1,3 @@
-// custom_mastermind.h
 #ifndef MYSTERIOUS_H
 #define MYSTERIOUS_H 
 

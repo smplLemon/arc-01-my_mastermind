@@ -37,13 +37,13 @@ gcc my_mastermind.c -o my_mastermind
 
 3. Run the program:
 
-```bash
+```Bash
 ./my_mastermind
 ```
 
 4. You can optionally specify the number of attempts and secret code:
 
-```bash
+```Bash
 ./my_mastermind -t 15 -c 1234
 ```
 

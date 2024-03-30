@@ -1,4 +1,4 @@
-CC = gccc
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SOURCE = my_mastermind.c
 TARGET = my_mastermind

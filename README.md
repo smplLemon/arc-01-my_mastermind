@@ -1,4 +1,4 @@
-Welcome to My Mastermind 
+# Welcome to My Mastermind 
 
 The name of this project My_Matermind 
 
@@ -11,4 +11,8 @@ You should write 4 secret codes for play this project , if these secret codes wi
 first: write make on terminal and call ./my_Mastermind
 
 # Usage
-You may check it via writing any word after ./my_Mastermind 
+
+You may check it via writing any word after ./my_Mastermind
+```bash
+make
+```

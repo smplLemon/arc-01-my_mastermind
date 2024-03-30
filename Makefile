@@ -1,24 +1,12 @@
-
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -std=c99
+SOURCE = my_mastermind.c
 TARGET = my_mastermind
-SRC = my_mastermind.c
-OBJ = $(SRC:.c=.o)
-
-.PHONY: all clean fclean re
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
+$(TARGET): $(SOURCE)
+	$(CC) $(CFLAGS) -o $@ $<
 
-$(OBJ): $(SRC)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-clean:
-	rm -f $(OBJ)
-
-fclean: clean
+fclean:
 	rm -f $(TARGET)
-
-re: fclean all

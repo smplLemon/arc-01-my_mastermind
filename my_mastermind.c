@@ -4,163 +4,156 @@
 #include <time.h>
 #include <unistd.h>
 
-int values(char *main_in) {
-  int i = 0;
-  while (main_in[i] != '\0') {
-    i++;
-  }
-  return i;
+int calculateLength(char *input) {
+    int length = 0;
+    while (input[length])
+        length++;
+    return length;
 }
 
-char *strln(char *param_1, char *param_2) {
-  int i = 0;
-  for (; param_2[i] != '\0'; i++) {
-    param_1[i] = param_2[i];
-  }
-  param_1[i] = '\0';
-  return param_1;
+char *copyString(char *destination, char *source) {
+    int i;
+    for (i = 0; source[i]; i++)
+        destination[i] = source[i];
+    destination[i] = '\0';
+    return destination;
 }
 
-int new_strchr(char *numbers, char num) {
-  for (int i = 0; numbers[i] != '\0'; i++) {
-    if (numbers[i] == num) {
-      return i;
+int findNumberInArray(char *numbers, char num) {
+    for (int i = 0; numbers[i]; i++) {
+        if (numbers[i] == num)
+            return i;
     }
-  }
-  return -1;
+    return -1;
 }
 
-int new_input(char param_1) {
-  if (param_1 >= '0' && param_1 <= '8') {
-    return 1;
-  }
-  return 0;
+int ArethereSimilarCharacters(char *input) {
+    int length = calculateLength(input);
+    for (int i = 0; i < length - 1; i++) {
+        for (int j = i + 1; j < length; j++) {
+            if (input[i] == input[j]) {
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-int bubble(char *main_in) {
-  int last = values(main_in);
-  for (int i = 0; i < last - 1; i++) {
-    for (int j = i + 1; j < last; j++) {
-      if (main_in[i] == main_in[j]) {
+int compareNumbers(char *input, char *secretNumbers) {
+    int correctlyPlaced = 0;
+    int misplaced = 0;
+    for (int i = 0; input[i] != '\0'; i++) {
+        for (int j = 0; secretNumbers[j] != '\0'; j++) {
+            if (input[i] == secretNumbers[j] && i != j) {
+                misplaced++;
+            }
+            else if (input[i] == secretNumbers[j]) {
+                correctlyPlaced++;
+            }
+        }
+    }
+    if (correctlyPlaced == 4) {
+        printf("Congratz! You did it!\n");
         return 1;
-      }
     }
-  }
-  return 0;
+
+    printf("Well placed numbers: %d\nMisplaced numbers: %d\n", correctlyPlaced, misplaced);
+    return 0;
 }
 
-int nested(char *main_in, char *numbeses) {
-  int b = 0;
-  int c = 0;
-  for (int i = 0; main_in[i] != '\0'; i++) {
-    for (int j = 0; numbeses[j] != '\0'; j++) {
-      if (main_in[i] == numbeses[j] && i != j) {
-        c++;
-      } else if (main_in[i] == numbeses[j]) {
-        b++;
-      }
+char *readInput() {
+    int length = 0;
+    char character;
+    char *input = malloc(6);
+    write(1, ">", 1);
+    while (read(0, &character, 1)) {
+        if (character == '\n') {
+            input[length] = '\0';
+            return input;
+        }
+        input[length++] = character;
     }
-  }
-  if (b == 4) {
-    printf("Congratz! You did it!\n");
-    return 1;
-  }
-
-  printf("Well placed numbers: %d\nMisplaced numbers: %d\n", b, c);
-  return 0;
+    return NULL;
 }
 
-char *inrct() {
-  int i = 0;
-  char j;
-  char *inclusion = malloc(6);
-  write(1, ">", 1);
-  while (read(0, &j, 1)) {
-    if (j == '\n') {
-      inclusion[i] = '\0';
-      return inclusion;
+char *SecretNumbers() {
+    int count = 0;
+    char *numbers = malloc(sizeof(char) * 5);
+    numbers[4] = '\0';
+    char num;
+    while (count < 4) {
+        num = rand() % 9 + 48;
+        if (findNumberInArray(numbers, num) == -1) {
+            numbers[count] = num;
+            count++;
+        }
     }
-    inclusion[i++] = j;
-  }
-  return "stop";
+    return numbers;
 }
 
-char *numbers() {
-  int i = 0;
-  char *numbers = malloc(sizeof(char) * 5);
-  numbers[4] = '\0';
-  char num;
-  while (i < 4) {
-    num = rand() % 9 + 48;
-    if (new_strchr(numbers, num) == -1) {
-      numbers[i] = num;
-      i++;
+int checkError(char *input) {
+    int length = calculateLength(input);
+    int count = 0;
+    if (length != 4 || ArethereSimilarCharacters(input) == 1) {
+        printf("Wrong input!\n");
+        return 1;
     }
-  }
-  return numbers;
+    while (count < length) {
+        if (input[count] < '0' || input[count] > '8') {
+            printf("Wrong input!\n");
+            return 1;
+        }
+        count++;
+    }
+    return 0;
 }
 
-int error(char *main_in) {
-  int len = values(main_in);
-  int i = 0;
-  if ((len != 4) || (bubble(main_in) == 1)) {
-    printf("Wrong input!\n");
-    return 1;
-  }
-  while (i < len) {
-    if ((new_input(main_in[i]) == 0)) {
-      printf("Wrong input!\n");
-      return 1;
-    }
-    i++;
-  }
-  return 0;
-}
+void startGame(int round, char *secretNumbers) {
+    printf("Will you find the secret code?\n");
+    printf("Please enter a valid guess\n");
+    char *input;
+    int count = 0;
 
-void begin(int round, char *numbeses) {
-  printf("Will you find the secret code?\n");
-  printf("Please enter a valid guess\n");
-  char *input_value;
-  int flag = 0;
-  int i = 0;
-  while (i < round) {
     printf("---\n");
-    printf("Round %d\n", i);
-    if (strcmp(input_value = inrct(), "stop") == 0)
-      return;
-    flag = error(input_value);
-    if (flag == 0) {
-      if (1 == nested(input_value, numbeses)) {
-        return;
-      }
-      i++;
-    }
-  }
+    printf("Round %d\n", count);
 
-  if (flag == 0)
-  {
-    exit(0);
-  }
-  
+    while (count < round) {
+        int inputError = 1;
+        while (inputError) {
+            input = readInput();
+            if (input == NULL)
+                return;
+            inputError = checkError(input);
+        }
+        if (compareNumbers(input, secretNumbers))
+            return;
+
+        count++;
+        if (count < round) {
+            printf("---\n");
+            printf("Round %d\n", count);
+        }
+    }
 }
 
-void replace(int argc, char **argv) {
-  int i = 1;
-  int round = 10;
-  char *numbeses = numbers();
-  while (i < argc) {
-    if (strcmp(argv[i], "-c") == 0) {
-      numbeses = argv[i + 1];
-      i += 2;
-    } else if (strcmp(argv[i], "-t") ==0) {
-      round = atoi(argv[i + 1]);
-      i += 2;
+void commandLine(int argc, char **argv) {
+    int count = 1;
+    int round = 10;
+    char *secretNumbers = SecretNumbers();
+    while (count < argc) {
+        if (strcmp(argv[count], "-c") == 0) {
+            secretNumbers = argv[count + 1];
+            count += 2;
+        }
+        else if (strcmp(argv[count], "-t") == 0) {
+            round = atoi(argv[count + 1]);
+            count += 2;
+        }
     }
-  }
-  begin(round, numbeses);
+    startGame(round, secretNumbers);
 }
 
 int main(int argc, char **argv) {
-  replace(argc, argv);
-  return 0;
+    commandLine(argc, argv);
+    return 0;
 }

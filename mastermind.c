@@ -3,9 +3,17 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+#include <signal.h>
 
 #define NEW_INPUT_LENGTH 6
 
+volatile sig_atomic_t stop_game = 0;
+
+void handle_signal(int signal) {
+    if (signal == SIGINT) {
+        stop_game = 1;
+    }
+}
 char* code_random_generate() {
     static int initialized = 0;
     if (!initialized) {
@@ -62,7 +70,6 @@ char* receive_information() {
     if (input == NULL) {
         return NULL;
     }
-
     char c = 0;
     int j = 0, flag = 1;
     do {
@@ -76,7 +83,7 @@ char* receive_information() {
             input[j++] = c;
         }
         if (flag == 0) {
-             free(input);
+            free(input);
             return NULL;
         }
     } while (argument_length_error(input) || incorrect_range(input) || incorrect_duplicates(input));
@@ -86,7 +93,7 @@ char* receive_information() {
 int find_true_or_false_codes(const char* code, const char *guess) {
     int well = 0, missed = 0;
     int code_used = 0, input_used = 0;
-    for (int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++) {
         if (code[i] == guess[i]) well++;
         code_used |= (1 << (code[i] - '0'));
         input_used |= (1 << (guess[i] - '0'));
@@ -117,9 +124,13 @@ void play_game(int attempts, const char *code) {
     for (int i = 0; i < attempts; i++) {
         printf("---\nRound %d\n", i + 1);
         char *guess = receive_information();
-        if(guess == NULL) return;
+        if (guess == NULL || stop_game) {
+            return;
+        }
         find_true_or_false_codes(code, guess);
-        if(result_game(code, guess)) return;
+        if (result_game(code, guess)) {
+            return;
+        }
         free(guess);
     }
 }
@@ -148,13 +159,15 @@ void parse_arguments(int argc, char** argv, int* attempts, const char** code) {
         }
     }
 }
+
 int main(int argc, char **argv) {
     int attempts;
     const char *code;
     parse_arguments(argc, argv, &attempts, &code);
     if (code == NULL) {
         code = code_random_generate();
-    }play_game(attempts, code);
+    }signal(SIGINT, handle_signal);
+    play_game(attempts, code);
     if (code != NULL && code != argv[2]) {
         free((char *)code);
     }

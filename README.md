@@ -1,16 +1,23 @@
-# arc-01-my_mastermind
-
-## Description
-Mastermind is a game composed of 9 pieces of different colors. A secret code is then composed of 4 distinct pieces. The player has 10 attempts to find the secret code. After each input, the game indicates to the player the number of well-placed pieces and the number of misplaced pieces. If the player finds the code, he wins, and the game stops. A misplaced piece is a piece that is present in the secret code but is not in the correct position.
-
-## Usage
-To play My Mastermind, run the program and follow the on-screen instructions to input your guesses and receive feedback on the correctness of your guesses.
-
-## How to Play
-- The player attempts to guess the secret code, which consists of 4 distinct pieces from a set of 9 different pieces.
-- After each input, the game indicates the number of well-placed pieces and the number of misplaced pieces.
-- The game continues until the player guesses the correct code or runs out of attempts.
-- The player can specify the secret code and the number of attempts using the command-line options -c (code) and -t (attemts) respectively.
-
-## installation 
-  none
+# Welcome to my game Mastermaind
+# Task
+*This program is a simple implementation of a guessing game in which the player tries to guess a secret code within a limited number of attempts. the game provides feedback on the correctness of the guesses, indicating how many numbers are placed correctly and how many are placed incorrectly.
+# Description
+*The game generates a secret code consisting of four unique numbers from 0 to 9. The player then tries to guess the code within a certain number of attempts. After each guess, the game provides feedback on the accuracy of the guess, indicating the number of correctly placed digits and the number of incorrectly placed digits.
+# Installation
+*To install and compile the game, follow these steps:
+*Clone the repository or download the source code files.
+*Compile the source code using a C compiler such as gcc. For example: gcc -o guess_game.c
+* Run the compiled executable.
+# Usage
+*Once the game is compiled and running, follow these instructions to play:
+*If no arguments are provided, a random secret code will be generated and the game *will start with default settings (9 attempts).
+*If desired, you can provide command line arguments to configure the game:
+*-t <attempts>: Specify the number of attempts the player must guess the code.
+*-c <code>: Specify a specific secret code to guess.
+* Enter your guesses when prompted. Each guess must be four digits from 0 to 9, with no duplicates.
+*After each guess, the game will provide feedback on the correctness of the guess:
+*"Congratulations! You did it!" if the assumption is correct.
+*Otherwise, the number of correctly placed digits and the number of incorrectly placed digits will be indicated.
+*Keep guessing until you guess the correct code or you run out of attempts.
+*After completing the game, you can continue the game by restarting the executable file.
+* Enjoy the guessing game!

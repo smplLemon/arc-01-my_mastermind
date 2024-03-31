@@ -76,7 +76,7 @@ char* receive_information() {
             input[j++] = c;
         }
         if (flag == 0) {
-            free(input);
+             free(input);
             return NULL;
         }
     } while (argument_length_error(input) || incorrect_range(input) || incorrect_duplicates(input));
@@ -154,7 +154,6 @@ int main(int argc, char **argv) {
     parse_arguments(argc, argv, &attempts, &code);
     if (code == NULL) {
         code = code_random_generate();
-        printf("Generated secret code: %s\n", code);
     }play_game(attempts, code);
     if (code != NULL && code != argv[2]) {
         free((char *)code);

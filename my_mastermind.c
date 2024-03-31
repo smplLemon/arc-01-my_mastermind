@@ -1,211 +1,198 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 #include <unistd.h>
+#include <time.h>
 
-#define CODE_LENGTH 4
+#define SECRET_CODE_LENGTH 4
 
-int my_strlen(char *guess)
+int str_len(char *arr)
 {
-    int counter = 0;
-    for (int i = 0; guess[i]; i++)
+    int length = 0;
+    for (int i = 0; arr[i] != '\0'; ++i)
     {
-        counter++;
+        length++;
     }
-
-    return counter;
+    return length;
 }
 
-int my_strcmp(const char *str1, const char *str2)
+int inspector(char *arr, char letter)
 {
-    while (*str1 && *str2 && *str1 == *str2)
+    for (int i = 0; arr[i] != '\0'; i++)
     {
-        str1++;
-        str2++;
+        if (arr[i] == letter)
+            return 1;
     }
-    return *(unsigned char *)str1 - *(unsigned char *)str2;
-}
-
-void my_strncpy(char *dest, const char *src, size_t n)
-{
-    for (size_t i = 0; i < n && src[i] != '\0'; i++)
-    {
-        dest[i] = src[i];
-    }
-    dest[n] = '\0';
-}
-
-void GenerateSecretCode(char *code)
-{
-    srand(time(NULL));
-    for (int i = 0; i < CODE_LENGTH; i++)
-    {
-        int digit;
-        do
-        {
-            digit = rand() % 9 + 1;
-            int found = 0;
-            for (int j = 0; j < i; j++)
-            {
-                if (code[j] == digit + '0')
-                {
-                    found = 1;
-                    break;
-                }
-            }
-            if (!found)
-            {
-                code[i] = digit + '0';
-                break;
-            }
-        } while (1);
-    }
-    code[CODE_LENGTH] = '\0';
-}
-
-int CheckValidGuess(char *guess)
-{
-    if (my_strlen(guess) != CODE_LENGTH)
-    {
-        return 0;
-    }
-    for (int i = 0; i < CODE_LENGTH; i++)
-    {
-        if (guess[i] < '0' || guess[i] > '8')
-        {
-            return 0;
-        }
-        for (int j = i + 1; j < CODE_LENGTH; j++)
-        {
-            if (guess[i] == guess[j])
-            {
-                return 0;
-            }
-        }
-    }
-    return 1;
-}
-
-void ReadGuess(char *guess)
-{
-    char c;
-    int i = 0;
-    write(1, ">", 1);
-    while (read(STDIN_FILENO, &c, 1) > 0 && c != '\n')
-    {
-        guess[i++] = c;
-        if (c == EOF)
-        {
-            break;
-        }
-    }
-    guess[i] = '\0';
-
-    if (i == 0)
-    {
-        write(1, "\n", 1);
-    }
-    while (c != '\n' && read(STDIN_FILENO, &c, 1) > 0)
-        ;
-}
-
-int CounterPlaces(char *secretCode, char *guessCode)
-{
-    int well_placed = 0, misplaced = 0, i = 0, j = 0;
-    do
-    {
-        if (secretCode[i] == guessCode[i])
-        {
-            well_placed++;
-        }
-        else
-        {
-            do
-            {
-                misplaced++;
-                j++;
-                break;
-            } while (j < CODE_LENGTH);
-        }
-        i++;
-    } while (i < CODE_LENGTH);
-
-    if (well_placed == CODE_LENGTH)
-    {
-        return 1;
-    }
-
-    printf("Well placed pieces: %d\n", well_placed);
-    printf("Misplaced pieces: %d\n", misplaced);
     return 0;
 }
 
-void UserAttempts(char *secretCode, char *guessCode, int maxRounds)
+void generate_secret(char secret[])
 {
-    printf("Will you find the secret code?\nPlease enter a valid guess\n");
-
-    for (int round = 0; round < maxRounds; round++)
+    srand(time(NULL));
+    int i = 0;
+    char temp;
+    while (i < SECRET_CODE_LENGTH)
     {
-        printf("---\nRound: %d\n", round);
-        ReadGuess(guessCode);
-        if (CheckValidGuess(guessCode) == 0)
+        temp = rand() % 10 + '0';
+        if (inspector(secret, temp) == 0)
         {
-            round--;
-            printf("Wrong input!\n");
-            continue;
-        }
-        else if (CounterPlaces(secretCode, guessCode) == 1)
-        {
-            printf("Congratz! You did it!\n");
-            break;
+            secret[i] = temp;
+            i++;
         }
     }
+    secret[SECRET_CODE_LENGTH] = '\0';
 }
 
-int main(int argc, char *argv[])
+int checkDuplicateNumbers(char *guess)
 {
-    char secretCode[CODE_LENGTH + 1] = {0};
-    char guessCode[CODE_LENGTH + 1];
-    int maxRounds = 10;
-
-    for (int i = 1; i < argc; i++)
+    if (str_len(guess) != SECRET_CODE_LENGTH)
+        return 1;
+    for (int i = 0; i < SECRET_CODE_LENGTH; ++i)
     {
-        if (*(argv[i]) == '-' && argv[i][1] == 'c' && i + 1 < argc)
+        if (guess[i] < '0' || guess[i] > '8')
         {
-            int len = my_strlen(argv[i + 1]);
-            if (len != CODE_LENGTH)
+            return 1;
+        }
+    }
+    for (int i = 0; i < SECRET_CODE_LENGTH; i++)
+    {
+        for (int j = i + 1; j < SECRET_CODE_LENGTH; j++)
+        {
+            if (guess[i] == guess[j])
             {
-                printf("Wrong input!\n");
                 return 1;
             }
+        }
+    }
+    return 0;
+}
 
-            for (int j = 0; j < len; j++)
+char *get_user_guess()
+{
+    int the_size_array = 10, the_index = 0;
+    ssize_t reader;
+    char *the_user_input = calloc(sizeof(char), the_size_array);
+    if (the_user_input == NULL)
+    {
+        return NULL;
+    }
+    char temp;
+    write(1, ">", 1);
+    while ((reader = read(STDIN_FILENO, &temp, 1)) > 0 && temp != '\n')
+    {
+        if (the_index >= the_size_array - 1)
+        {
+            the_size_array *= 2;
+            the_user_input = realloc(the_user_input, the_size_array);
+            if (the_user_input == NULL)
             {
-                if (argv[i + 1][j] < '0' || argv[i + 1][j] > '8')
+                return NULL;
+            }
+        }
+        the_user_input[the_index++] = temp;
+    }
+
+    if (reader == 0)
+    {
+        printf("\n");
+        free(the_user_input);
+        return NULL;
+    }
+
+    if (the_index == 0)
+    {
+        printf("Wrong input!\n");
+        free(the_user_input);
+        return get_user_guess();
+    }
+
+    the_user_input[the_index] = '\0';
+    return the_user_input;
+}
+
+void give_feedback(char secret_code[SECRET_CODE_LENGTH], char guess[SECRET_CODE_LENGTH])
+{
+    int black = 0, white = 0;
+    for (int i = 0; i < SECRET_CODE_LENGTH; i++)
+    {
+        if (secret_code[i] == guess[i])
+        {
+            black++;
+        }
+        else
+        {
+            for (int j = 0; j < SECRET_CODE_LENGTH; j++)
+            {
+                if (secret_code[i] == guess[i])
                 {
-                    return 1;
-                }
-                for (int k = j + 1; k < len; k++)
-                {
-                    if (argv[i + 1][j] == argv[i + 1][k])
-                    {
-                        return 1;
-                    }
+                    white++;
+                    break;
                 }
             }
-            my_strncpy(secretCode, argv[i + 1], CODE_LENGTH);
-        }
-        else if (*(argv[i]) == '-' && argv[i][1] == 't' && i + 1 < argc)
-        {
-            maxRounds = atoi(argv[i + 1]);
         }
     }
-
-    if (!secretCode[0])
+    if (black == SECRET_CODE_LENGTH)
     {
-        GenerateSecretCode(secretCode);
+        printf("Congrats! You did it!\n");
+        exit(EXIT_SUCCESS);
     }
+    printf("Well placed: %d\n", black);
+    printf("Misplaced: %d\n", white);
+}
 
-    UserAttempts(secretCode, guessCode, maxRounds);
+int the_main_function(char secret_code[SECRET_CODE_LENGTH], int attempts)
+{
+    if (checkDuplicateNumbers(secret_code) == 1)
+        return 1;
+    printf("Will you find the secret code?\nPlease enter a valid guess\n");
+    for (int attempt = 0; attempt <= attempts; attempt++)
+    {
+        printf("---\nRound: %d\n", attempt);
+        while (1)
+        {
+            char *users_guess = get_user_guess();
+            if (users_guess == NULL)
+            {
+                return 0;
+            }
+            if (checkDuplicateNumbers(users_guess) == 1)
+            {
+                printf("Wrong input!\n");
+            }
+            else
+            {
+                give_feedback(secret_code, users_guess);
+                free(users_guess);
+                break;
+            }
+        }
+    }
+    printf("Out of attempts. The secret code was: %s\n", secret_code);
+    return 0;
+}
+int main(int argc, char *argv[])
+{
+    char secret_code[SECRET_CODE_LENGTH + 1];
+    generate_secret(secret_code);
+    if (argc == 3 && strcmp(argv[1], "-c") == 0)
+    {
+        the_main_function(argv[2], 10);
+    }
+    else if (argc == 3 && strcmp(argv[1], "-t") == 0)
+    {
+        the_main_function(secret_code, atoi(argv[2]));
+    }
+    else if (argc == 5 && strcmp(argv[1], "-c") == 0 && strcmp(argv[3], "-t") == 0)
+    {
+        the_main_function(argv[2], atoi(argv[4]));
+    }
+    else if (argc == 5 && strcmp(argv[1], "-t") == 0 && strcmp(argv[3], "-c") == 0)
+    {
+        the_main_function(argv[4], atoi(argv[2]));
+    }
+    else
+    {
+        the_main_function(secret_code, 10);
+    }
     return 0;
 }

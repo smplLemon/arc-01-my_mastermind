@@ -46,15 +46,3 @@ If customization options are not provided, the program generates a random secret
 ## Dependencies
 
 The program relies on standard C libraries (`stdio.h`, `stdlib.h`, `time.h`, `unistd.h`).
-
-## Contributors
-
-This program was created by [Your Name] ([Your GitHub Profile](https://github.com/maqsudbekov005/)).
-
-## License
-
-Feel free to contribute to or modify this program according to your needs! Your feedback and contributions are appreciated.
-
-## Additional Notes
-
-This implementation aims to provide a basic yet functional version of the Mastermind game. Further enhancements, such as graphical interfaces, additional gameplay modes, or advanced algorithms for generating secret codes, can be explored for more sophisticated versions of the game.

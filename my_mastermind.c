@@ -5,6 +5,7 @@
 #include <time.h>
 
 char *generate_random_code();
+int string_length(char *str);
 int check_input_validity(char *input);
 void evaluate_guess(char *code, char *guess, int *good, int *unitized);
 
@@ -24,8 +25,17 @@ char *generate_random_code() {
     return code;
 }
 
+int string_length(char *str) {
+    int length = 0;
+    while (str[length] != '\0') {
+        length++;
+    }
+    return length;
+}
+
 int check_input_validity(char *input) {
-    if(strlen(input) != 4) {
+    int length = string_length(input);
+    if(length != 4) {
         printf("Wrong input!\n");
         return 0;
     } 
@@ -105,7 +115,7 @@ int main(int argc, char **argv) {
                 guess[j] = c;
                 j++;
             }
-            if(c == 0) {
+            if(c == 0 || c == -1) {
                 return 0;
             }
         } while(!check_input_validity(guess));  
@@ -116,7 +126,7 @@ int main(int argc, char **argv) {
             printf("Congratulations! You did it!\n");
             return 0;
         } else {
-            printf("Correctly placed pieces: %d\n", good);
+            printf("Well placed pieces: %d\n", good);
             printf("Misplaced pieces: %d\n", unitized);
         }
     }

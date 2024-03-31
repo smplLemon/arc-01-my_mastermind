@@ -115,6 +115,7 @@ char *generate_secret_code() {
     return code;
 }
 
+
 void evaluate_guess(char *input, char *code) {
     int well = count_correct_placements(code, input);
     int missed = count_misplaced_pieces(code, input);
@@ -275,7 +276,7 @@ void handle_input_reading(char *input, int *flag, char c, int *j) {
 }
 
 void handle_no_input_received() {
-
+    return 0;
 }
 
 void handle_correct_attempt() {
@@ -290,7 +291,7 @@ void print_secret_code_revealed(char *code) {
     printf("The secret code was: %s\n", code);
 }
 
+
 void print_secret_code(char *code) {
     printf("The secret code was: %s\n", code);
 }
-

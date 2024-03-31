@@ -1,49 +1,40 @@
-## Welcome to My Mastermind Game
+## Welcome to my_mastermind
+
+This project emulates the game of "Mastermind." In this game, the user inputs a sequence of random numbers, and the program generates a random sequence of numbers. The user continues to make guesses, and after each guess, the program checks the user's input, provides additional information, and congratulates the user if the input sequence is correct.
 
 ## Task
-In this section, you will gather all the necessary information about your Mastermind game.
+
+Run the following commands to install and start the program:
+
+```bash
+make
+./my_mastermind
+```
 
 ## Description
-Provide a brief overview of the **Mastermind** game, emphasizing its gameplay and rules. The game is centered around guessing a variable code. Users' guesses are evaluated, providing them feedback.
 
-Game Concepts:
-- In each turn, users attempt to guess the correct code.
-- Users must provide a 4-digit code in each turn.
-- Feedback is given to users in each turn, including:
-  - "Well placed pieces": Number of correctly placed digits.
-  - "Missed placed pieces": Number of incorrectly placed digits.
-- The game continues until users guess the code or run out of attempts.
+The program emulates the game of "Mastermind." It provides more information about the game and checks the user's input sequence. After each move, the program provides additional information to the user, and if the user correctly guesses the sequence of numbers, the program congratulates the user.
 
 ## Installation
-Describe the installation steps and configurations needed for the game. This includes dependencies, download links, and setup instructions.
+
+To install the program, follow these steps:
+
+1. Download the code or clone the repository.
+2. Open a terminal and navigate to the repository.
+3. Run the following command:
+
+```bash
+make
+```
 
 ## Usage
-Provide instructions on how to run and play the game.
 
-- **Installation**:
-  - The game requires **C** programming language and **gcc** compiler.
-  - Download the game code from your GitHub repository.
-  - Navigate to the game directory in the terminal.
-  - Execute the following command in the terminal:
+To start the program, run the following command:
 
-    ```bash
-    gcc -o mastermind mastermind.c
-    ```
+```bash
+./my_mastermind
+```
 
-- **Running the Game**:
-  - To run the game, execute the following command in the terminal:
+Upon starting the program, the user will receive information about the "Mastermind" game and will be prompted to enter a sequence of numbers. After each guess, the program provides information to the user, and if the user correctly guesses the sequence of numbers, the program congratulates the user.
 
-    ```bash
-    ./mastermind
-    ```
-
-- **Options**:
-  - Users can customize game parameters with command-line options:
-    - `-t` - Number of attempts (e.g., `-t 10`).
-    - `-c` - Set a specific code (e.g., `-c 1234`).
-
-- **Playing the Game**:
-  - Start the game by typing ">", then enter "Play game".
-  - You will be prompted to enter a 4-digit code.
-  - Feedback and responses will guide you through the game.
-  - Continue playing until you guess the code or the game ends.
+If you need more information or have any questions, please feel free to contact me!

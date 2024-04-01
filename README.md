@@ -11,7 +11,7 @@ The my_mastermind program supports several command-line options to customize gam
 -t specifies the number of attempts. Default is 10.
 
 ## Installation
-    ```bash
+    ```
     gcc -o my_mastermind my_mastermind.c
     ```
 

@@ -115,7 +115,9 @@ int main(int argc, char **argv) {
                 guess[j] = c;
                 j++;
             }
-            if(c == 0 || c == -1) {
+            if (j == 0) {
+                // EOF received, handle it
+                printf("\nEOF received. Exiting...\n");
                 return 0;
             }
         } while(!check_input_validity(guess));  

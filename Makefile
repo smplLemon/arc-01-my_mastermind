@@ -1,13 +1,21 @@
+
 CC = gcc
-CFLAGS = -Wall -Wextra -Wpedantic -std=c99
+CFLAGS = -Wall -Wextra -std=c99
+TARGET = guessing_game
 
-TARGET = secret_code
+SRCS = guessing_game.c
 
-$(TARGET): secret_code.o
-    $(CC) $(CFLAGS) -o $(TARGET) secret_code.o
+OBJS = $(SRCS:.c=.o)
 
-secret_code.o: secret_code.c
-    $(CC) $(CFLAGS) -c secret_code.c
+.PHONY: all clean
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+    $(CC) $(CFLAGS) -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-    rm -f $(TARGET) *.o
+	rm -f $(OBJS) $(TARGET)

@@ -93,7 +93,7 @@ char *get_user_guess() {
         }
 
         if (flag == 0)
-            exit(0);
+            return 0;
 
     } while (is_incorrect(input));
 

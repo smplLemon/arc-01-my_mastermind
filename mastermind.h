@@ -26,7 +26,7 @@ int preGtr(char *string){
             return 1;
         } string[index++] = letter; }
     if(index == 0){
-        exit(0); }
+        return 0; }
     return 0; }
 
 void strCpy(char *destination, char *source){

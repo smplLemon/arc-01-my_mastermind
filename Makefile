@@ -1,19 +1,20 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11
-
-SRCS = main.c
+CFLAGS = -Wall -Wextra -Werror
+TARGET = my_mastermind
+SRCS = my_mastermind.c
 OBJS = $(SRCS:.c=.o)
-EXEC = guess_game
 
-.PHONY: all clean
+all: $(TARGET)
 
-all: $(EXEC)
+$(TARGET): $(OBJS)
+  $(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
 
-$(EXEC): $(OBJS)
-    $(CC) $(CFLAGS) $(OBJS) -o $@
-
-%.o: %.c
-    $(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c mastermind.h
+  $(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-    $(RM) $(OBJS) $(EXEC)
+  rm -f $(OBJS) $(TARGET)
+
+re: clean all
+
+.PHONY: all clean re

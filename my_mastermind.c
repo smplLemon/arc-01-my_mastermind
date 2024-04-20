@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
     char *code = NULL;
     char guess[15] = {0};
     char c = 0;
-    int j = 0;
+    int j = 0, cnt;
     int good;
     int unitized;
     good = 0;
@@ -107,20 +107,23 @@ int main(int argc, char **argv) {
         do {
             write(1, ">", 1);
             j = 0;
-            while((read(0, &c, 1)) > 0) {
+            while((cnt = read(0, &c, 1)) != -1) {
+                if(cnt == 0 ){
+                    return -1;
+                }
                 if(c == '\n') {
                     guess[j] = '\0';
                     break;
                 }
+                else if(c == EOF){
+                    printf("\n");
+                    return 0;
+                }
                 guess[j] = c;
                 j++;
             }
-            if (j == 0) {
-                // EOF received, handle it
-                printf("\nEOF received. Exiting...\n");
-                return 0;
-            }
-        } while(!check_input_validity(guess));  
+        } while(!check_input_validity(guess));
+
 
         evaluate_guess(code, guess, &good, &unitized);
 
